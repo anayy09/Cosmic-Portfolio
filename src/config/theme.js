@@ -33,7 +33,7 @@ const theme = {
       small: '0 2px 10px rgba(0, 0, 0, 0.1)',
       medium: '0 4px 20px rgba(0, 0, 0, 0.15)',
       large: '0 10px 40px rgba(0, 0, 0, 0.2)',
-      glow: '0 0 15px rgba(66, 133, 244, 0.5)',
+      glow: '0 0 15px rgba(66, 133, 244, 0.3)',
     },
     spacing: {
       xs: '0.25rem',

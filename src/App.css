@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .App-logo {
@@ -35,4 +37,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+section {
+  position: relative;
+  z-index: 2;
 }

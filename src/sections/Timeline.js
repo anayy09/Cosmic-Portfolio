@@ -81,8 +81,8 @@ const TimelineDot = styled(motion.div)`
   height: 25px;
   border-radius: 50%;
   background: ${props => props.theme.colors.primary};
-  left: 50%;
-  top: 50%;
+  left: 49%;
+  top: 46%;
   transform: translate(-50%, -50%);
   z-index: 2;
   box-shadow: 0 0 10px ${props => props.theme.colors.primary};
@@ -100,7 +100,7 @@ const TimelineDot = styled(motion.div)`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    left: 30px;
+    left: 5%;
   }
 `;
 

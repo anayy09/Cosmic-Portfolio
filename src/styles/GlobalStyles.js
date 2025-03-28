@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
   
   html, body {
     font-family: ${theme.fonts.main};
-    background-color: ${theme.colors.dark};
+    background-color: ${theme.colors.dark}CC; /* Adding translucency with alpha channel */
     color: ${theme.colors.light};
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -23,11 +23,11 @@ const GlobalStyles = createGlobalStyle`
   }
   
   body::-webkit-scrollbar-track {
-    background: ${theme.colors.dark};
+    background: ${theme.colors.dark}CC; /* Adding translucency */
   }
   
   body::-webkit-scrollbar-thumb {
-    background-color: ${theme.colors.primary};
+    background-color: ${theme.colors.primary}CC; /* Adding translucency */
     border-radius: 20px;
   }
   
