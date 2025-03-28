@@ -41,7 +41,7 @@ function App() {
           hashnodeUsername={personalInfo.apis.hashnode.username}
         />
         <WorldMap 
-          csvFilePath="/locations.csv" // Optional: provide a CSV file with your visited locations
+          csvFilePath={process.env.PUBLIC_URL + "/locations.csv"}
         />
         <Contact 
           email={personalInfo.email}
