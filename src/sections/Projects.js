@@ -200,7 +200,7 @@ const ErrorMessage = styled.div`
   margin: 0 auto;
 `;
 
-const AddProjectButton = styled(motion.button)`
+const ViewAllButton = styled(motion.a)`
   display: block;
   margin: 3rem auto 0;
   padding: 0.8rem 2rem;
@@ -210,143 +210,24 @@ const AddProjectButton = styled(motion.button)`
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 500;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
+  max-width: 200px;
   
   &:hover {
     background: rgba(66, 133, 244, 0.1);
+    color: ${props => props.theme.colors.primary};
     transform: translateY(-3px);
   }
-`;
-
-const ModalOverlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 1rem;
-`;
-
-const ModalContent = styled(motion.div)`
-  background: ${props => props.theme.colors.darkBlue};
-  border-radius: 15px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid ${props => props.theme.colors.primary};
-  box-shadow: 0 0 30px rgba(66, 133, 244, 0.3);
-`;
-
-const ModalTitle = styled.h3`
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: ${props => props.theme.colors.light};
-  text-align: center;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
-const FormLabel = styled.label`
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  color: ${props => props.theme.colors.light};
-`;
-
-const FormInput = styled.input`
-  width: 100%;
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  color: ${props => props.theme.colors.light};
-  font-size: 1rem;
-  transition: all 0.3s ease;
   
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-  }
-`;
-
-const FormTextarea = styled.textarea`
-  width: 100%;
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  color: ${props => props.theme.colors.light};
-  font-size: 1rem;
-  min-height: 100px;
-  resize: vertical;
-  transition: all 0.3s ease;
-  
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-  }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-`;
-
-const Button = styled.button`
-  padding: 0.8rem 1.5rem;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &.primary {
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.dark};
-    border: none;
-    
-    &:hover {
-      background: ${props => props.theme.colors.primary}CC;
-      transform: translateY(-2px);
-    }
-  }
-  
-  &.secondary {
-    background: transparent;
-    color: ${props => props.theme.colors.light};
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const Projects = ({ githubUsername, customProjects = [] }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [manualProjects, setManualProjects] = useState(customProjects);
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    url: '',
-    homepage: '',
-    language: '',
-    topics: '',
-  });
-  
   const { projects, loading, error } = useGitHubProjects(githubUsername);
   const controls = useAnimation();
   const ref = useRef(null);
@@ -358,38 +239,7 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
     }
   }, [controls, inView]);
   
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    const newProject = {
-      id: `manual-${Date.now()}`,
-      name: formData.name,
-      description: formData.description,
-      url: formData.url,
-      homepage: formData.homepage,
-      language: formData.language,
-      topics: formData.topics.split(',').map(topic => topic.trim()).filter(Boolean),
-      isManual: true,
-    };
-    
-    setManualProjects(prev => [...prev, newProject]);
-    setShowModal(false);
-    setFormData({
-      name: '',
-      description: '',
-      url: '',
-      homepage: '',
-      language: '',
-      topics: '',
-    });
-  };
-  
-  const allProjects = [...manualProjects, ...projects];
+  const allProjects = [...customProjects, ...projects];
   
   const titleVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -421,24 +271,6 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
         stiffness: 100,
         damping: 12
       }
-    }
-  };
-  
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 25
-      }
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.9,
-      transition: { duration: 0.2 }
     }
   };
   
@@ -543,119 +375,16 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
           ))}
         </ProjectsContainer>
       )}
-      
-      <AddProjectButton
-        onClick={() => setShowModal(true)}
+
+      <ViewAllButton
+        href={`https://github.com/${githubUsername}?tab=repositories`}
+        target="_blank"
+        rel="noopener noreferrer"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Add Custom Project
-      </AddProjectButton>
-      
-      {showModal && (
-        <ModalOverlay
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setShowModal(false)}
-        >
-          <ModalContent
-            variants={modalVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={e => e.stopPropagation()}
-          >
-            <ModalTitle>Add Custom Project</ModalTitle>
-            
-            <form onSubmit={handleSubmit}>
-              <FormGroup>
-                <FormLabel htmlFor="name">Project Name</FormLabel>
-                <FormInput
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="description">Description</FormLabel>
-                <FormTextarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="url">Repository URL</FormLabel>
-                <FormInput
-                  type="url"
-                  id="url"
-                  name="url"
-                  value={formData.url}
-                  onChange={handleInputChange}
-                  placeholder="https://github.com/username/repo"
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="homepage">Live Demo URL</FormLabel>
-                <FormInput
-                  type="url"
-                  id="homepage"
-                  name="homepage"
-                  value={formData.homepage}
-                  onChange={handleInputChange}
-                  placeholder="https://yourproject.com"
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="language">Primary Language</FormLabel>
-                <FormInput
-                  type="text"
-                  id="language"
-                  name="language"
-                  value={formData.language}
-                  onChange={handleInputChange}
-                  placeholder="JavaScript, Python, etc."
-                />
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="topics">Topics (comma separated)</FormLabel>
-                <FormInput
-                  type="text"
-                  id="topics"
-                  name="topics"
-                  value={formData.topics}
-                  onChange={handleInputChange}
-                  placeholder="react, machine-learning, api"
-                />
-              </FormGroup>
-              
-              <ButtonGroup>
-                <Button 
-                  type="button" 
-                  className="secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" className="primary">
-                  Add Project
-                </Button>
-              </ButtonGroup>
-            </form>
-          </ModalContent>
-        </ModalOverlay>
-      )}
+        View All Projects
+      </ViewAllButton>
     </ProjectsSection>
   );
 };

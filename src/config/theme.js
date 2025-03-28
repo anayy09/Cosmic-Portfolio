@@ -15,7 +15,7 @@ const theme = {
     },
     fonts: {
       main: "'Space Grotesk', sans-serif",
-      heading: "'Orbitron', sans-serif",
+      heading: "'Yatra One', sans-serif",
       code: "'Fira Code', monospace",
     },
     breakpoints: {

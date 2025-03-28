@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import theme from '../config/theme';
 
 const GlobalStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Yatra+One:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap');
   
   * {
     box-sizing: border-box;

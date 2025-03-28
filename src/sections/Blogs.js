@@ -58,24 +58,6 @@ const BlogCard = styled(motion.div)`
   }
 `;
 
-const BlogImage = styled.div`
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  position: relative;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-  
-  ${BlogCard}:hover & img {
-    transform: scale(1.05);
-  }
-`;
-
 const BlogContent = styled.div`
   padding: 1.5rem;
   flex-grow: 1;
@@ -192,14 +174,20 @@ const ViewAllButton = styled(motion.a)`
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
   text-align: center;
   text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  max-width: 200px;
   
   &:hover {
     background: rgba(66, 133, 244, 0.1);
+    color: ${props => props.theme.colors.primary};
     transform: translateY(-3px);
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -284,12 +272,6 @@ const Blogs = ({ hashnodeUsername }) => {
           >
             {blogs.slice(0, 6).map((blog, index) => (
               <BlogCard key={index} variants={itemVariants}>
-                {blog.coverImage && (
-                  <BlogImage>
-                    <img src={blog.coverImage} alt={blog.title} />
-                  </BlogImage>
-                )}
-                
                 <BlogContent>
                   <BlogTitle>{blog.title}</BlogTitle>
                   <BlogExcerpt>{blog.brief}</BlogExcerpt>

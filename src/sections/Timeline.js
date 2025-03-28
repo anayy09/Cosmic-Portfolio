@@ -269,7 +269,7 @@ const Timeline = ({ education, experience }) => {
         initial="hidden"
         animate={controls}
       >
-        Astronomic Timeline
+        Timeline
       </SectionTitle>
       
       <TimelineToggle>

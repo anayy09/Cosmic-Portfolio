@@ -11,7 +11,7 @@ const ContactSection = styled.section`
   overflow: hidden;
 `;
 
-const SectionTitle = styled(motion .h2)`
+const SectionTitle = styled(motion.h2)`
   font-size: clamp(2rem, 5vw, 3.5rem);
   text-align: center;
   margin-bottom: 1rem;
@@ -217,12 +217,11 @@ const Contact = ({ email, linkedin, github }) => {
     setIsSubmitting(true);
     
     try {
-      // Replace these with your actual EmailJS service ID, template ID, and public key
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         formRef.current,
-        'YOUR_PUBLIC_KEY'
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
       );
       
       setFormStatus({ type: 'success', message: 'Message sent successfully! I\'ll get back to you soon.' });
