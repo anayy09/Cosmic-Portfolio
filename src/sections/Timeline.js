@@ -118,15 +118,50 @@ const TimelineDate = styled.div`
   }
 `;
 
+const TimelineHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+`;
+
+const LogoContainer = styled.div`
+  width: 55px;
+  height: 55px;
+  border-radius: 32px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.1);
+  }
+`;
+
+const TitleContainer = styled.div`
+  flex-grow: 1;
+`;
+
 const TimelineTitle = styled.h3`
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.3rem 0;
   color: ${props => props.theme.colors.light};
 `;
 
 const TimelineSubtitle = styled.h4`
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  margin: 0;
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
 `;
@@ -135,6 +170,7 @@ const TimelineDescription = styled.p`
   font-size: 1rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
 `;
 
 const TimelineTags = styled.div`
@@ -182,6 +218,23 @@ const ToggleButton = styled.button`
   }
 `;
 
+// Fallback logo component for when a logo URL is not provided
+const FallbackLogo = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.theme.gradients.nebula};
+  color: ${props => props.theme.colors.light};
+  font-weight: 600;
+  font-size: 1.2rem;
+  
+  &::after {
+    content: '${props => props.initials || "?"}';
+  }
+`;
+
 const Timeline = ({ education, experience }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [timelineItems, setTimelineItems] = useState([]);
@@ -216,6 +269,16 @@ const Timeline = ({ education, experience }) => {
     
     setTimelineItems(items);
   }, [activeTab, education, experience]);
+  
+  // Get organization initials for fallback logo
+  const getInitials = (name) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  };
   
   const titleVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -309,9 +372,31 @@ const Timeline = ({ education, experience }) => {
               <TimelineDate position={index % 2 === 0 ? 'right' : 'left'}>
                 {item.startDate} - {item.endDate || 'Present'}
               </TimelineDate>
-              <TimelineTitle>{item.title}</TimelineTitle>
-              <TimelineSubtitle>{item.organization}</TimelineSubtitle>
+              
+              <TimelineHeader>
+                <LogoContainer>
+                  {item.logoUrl ? (
+                    <img 
+                      src={item.logoUrl} 
+                      alt={`${item.organization} logo`} 
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #4285F4, #8A2BE2);color:white;font-weight:600;">${getInitials(item.organization)}</div>`;
+                      }}
+                    />
+                  ) : (
+                    <FallbackLogo initials={getInitials(item.organization)} />
+                  )}
+                </LogoContainer>
+                
+                <TitleContainer>
+                  <TimelineTitle>{item.title}</TimelineTitle>
+                  <TimelineSubtitle>{item.organization}</TimelineSubtitle>
+                </TitleContainer>
+              </TimelineHeader>
+              
               <TimelineDescription>{item.description}</TimelineDescription>
+              
               {item.skills && (
                 <TimelineTags>
                   {item.skills.map((skill, i) => (
