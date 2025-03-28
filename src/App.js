@@ -1,31 +1,45 @@
-// src/App.js
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import theme from './config/theme';
+import CosmicBackground from './components/CosmicBackground';
+import Navigation from './components/Navigation';
+import Hero from './sections/Hero';
 
-// We'll import our sections here later
-// import Hero from './sections/Hero';
-// import Timeline from './sections/Timeline';
-// import Projects from './sections/Projects';
-// import Blogs from './sections/Blogs';
-// import WorldMap from './sections/WorldMap';
-// import Contact from './sections/Contact';
+const personalInfo = {
+  name: "Anay Sinhal",
+  skills: [
+    "Software Developer",
+    "Machine Learning Engineer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Python Expert",
+    "JavaScript Enthusiast"
+  ],
+  description: "A passionate software and ML developer specializing in creating exceptional digital experiences. Currently focused on building accessible, human-centered products with cutting-edge technologies.",
+  github: "https://github.com/anay09",
+  linkedin: "https://linkedin.com/in/anaysinhal",
+  email: "anaysinhal.edu@gmail.com",
+  blog: "https://anay09.hashnode.dev/"
+};
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
+      <CosmicBackground />
+      <Navigation />
       <div className="App">
-        <h1>Cosmic Portfolio</h1>
-        <p>We're setting up your futuristic portfolio. Stay tuned!</p>
-        {/* We'll add our sections here later */}
-        {/* <Hero />
-        <Timeline />
-        <Projects />
-        <Blogs />
-        <WorldMap />
-        <Contact /> */}
+        <Hero 
+          name={personalInfo.name}
+          skills={personalInfo.skills}
+          description={personalInfo.description}
+          github={personalInfo.github}
+          linkedin={personalInfo.linkedin}
+          email={personalInfo.email}
+          blog={personalInfo.blog}
+        />
+        {/* We'll add more sections in the next parts */}
       </div>
     </ThemeProvider>
   );
