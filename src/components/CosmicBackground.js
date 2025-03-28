@@ -1,7 +1,7 @@
 // src/components/CosmicBackground.js
 import React, { useRef, useMemo } from 'react';
 import * as THREE from 'three';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import styled from 'styled-components';
 
@@ -17,8 +17,9 @@ const BackgroundContainer = styled.div`
 `;
 
 // Stars field component with different star sizes and brightness
-const Stars = ({ count = 20 }) => {
+const Stars = ({ count = 100 }) => {
   const mesh = useRef();
+  const starTexture = useLoader(THREE.TextureLoader, '/star.png');
   
   // Generate random stars with varying sizes
   const [positions, sizes, colors] = useMemo(() => {
@@ -100,6 +101,8 @@ const Stars = ({ count = 20 }) => {
         transparent
         opacity={0.8}
         depthWrite={false}
+        map={starTexture}
+        alphaTest={0.001}
       />
     </points>
   );
@@ -111,6 +114,7 @@ const ShootingStars = () => {
   const count = 5;
   const shootingStars = useRef([]);
   const trailsGroup = useRef();
+  const starTexture = useLoader(THREE.TextureLoader, '/star.png');
   
   // Initialize shooting stars
   useMemo(() => {
@@ -233,10 +237,14 @@ const ShootingStars = () => {
     <>
       <group ref={trailsGroup} />
       {shootingStars.current.map((star, i) => (
-        <mesh key={i} position={star.position} visible={star.active}>
-          <sphereGeometry args={[0.5, 8, 8]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
+        <sprite key={i} position={star.position} visible={star.active}>
+          <spriteMaterial
+            map={starTexture}
+            transparent
+            opacity={0.8}
+            color="#ffffff"
+          />
+        </sprite>
       ))}
     </>
   );
@@ -249,7 +257,7 @@ const CosmicScene = () => {
       <color attach="background" args={['#050714']} />
       <ambientLight intensity={0.1} />
       
-      <Stars count={20} />
+      <Stars count={100} />
       <ShootingStars />
       
       <EffectComposer>
