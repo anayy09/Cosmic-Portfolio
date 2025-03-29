@@ -10,6 +10,7 @@ import Timeline from './sections/Timeline';
 import Projects from './sections/Projects';
 import Blogs from './sections/Blogs';
 import WorldMap from './sections/WorldMap';
+import AmChartsWorldMap from './sections/AmChartsWorldMap';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
 import CosmicLoader from './components/CosmicLoader';
@@ -63,6 +64,9 @@ function App() {
             <WorldMap 
               csvFilePath={process.env.PUBLIC_URL + "/locations.csv"}
             />
+            {/* <AmChartsWorldMap 
+              csvFilePath={process.env.PUBLIC_URL + "/locations.csv"}
+            /> */}
             <Contact 
               email={personalInfo.email}
               linkedin={personalInfo.linkedin}
