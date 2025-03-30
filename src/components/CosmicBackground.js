@@ -1,7 +1,7 @@
 // src/components/CosmicBackground.js
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import styled from 'styled-components';
 
@@ -250,6 +250,177 @@ const ShootingStars = () => {
   );
 };
 
+// RealMoon component that shows the moon as it appears in the real sky
+const RealMoon = () => {
+  const moonRef = useRef();
+  const { viewport } = useThree();
+  const [moonPosition, setMoonPosition] = useState({ azimuth: 0, altitude: 0 });
+  const [isDefaultMode, setIsDefaultMode] = useState(false);
+  const moonTexture = useLoader(THREE.TextureLoader, '/moon.png', (loader) => {
+    // Set texture loading priority and use image optimization
+    loader.setCrossOrigin('anonymous');
+    THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      if (url.includes('moon.png')) {
+        console.log(`Loading moon texture: ${Math.round((itemsLoaded / itemsTotal) * 100)}%`);
+      }
+    };
+  });
+  
+  // For better performance with large texture
+  useEffect(() => {
+    if (moonTexture) {
+      moonTexture.minFilter = THREE.LinearFilter;
+      moonTexture.generateMipmaps = false;
+      moonTexture.anisotropy = 1;
+      
+      // Resize the texture for better performance if needed
+      const reducer = 4; // Reduce texture size for better performance
+      if (moonTexture.image && (moonTexture.image.width > 2048 || moonTexture.image.height > 2048)) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = moonTexture.image.width / reducer;
+        canvas.height = moonTexture.image.height / reducer;
+        ctx.drawImage(moonTexture.image, 0, 0, canvas.width, canvas.height);
+        
+        // Create new texture from canvas
+        const newTexture = new THREE.CanvasTexture(canvas);
+        newTexture.needsUpdate = true;
+        moonTexture.image = canvas;
+        moonTexture.needsUpdate = true;
+      }
+    }
+  }, [moonTexture]);
+
+  // Calculate real moon position based on current date/time
+  useEffect(() => {
+    // Function to calculate the moon's position in the sky
+    const calculateMoonPosition = () => {
+      // Current date - March 29, 2025
+      const now = new Date();
+      
+      // Calculate Julian date
+      const getJulianDate = (date) => {
+        const time = date.getTime();
+        return (time / 86400000) + 2440587.5;
+      };
+      
+      const julianDate = getJulianDate(now);
+      
+      // Calculate moon's celestial coordinates
+      // These are simplified calculations for demonstration
+      const daysSince2000 = julianDate - 2451545.0;
+      
+      // Mean longitude of the moon
+      const L = 218.316 + 13.176396 * daysSince2000;
+      // Mean anomaly of the moon
+      const M = 134.963 + 13.064993 * daysSince2000;
+      // Moon's longitude
+      const moonLong = L + 6.289 * Math.sin((M * Math.PI) / 180);
+      
+      // Convert to horizontal coordinates (simplified)
+      // Using observer's location (approximate for Northern Hemisphere)
+      const latitude = 40.0; // Default latitude (can be made dynamic)
+      const hourAngle = ((now.getHours() + now.getMinutes() / 60) * 15) - 180;
+      
+      // Calculate approximate altitude and azimuth
+      const altitude = 40 * Math.sin((moonLong - hourAngle) * Math.PI / 180) * 
+                      Math.sin(latitude * Math.PI / 180);
+      const azimuth = 90 + 70 * Math.sin((hourAngle - moonLong) * Math.PI / 180);
+      
+      // Check if moon is below horizon (or very close to it)
+      // If altitude is below 5 degrees, switch to default mode
+      setIsDefaultMode(altitude < 5);
+      
+      return { altitude, azimuth };
+    };
+
+    // Initial calculation
+    setMoonPosition(calculateMoonPosition());
+    
+    // Update position every minute
+    const interval = setInterval(() => {
+      setMoonPosition(calculateMoonPosition());
+    }, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Default beautiful position for the moon when not visible in real sky
+  const defaultMoonPosition = useMemo(() => {
+    // Place the moon in upper right quadrant by default
+    return new THREE.Vector3(
+      viewport.width * 0.35, // X position - right side
+      viewport.height * 0.35, // Y position - upper area
+      -30 // Z position - behind stars
+    );
+  }, [viewport]);
+  
+  // Convert altitude and azimuth to 3D position
+  const calculatedMoonPosition = useMemo(() => {
+    // Convert from astronomical coordinates to scene position
+    // Azimuth: 0-360 degrees (0/360=North, 90=East, 180=South, 270=West)
+    // Altitude: -90 to 90 degrees (-90=below horizon, 0=horizon, 90=zenith)
+    
+    // Scale the position to fit nicely in the viewport
+    const radius = 40; // Distance from center
+    const x = radius * Math.sin((moonPosition.azimuth * Math.PI) / 180);
+    
+    // Always keep moon above horizon for visibility
+    const altitudeFactor = Math.max(0.1, (moonPosition.altitude + 10) / 90);
+    const y = 20 * altitudeFactor; // Vertical position
+    
+    const z = -radius * Math.cos((moonPosition.azimuth * Math.PI) / 180);
+    
+    return new THREE.Vector3(x, y, z);
+  }, [moonPosition]);
+  
+  // Use default or calculated position based on visibility
+  const moonWorldPosition = isDefaultMode ? defaultMoonPosition : calculatedMoonPosition;
+  
+  // Moon size and appearance
+  const moonSize = isDefaultMode ? 12 : 10; // Slightly larger in default mode for better visibility
+  
+  // Animate the moon with subtle floating
+  useFrame((state) => {
+    if (moonRef.current) {
+      const time = state.clock.getElapsedTime() * 0.03;
+      
+      // Position based on chosen mode with subtle movement
+      moonRef.current.position.x = moonWorldPosition.x + Math.sin(time) * 0.2;
+      moonRef.current.position.y = moonWorldPosition.y + Math.cos(time * 0.7) * 0.1;
+      moonRef.current.position.z = moonWorldPosition.z;
+      
+      // Add gentle rotation in default mode for visual interest
+      if (isDefaultMode) {
+        moonRef.current.rotation.z = Math.sin(time * 0.5) * 0.05;
+      } else {
+        // Moon always faces camera in real sky mode
+        moonRef.current.rotation.x = state.camera.rotation.x;
+        moonRef.current.rotation.y = state.camera.rotation.y;
+        moonRef.current.rotation.z = state.camera.rotation.z;
+      }
+    }
+  });
+  
+  return (
+    <group ref={moonRef} position={moonWorldPosition}>
+      {/* The moon with texture */}
+      <sprite scale={[moonSize, moonSize, 1]}>
+        <spriteMaterial
+          map={moonTexture}
+          transparent={true}
+          opacity={0.95}
+          depthTest={true}
+          depthWrite={false}
+          fog={false}
+          sizeAttenuation={true}
+        />
+      </sprite>
+    
+    </group>
+  );
+};
+
 // Main cosmic scene
 const CosmicScene = () => {
   return (
@@ -259,6 +430,7 @@ const CosmicScene = () => {
       
       <Stars count={100} />
       <ShootingStars />
+      <RealMoon />
       
       <EffectComposer>
         <Bloom

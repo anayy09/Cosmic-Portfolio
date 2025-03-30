@@ -93,9 +93,6 @@ const Footer = () => {
         <FooterText>
           © {currentYear} Anay Sinhal. All rights reserved.
         </FooterText>
-        <FooterText>
-          <a href="mailto:anaysinhal.edu@gmail.com">anaysinhal.edu@gmail.com</a>
-        </FooterText>
         <FooterCredits>
           Built with <FaHeart /> using React and Three.js
         </FooterCredits>
