@@ -72,6 +72,7 @@ const TimelineContent = styled(motion.div)`
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     width: 100%;
+    padding: 0.75rem;
   }
 `;
 
@@ -106,7 +107,7 @@ const TimelineDot = styled(motion.div)`
 
 const TimelineDate = styled.div`
   position: absolute;
-  top: -30px;
+  top: -26px;
   ${props => props.position === 'left' ? 'right: 0;' : 'left: 0;'}
   font-family: ${props => props.theme.fonts.code};
   color: ${props => props.theme.colors.primary};
@@ -115,6 +116,7 @@ const TimelineDate = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     left: 0;
     right: auto;
+    font-size: 0.8rem; // Smaller font size for mobile
   }
 `;
 
@@ -123,6 +125,10 @@ const TimelineHeader = styled.div`
   align-items: center;
   margin-bottom: 1rem;
   gap: 1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-bottom: 0.5rem; // Smaller margin for mobile
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -157,6 +163,10 @@ const TimelineTitle = styled.h3`
   font-size: 1.5rem;
   margin: 0 0 0.3rem 0;
   color: ${props => props.theme.colors.light};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem; // Smaller font size for mobile
+  }
 `;
 
 const TimelineSubtitle = styled.h4`
@@ -164,6 +174,10 @@ const TimelineSubtitle = styled.h4`
   margin: 0;
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.9rem; // Smaller font size for mobile
+  }
 `;
 
 const TimelineDescription = styled.p`
@@ -171,6 +185,11 @@ const TimelineDescription = styled.p`
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
 `;
 
 const TimelineTags = styled.div`
@@ -178,6 +197,10 @@ const TimelineTags = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none; // Hide on mobile
+  }
 `;
 
 const TimelineTag = styled.span`
@@ -233,20 +256,54 @@ const FallbackLogo = styled.div`
   &::after {
     content: '${props => props.initials || "?"}';
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem; // Smaller font size for mobile
+  }
 `;
+
+// New component to handle logo display and fallback
+const LogoDisplay = ({ logoUrl, organizationName, getInitials }) => {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false); // Reset error state if logoUrl changes
+  }, [logoUrl]);
+
+  if (logoUrl && !hasError) {
+    return (
+      <img
+        src={logoUrl}
+        alt={`${organizationName} logo`}
+        onError={() => setHasError(true)}
+        // Styles for img are handled by LogoContainer's styled-component rules
+      />
+    );
+  }
+  return <FallbackLogo initials={getInitials(organizationName)} />;
+};
 
 const Timeline = ({ education, experience }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [timelineItems, setTimelineItems] = useState([]);
-  const controls = useAnimation();
+  const sectionControls = useAnimation(); // For the SectionTitle
   const ref = useRef(null);
+  // Ensure useInView triggers every time, not just once, if section scrolls out and back in.
   const inView = useInView(ref, { once: false, threshold: 0.2 });
-  
+
+  // State to control the TimelineContainer's animation target
+  const [containerAnimateState, setContainerAnimateState] = useState("hidden");
+
   useEffect(() => {
     if (inView) {
-      controls.start('visible');
+      sectionControls.start('visible');
+      setContainerAnimateState("visible");
+    } else {
+      // If you want the title to hide when out of view too:
+      // sectionControls.start('hidden');
+      setContainerAnimateState("hidden");
     }
-  }, [controls, inView]);
+  }, [sectionControls, inView]);
   
   useEffect(() => {
     // Combine and sort education and experience by date
@@ -260,7 +317,6 @@ const Timeline = ({ education, experience }) => {
       items = [...items, ...experience.map(item => ({ ...item, type: 'experience' }))];
     }
     
-    // Sort by end date (most recent first)
     items.sort((a, b) => {
       const dateA = new Date(a.endDate || new Date());
       const dateB = new Date(b.endDate || new Date());
@@ -268,7 +324,19 @@ const Timeline = ({ education, experience }) => {
     });
     
     setTimelineItems(items);
-  }, [activeTab, education, experience]);
+
+    // When activeTab changes, force re-animation of the container if it's in view.
+    // The TimelineContainer will re-mount due to its key={activeTab} prop.
+    // This sequence ensures its animate prop changes, triggering the animation.
+    if (inView) {
+      setContainerAnimateState("hidden"); // Set to hidden first
+      requestAnimationFrame(() => { // Then set to visible in the next frame
+        setContainerAnimateState("visible");
+      });
+    }
+    // If not inView, containerAnimateState is already "hidden" from the other effect,
+    // so the new instance will mount hidden and animate in when scrolled into view.
+  }, [activeTab, education, experience, inView]); // inView dependency is important here
   
   // Get organization initials for fallback logo
   const getInitials = (name) => {
@@ -294,8 +362,8 @@ const Timeline = ({ education, experience }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.2
+        // delayChildren: 0.3, // Removed for more instant re-animation
       }
     }
   };
@@ -330,7 +398,7 @@ const Timeline = ({ education, experience }) => {
       <SectionTitle
         variants={titleVariants}
         initial="hidden"
-        animate={controls}
+        animate={sectionControls} // Use sectionControls for the title
       >
         Timeline
       </SectionTitle>
@@ -357,14 +425,15 @@ const Timeline = ({ education, experience }) => {
       </TimelineToggle>
       
       <TimelineContainer
+        key={activeTab} // This key is crucial for re-mounting the container
         as={motion.div}
         variants={containerVariants}
-        initial="hidden"
-        animate={controls}
+        initial="hidden" // Always start hidden on mount/re-mount
+        animate={containerAnimateState} // Animate to the current state value
       >
         {timelineItems.map((item, index) => (
           <TimelineItem 
-            key={`${item.type}-${index}`}
+            key={`${item.type}-${item.organization}-${item.title}`} // More stable key
             position={index % 2 === 0 ? 'right' : 'left'}
             variants={itemVariants}
           >
@@ -375,18 +444,11 @@ const Timeline = ({ education, experience }) => {
               
               <TimelineHeader>
                 <LogoContainer>
-                  {item.logoUrl ? (
-                    <img 
-                      src={item.logoUrl} 
-                      alt={`${item.organization} logo`} 
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #4285F4, #8A2BE2);color:white;font-weight:600;">${getInitials(item.organization)}</div>`;
-                      }}
-                    />
-                  ) : (
-                    <FallbackLogo initials={getInitials(item.organization)} />
-                  )}
+                  <LogoDisplay
+                    logoUrl={item.logoUrl}
+                    organizationName={item.organization}
+                    getInitials={getInitials}
+                  />
                 </LogoContainer>
                 
                 <TitleContainer>
