@@ -36,6 +36,10 @@ const Name = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: ${props => props.theme.shadows.glow};
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    text-shadow: ${props => props.theme.shadows.glowMobile};
+  }
 `;
 
 const Title = styled(motion.h2)`
@@ -91,7 +95,7 @@ const ScrollIndicator = styled(motion.div)`
   }
 `;
 
-const Hero = ({ name, skills, description, github, linkedin, email, blog }) => {
+const Hero = ({ name, skills, description, github, linkedin, email, blog, cv }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -137,6 +141,7 @@ const Hero = ({ name, skills, description, github, linkedin, email, blog }) => {
             linkedin={linkedin}
             email={email}
             blog={blog}
+            cv={cv} // Pass cv prop
           />
         </motion.div>
       </ContentWrapper>

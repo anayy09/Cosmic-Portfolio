@@ -1,14 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import useGitHubProjects from '../hooks/useGitHubProjects';
-import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import personalInfo from '../config/personalInfo';
 
 const ProjectsSection = styled.section`
   min-height: 100vh;
   padding: 8rem 2rem;
   position: relative;
   overflow: hidden;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 2rem 2rem;
+  }
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -18,6 +21,10 @@ const SectionTitle = styled(motion.h2)`
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 0.8rem;
+  }
 `;
 
 const SectionSubtitle = styled(motion.p)`
@@ -26,6 +33,11 @@ const SectionSubtitle = styled(motion.p)`
   margin: 0 auto 4rem;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    font-size: 1rem;
+  }
 `;
 
 const ProjectsContainer = styled(motion.div)`
@@ -37,6 +49,7 @@ const ProjectsContainer = styled(motion.div)`
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 
@@ -56,24 +69,54 @@ const ProjectCard = styled(motion.div)`
     box-shadow: 0 10px 30px rgba(66, 133, 244, 0.2);
     border-color: ${props => props.theme.colors.primary};
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    border-radius: 12px;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(66, 133, 244, 0.15);
+    }
+  }
+`;
+
+const ProjectImagePlaceholder = styled.div`
+  display: block;
+  height: 120px;
+  background-color: rgba(255, 255, 255, 0.05);
+  background-image: url(${props => props.imageUrl});
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid rgba(66, 133, 244, 0.3);
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    height: 100px;
+  }
 `;
 
 const ProjectHeader = styled.div`
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0.75rem 0.75rem;
+  }
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
   color: ${props => props.theme.colors.light};
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.1rem;
+  }
 `;
 
 const ProjectLinks = styled.div`
   display: flex;
   gap: 1rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: 0.8rem;
+  }
 `;
 
 const ProjectLink = styled.a`
@@ -85,34 +128,47 @@ const ProjectLink = styled.a`
     color: ${props => props.theme.colors.primary};
     transform: translateY(-3px);
   }
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.1rem;
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
 `;
 
 const ProjectBody = styled.div`
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 1rem 1rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0 0.75rem 0.75rem;
+  }
 `;
 
 const ProjectDescription = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1.5rem;
   flex-grow: 1;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
 `;
 
 const ProjectFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: auto; 
 `;
 
 const ProjectLanguage = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.8rem;
   
   &::before {
     content: '';
@@ -139,65 +195,34 @@ const ProjectLanguage = styled.div`
       }
     }};
   }
-`;
-
-const ProjectStats = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const ProjectStat = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const ProjectTags = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
+  margin-bottom: 1rem; 
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: None;
+  }
 `;
 
 const ProjectTag = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   background: rgba(66, 133, 244, 0.2);
   color: ${props => props.theme.colors.primary};
   font-family: ${props => props.theme.fonts.code};
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-`;
-
-const LoadingSpinner = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(66, 133, 244, 0.3);
-  border-radius: 50%;
-  border-top-color: ${props => props.theme.colors.primary};
-  animation: spin 1s ease-in-out infinite;
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 15px;
   }
-`;
-
-const ErrorMessage = styled.div`
-  text-align: center;
-  color: #ff6b6b;
-  padding: 2rem;
-  background: rgba(255, 107, 107, 0.1);
-  border-radius: 10px;
-  max-width: 600px;
-  margin: 0 auto;
 `;
 
 const ViewAllButton = styled(motion.a)`
@@ -225,28 +250,43 @@ const ViewAllButton = styled(motion.a)`
   &:active {
     transform: translateY(0);
   }
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin: 2.5rem auto 0;
+    padding: 0.7rem 1.8rem;
+    font-size: 0.9rem;
+    max-width: 180px;
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
 `;
 
-const Projects = ({ githubUsername, customProjects = [] }) => {
-  const { projects, loading, error } = useGitHubProjects(githubUsername);
+const Projects = ({ githubUsername = [] }) => {
+  const customProjects = personalInfo.customProjects || [];
   const controls = useAnimation();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.2 });
+  const inView = useInView(ref, { once: false, threshold: 0.1 });
   
   useEffect(() => {
     if (inView) {
       controls.start('visible');
+    } else {
+      controls.start('hidden'); // Optional: hide when out of view
     }
   }, [controls, inView]);
   
-  const allProjects = [...customProjects, ...projects];
-  
+  // Use only custom projects
+  const sortedProjects = [...customProjects].sort((a, b) => {
+    if (a.sortOrder && b.sortOrder) return a.sortOrder - b.sortOrder;
+    return 0; 
+  });
+
   const titleVariants = {
-    hidden: { opacity: 0, y: -50 },
+    hidden: { opacity: 0, y: -30 }, 
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.5, ease: "easeOut" } 
     }
   };
   
@@ -255,21 +295,21 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
+        staggerChildren: 0.08, 
+        delayChildren: 0.2 
       }
     }
   };
   
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15 }, 
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 12
+        stiffness: 120, 
+        damping: 10 
       }
     }
   };
@@ -289,26 +329,26 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
         initial="hidden"
         animate={controls}
       >
-        A collection of my recent work and personal projects
+        A collection of my recent work and personal projects.
       </SectionSubtitle>
       
-      {loading ? (
-        <LoadingContainer>
-          <LoadingSpinner />
-        </LoadingContainer>
-      ) : error ? (
-        <ErrorMessage>
-          <h3>Error Loading Projects</h3>
-          <p>{error}</p>
-        </ErrorMessage>
+      {sortedProjects.length === 0 ? (
+        <SectionSubtitle 
+            variants={titleVariants}
+            initial="hidden"
+            animate={controls}
+        >
+            No projects to display at the moment. Check back soon!
+        </SectionSubtitle>
       ) : (
         <ProjectsContainer
           variants={containerVariants}
           initial="hidden"
           animate={controls}
         >
-          {allProjects.map(project => (
-            <ProjectCard key={project.id} variants={itemVariants}>
+          {sortedProjects.map(project => (
+            <ProjectCard key={project.id || project.name} variants={itemVariants}>
+              {project.imageUrl && <ProjectImagePlaceholder imageUrl={project.imageUrl} />}
               <ProjectHeader>
                 <ProjectTitle>{project.name}</ProjectTitle>
                 <ProjectLinks>
@@ -317,7 +357,7 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
                       href={project.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      aria-label="View source code on GitHub"
+                      aria-label={`View source code for ${project.name}`}
                     >
                       <FaGithub />
                     </ProjectLink>
@@ -327,7 +367,7 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
                       href={project.homepage} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      aria-label="View live project"
+                      aria-label={`View live demo for ${project.name}`}
                     >
                       <FaExternalLinkAlt />
                     </ProjectLink>
@@ -353,21 +393,6 @@ const Projects = ({ githubUsername, customProjects = [] }) => {
                     <ProjectLanguage language={project.language}>
                       {project.language}
                     </ProjectLanguage>
-                  )}
-                  
-                  {!project.isManual && (
-                    <ProjectStats>
-                      {project.stars !== undefined && (
-                        <ProjectStat>
-                          <FaStar /> {project.stars}
-                        </ProjectStat>
-                      )}
-                      {project.forks !== undefined && ( 
-                        <ProjectStat>
-                          <FaCodeBranch /> {project.forks}
-                        </ProjectStat>
-                      )}
-                    </ProjectStats>
                   )}
                 </ProjectFooter>
               </ProjectBody>
