@@ -1,7 +1,8 @@
 // src/components/CosmicBackground.js
-import React, { useRef, useMemo, useEffect, useState } from 'react';
+import React, { useRef, useMemo, useEffect, useState, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { Stars } from '@react-three/drei'; // Added Stars from drei
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import styled from 'styled-components';
 
@@ -16,97 +17,31 @@ const BackgroundContainer = styled.div`
   background: #050714; /* Very dark blue-black base */
 `;
 
-// Stars field component with different star sizes and brightness
-const Stars = ({ count = 100 }) => {
-  const mesh = useRef();
-  const starTexture = useLoader(THREE.TextureLoader, '/star.png');
-  
-  // Generate random stars with varying sizes
-  const [positions, sizes, colors] = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const sizes = new Float32Array(count);
-    const colors = new Float32Array(count * 3);
-    
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      // Distribute stars in a sphere
-      const radius = Math.random() * 100 + 15;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos((Math.random() * 2) - 1);
-      
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
-      
-      // Vary star sizes - keep them small
-      sizes[i] = Math.random() * 0.8 + 0.2;
-      
-      // Create different star colors (mostly white with hints of blue and yellow)
-      const colorChoice = Math.random();
-      if (colorChoice > 0.95) {
-        // Blue-ish stars
-        colors[i3] = 0.7 + Math.random() * 0.3; // R
-        colors[i3 + 1] = 0.7 + Math.random() * 0.3; // G
-        colors[i3 + 2] = 1.0; // B
-      } else if (colorChoice > 0.9) {
-        // Yellow-ish stars
-        colors[i3] = 1.0; // R
-        colors[i3 + 1] = 0.9 + Math.random() * 0.1; // G
-        colors[i3 + 2] = 0.6 + Math.random() * 0.2; // B
-      } else {
-        // White stars with slight variations
-        const brightness = 0.8 + Math.random() * 0.2;
-        colors[i3] = brightness; // R
-        colors[i3 + 1] = brightness; // G
-        colors[i3 + 2] = brightness + (Math.random() * 0.1); // B
-      }
+// Optional: Component to make stars slightly twinkle or move (User's suggestion)
+function AnimatedStars() {
+  const starsRef = useRef();
+
+  useFrame(({ clock }) => {
+    if (starsRef.current) {
+      // Subtle rotation for a dynamic feel
+      starsRef.current.rotation.x = Math.sin(clock.getElapsedTime() / 20) / 10;
+      starsRef.current.rotation.y = Math.cos(clock.getElapsedTime() / 20) / 10;
     }
-    
-    return [positions, sizes, colors];
-  }, [count]);
-  
-  // Animate stars with very subtle rotation
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime() * 0.02;
-    mesh.current.rotation.x = Math.sin(time * 0.3) * 0.01;
-    mesh.current.rotation.y = Math.cos(time * 0.2) * 0.01;
   });
-  
+
   return (
-    <points ref={mesh}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          count={count}
-          array={sizes}
-          itemSize={1}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={1}
-        sizeAttenuation={true}
-        vertexColors
-        transparent
-        opacity={0.8}
-        depthWrite={false}
-        map={starTexture}
-        alphaTest={0.001}
-      />
-    </points>
+    <Stars
+      ref={starsRef}
+      radius={100} // Radius of the sphere on which stars are generated
+      depth={50} // Depth of the star sphere
+      count={2500} // Number of stars
+      factor={4} // Star size factor
+      saturation={0} // Star color saturation (0 for white)
+      fade // Stars disappear when they are too far away
+      speed={1} // Animation speed (if applicable to the internal animation)
+    />
   );
-};
+}
 
 // Shooting stars component with tails
 const ShootingStars = () => {
@@ -254,8 +189,6 @@ const ShootingStars = () => {
 const RealMoon = () => {
   const moonRef = useRef();
   const { viewport } = useThree();
-  const [moonPosition, setMoonPosition] = useState({ azimuth: 0, altitude: 0 });
-  const [isDefaultMode, setIsDefaultMode] = useState(false);
   const moonTexture = useLoader(THREE.TextureLoader, '/moon.png', (loader) => {
     // Set texture loading priority and use image optimization
     loader.setCrossOrigin('anonymous');
@@ -291,63 +224,9 @@ const RealMoon = () => {
     }
   }, [moonTexture]);
 
-  // Calculate real moon position based on current date/time
-  useEffect(() => {
-    // Function to calculate the moon's position in the sky
-    const calculateMoonPosition = () => {
-      // Current date - March 29, 2025
-      const now = new Date();
-      
-      // Calculate Julian date
-      const getJulianDate = (date) => {
-        const time = date.getTime();
-        return (time / 86400000) + 2440587.5;
-      };
-      
-      const julianDate = getJulianDate(now);
-      
-      // Calculate moon's celestial coordinates
-      // These are simplified calculations for demonstration
-      const daysSince2000 = julianDate - 2451545.0;
-      
-      // Mean longitude of the moon
-      const L = 218.316 + 13.176396 * daysSince2000;
-      // Mean anomaly of the moon
-      const M = 134.963 + 13.064993 * daysSince2000;
-      // Moon's longitude
-      const moonLong = L + 6.289 * Math.sin((M * Math.PI) / 180);
-      
-      // Convert to horizontal coordinates (simplified)
-      // Using observer's location (approximate for Northern Hemisphere)
-      const latitude = 40.0; // Default latitude (can be made dynamic)
-      const hourAngle = ((now.getHours() + now.getMinutes() / 60) * 15) - 180;
-      
-      // Calculate approximate altitude and azimuth
-      const altitude = 40 * Math.sin((moonLong - hourAngle) * Math.PI / 180) * 
-                      Math.sin(latitude * Math.PI / 180);
-      const azimuth = 90 + 70 * Math.sin((hourAngle - moonLong) * Math.PI / 180);
-      
-      // Check if moon is below horizon (or very close to it)
-      // If altitude is below 5 degrees, switch to default mode
-      setIsDefaultMode(altitude < 5);
-      
-      return { altitude, azimuth };
-    };
-
-    // Initial calculation
-    setMoonPosition(calculateMoonPosition());
-    
-    // Update position every minute
-    const interval = setInterval(() => {
-      setMoonPosition(calculateMoonPosition());
-    }, 60000);
-    
-    return () => clearInterval(interval);
-  }, []);
-  
-  // Default beautiful position for the moon when not visible in real sky
-  const defaultMoonPosition = useMemo(() => {
-    // Place the moon in upper right quadrant by default
+  // Fixed position for the moon
+  const fixedMoonPosition = useMemo(() => {
+    // Place the moon in upper right quadrant
     return new THREE.Vector3(
       viewport.width * 0.35, // X position - right side
       viewport.height * 0.35, // Y position - upper area
@@ -355,55 +234,26 @@ const RealMoon = () => {
     );
   }, [viewport]);
   
-  // Convert altitude and azimuth to 3D position
-  const calculatedMoonPosition = useMemo(() => {
-    // Convert from astronomical coordinates to scene position
-    // Azimuth: 0-360 degrees (0/360=North, 90=East, 180=South, 270=West)
-    // Altitude: -90 to 90 degrees (-90=below horizon, 0=horizon, 90=zenith)
-    
-    // Scale the position to fit nicely in the viewport
-    const radius = 40; // Distance from center
-    const x = radius * Math.sin((moonPosition.azimuth * Math.PI) / 180);
-    
-    // Always keep moon above horizon for visibility
-    const altitudeFactor = Math.max(0.1, (moonPosition.altitude + 10) / 90);
-    const y = 20 * altitudeFactor; // Vertical position
-    
-    const z = -radius * Math.cos((moonPosition.azimuth * Math.PI) / 180);
-    
-    return new THREE.Vector3(x, y, z);
-  }, [moonPosition]);
-  
-  // Use default or calculated position based on visibility
-  const moonWorldPosition = isDefaultMode ? defaultMoonPosition : calculatedMoonPosition;
-  
-  // Moon size and appearance
-  const moonSize = isDefaultMode ? 12 : 10; // Slightly larger in default mode for better visibility
+  // Moon size and appearance (can be a fixed value now)
+  const moonSize = 12; // Fixed moon size
   
   // Animate the moon with subtle floating
   useFrame((state) => {
     if (moonRef.current) {
       const time = state.clock.getElapsedTime() * 0.03;
       
-      // Position based on chosen mode with subtle movement
-      moonRef.current.position.x = moonWorldPosition.x + Math.sin(time) * 0.2;
-      moonRef.current.position.y = moonWorldPosition.y + Math.cos(time * 0.7) * 0.1;
-      moonRef.current.position.z = moonWorldPosition.z;
+      // Position based on fixed position with subtle movement
+      moonRef.current.position.x = fixedMoonPosition.x + Math.sin(time) * 0.2;
+      moonRef.current.position.y = fixedMoonPosition.y + Math.cos(time * 0.7) * 0.1;
+      moonRef.current.position.z = fixedMoonPosition.z;
       
-      // Add gentle rotation in default mode for visual interest
-      if (isDefaultMode) {
-        moonRef.current.rotation.z = Math.sin(time * 0.5) * 0.05;
-      } else {
-        // Moon always faces camera in real sky mode
-        moonRef.current.rotation.x = state.camera.rotation.x;
-        moonRef.current.rotation.y = state.camera.rotation.y;
-        moonRef.current.rotation.z = state.camera.rotation.z;
-      }
+      // Add gentle rotation for visual interest (was previously in defaultMode)
+      moonRef.current.rotation.z = Math.sin(time * 0.5) * 0.05;
     }
   });
   
   return (
-    <group ref={moonRef} position={moonWorldPosition}>
+    <group ref={moonRef} position={fixedMoonPosition}>
       {/* The moon with texture */}
       <sprite scale={[moonSize, moonSize, 1]}>
         <spriteMaterial
@@ -428,7 +278,7 @@ const CosmicScene = () => {
       <color attach="background" args={['#050714']} />
       <ambientLight intensity={0.1} />
       
-      <Stars count={100} />
+      <AnimatedStars /> {/* Replaced custom Stars with AnimatedStars */}
       <ShootingStars />
       <RealMoon />
       
@@ -456,7 +306,9 @@ const CosmicBackground = () => {
         }}
         dpr={[1, 2]} // Responsive to device pixel ratio
       >
-        <CosmicScene />
+        <Suspense fallback={null}> {/* Added Suspense */}
+          <CosmicScene />
+        </Suspense>
       </Canvas>
     </BackgroundContainer>
   );
