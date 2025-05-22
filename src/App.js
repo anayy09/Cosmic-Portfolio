@@ -49,6 +49,7 @@ function App() {
               linkedin={personalInfo.linkedin}
               email={personalInfo.email}
               blog={personalInfo.blog}
+              cv={personalInfo.cv} // Pass cv prop
             />
             <Timeline 
               education={personalInfo.education}

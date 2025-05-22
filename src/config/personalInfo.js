@@ -8,6 +8,7 @@ const personalInfo = {
     github: "https://github.com/anayy09",
     linkedin: "https://linkedin.com/in/anaysinhal",
     blog: "https://anay09.hashnode.dev/",
+    cv: "https://drive.google.com/file/d/1mEWJhZ6u5jKCf2g3hoV1iSEbPDGFX9a-/view?usp=sharing",
     
     // About Me
     description: "A passionate software and ML developer specializing in creating exceptional digital experiences. Currently focused on building accessible, human-centered products with cutting-edge technologies.",
@@ -115,19 +116,31 @@ const personalInfo = {
       skills: ["ReactJS", "Zoho CRM", "Spring Boot", "Laravel"]
       }
     ],
-    // // Custom Projects (in addition to GitHub projects)
-    // customProjects: [
-    //   {
-    //     id: "custom-1",
-    //     name: "Neural Style Transfer App",
-    //     description: "A web application that applies artistic styles to images using deep neural networks. Built with TensorFlow.js and React.",
-    //     url: "https://github.com/yourusername/neural-style-transfer",
-    //     homepage: "https://neural-style-demo.netlify.app",
-    //     language: "JavaScript",
-    //     topics: ["machine-learning", "tensorflow", "react", "computer-vision"],
-    //     isManual: true
-    //   }
-    // ],
+    // Custom Projects (in addition to GitHub projects)
+    customProjects: [
+      {
+        id: "custom-1",
+        name: "Neural Style Transfer App",
+        description: "A web application that applies artistic styles to images using deep neural networks. Built with TensorFlow.js and React.",
+        url: "https://github.com/anayy09/neural-style-transfer", // Assuming your username
+        homepage: "https://neural-style-demo.netlify.app",
+        language: "JavaScript",
+        topics: ["machine-learning", "tensorflow", "react", "computer-vision"],
+        isManual: true,
+        imageUrl: "https://via.placeholder.com/350x200?text=Project+Image" // Placeholder image
+      },
+      {
+        id: "custom-2",
+        name: "Portfolio Website",
+        description: "This very portfolio website, built with React, Styled Components, and Framer Motion, showcasing my skills and projects.",
+        url: "https://github.com/anayy09/Cosmic-Portfolio", // Assuming your username
+        homepage: "https://anay.dev", // Replace with your actual domain if different
+        language: "JavaScript",
+        topics: ["react", "styled-components", "framer-motion", "responsive-design"],
+        isManual: true,
+        imageUrl: "https://via.placeholder.com/350x200?text=Portfolio+Screenshot" // Placeholder image
+      }
+    ],
     
     // API Configuration
     apis: {
