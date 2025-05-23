@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import useHashnodeBlogs from '../hooks/useHashnodeBlogs';
@@ -21,6 +21,10 @@ const SectionTitle = styled(motion.h2)`
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 0.8rem;
+  }
 `;
 
 const SectionSubtitle = styled(motion.p)`
@@ -29,6 +33,11 @@ const SectionSubtitle = styled(motion.p)`
   margin: 0 auto 4rem;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    font-size: 1rem;
+  }
 `;
 
 const BlogsContainer = styled(motion.div)`
@@ -40,6 +49,7 @@ const BlogsContainer = styled(motion.div)`
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 
@@ -59,6 +69,14 @@ const BlogCard = styled(motion.div)`
     box-shadow: 0 10px 30px rgba(66, 133, 244, 0.2);
     border-color: ${props => props.theme.colors.primary};
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    border-radius: 12px;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(66, 133, 244, 0.15);
+    }
+  }
 `;
 
 const BlogContent = styled.div`
@@ -66,17 +84,23 @@ const BlogContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0.75rem;
+  }
 `;
 
 const BlogTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
   color: ${props => props.theme.colors.light};
   line-height: 1.3;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.1rem;
+  }
 `;
 
 const BlogExcerpt = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1.5rem;
@@ -87,6 +111,11 @@ const BlogExcerpt = styled.p`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+  }
 `;
 
 const BlogMeta = styled.div`
@@ -94,8 +123,11 @@ const BlogMeta = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  font-size: 0.9rem;
+  font-size: 0.8rem; // Matched from ProjectLanguage
   color: rgba(255, 255, 255, 0.7);
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.75rem;
+  }
 `;
 
 const BlogDate = styled.div`
@@ -107,6 +139,9 @@ const BlogDate = styled.div`
 const BlogStats = styled.div`
   display: flex;
   gap: 1rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const BlogStat = styled.div`
@@ -123,6 +158,9 @@ const ReadMoreLink = styled.a`
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   transition: all 0.3s ease;
+  font-size: 0.9rem; // Consistent with other links/buttons if applicable, or keep as is.
+                     // ProjectLink is 1.2rem/1.1rem, ViewAllButton is 1rem/0.9rem.
+                     // Let's make it similar to ViewAllButton for now.
   
   svg {
     transition: transform 0.3s ease;
@@ -134,6 +172,11 @@ const ReadMoreLink = styled.a`
     svg {
       transform: translateX(3px);
     }
+  }
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.8rem; 
+    margin-top: 0; // Remove top margin to align with other items in BlogMeta
+    margin-left: 1rem; // Add some space between stats and read more link
   }
 `;
 
@@ -192,6 +235,15 @@ const ViewAllButton = styled(motion.a)`
   &:active {
     transform: translateY(0);
   }
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin: 2.5rem auto 0;
+    padding: 0.7rem 1.8rem;
+    font-size: 0.9rem;
+    max-width: 180px;
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
 `;
 
 const Blogs = ({ hashnodeUsername }) => {
@@ -199,12 +251,27 @@ const Blogs = ({ hashnodeUsername }) => {
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, threshold: 0.2 });
+  const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
     if (inView) {
       controls.start('visible');
     }
   }, [controls, inView]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)'); // Matches tablet breakpoint from theme.js
+    const handleResize = () => {
+      setIsMobileView(mediaQuery.matches);
+    };
+
+    handleResize(); // Initial check
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []);
 
   const titleVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -273,30 +340,31 @@ const Blogs = ({ hashnodeUsername }) => {
             initial="hidden"
             animate={controls}
           >
-            {blogs.slice(0, 6).map((blog, index) => (
+            {blogs.slice(0, isMobileView ? 4 : 6).map((blog, index) => (
               <BlogCard key={index} variants={itemVariants}>
                 <BlogContent>
                   <BlogTitle>{blog.title}</BlogTitle>
                   <BlogExcerpt>{blog.brief}</BlogExcerpt>
 
                   <BlogMeta>
-                    <BlogDate>
-                      <FaCalendarAlt /> {blog.date}
-                    </BlogDate>
+                    <div style={{ display: 'flex', alignItems: 'center' }}> {/* Wrapper for date and stats */} 
+                      <BlogDate>
+                        <FaCalendarAlt /> {blog.date}
+                      </BlogDate>
 
-                    <BlogStats>
-                      <BlogStat>
-                        <FaHeart /> {blog.reactions}
-                      </BlogStat>
-                      <BlogStat>
-                        <FaComment /> {blog.comments}
-                      </BlogStat>
-                    </BlogStats>
+                      <BlogStats>
+                        <BlogStat>
+                          <FaHeart /> {blog.reactions}
+                        </BlogStat>
+                        <BlogStat>
+                          <FaComment /> {blog.comments}
+                        </BlogStat>
+                      </BlogStats>
+                    </div>
+                    <ReadMoreLink href={blog.url} target="_blank" rel="noopener noreferrer">
+                      Read More <FaExternalLinkAlt />
+                    </ReadMoreLink>
                   </BlogMeta>
-
-                  <ReadMoreLink href={blog.url} target="_blank" rel="noopener noreferrer">
-                    Read More <FaExternalLinkAlt />
-                  </ReadMoreLink>
                 </BlogContent>
               </BlogCard>
             ))}
