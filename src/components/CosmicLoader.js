@@ -22,7 +22,7 @@ const LoaderContainer = styled(motion.div)`
 
 const LoadingText = styled(motion.div)`
   color: #fff;
-  font-family: ${props => props.theme.fonts.code};
+  font-family: ${props => props.theme.fonts.main}; // Changed to main font
   font-size: clamp(1rem, 2vw, 1.5rem);
   font-weight: 300;
   opacity: 0.8;
@@ -110,58 +110,18 @@ const GentleStars = ({ count = 100 }) => {
 // Earth globe component with minimal continent outlines
 const Earth = () => {
     const mesh = React.useRef();
-  
-    // Create a minimal vector-style Earth texture with continent outlines
-    const vectorTexture = useMemo(() => {
-      const size = 512;
-      const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
-  
-      // Draw water background with a radial gradient
-      const gradient = ctx.createRadialGradient(size / 2, size / 2, size / 4, size / 2, size / 2, size / 2);
-      gradient.addColorStop(0, '#4a90e2'); // inner blue
-      gradient.addColorStop(1, '#003d73'); // outer blue
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, size, size);
-  
-      // Clip drawing to a circle to keep it within the sphere
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size / 2 - 5, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-  
-      // Draw minimal continent shapes
-      ctx.fillStyle = '#d1bfa7';   // land color
-      ctx.strokeStyle = '#a8927e'; // continent outline
-      ctx.lineWidth = 3;
-  
-      ctx.restore();
-  
-      // Draw the outline of the Earth
-      ctx.strokeStyle = '#666666';
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
-      ctx.stroke();
-  
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true;
-      return texture;
-    }, []);
-  
+    const texture = useLoader(THREE.TextureLoader, '/textures/2k_moon.jpg');
+
     useFrame(({ clock }) => {
       if (mesh.current) {
         mesh.current.rotation.y = clock.getElapsedTime() * 0.1;
       }
     });
-  
+
     return (
       <mesh ref={mesh}>
         <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial map={vectorTexture} metalness={0.1} roughness={0.8} />
+        <meshStandardMaterial map={texture} metalness={0.1} roughness={0.8} />
       </mesh>
     );
   };
