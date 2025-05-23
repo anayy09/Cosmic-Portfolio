@@ -9,6 +9,9 @@ const ContactSection = styled.section`
   padding: 8rem 2rem;
   position: relative;
   overflow: hidden;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 2rem 2rem;
+  }
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -51,6 +54,9 @@ const ContactHeading = styled.h3`
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: ${props => props.theme.colors.light};
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ContactText = styled.p`
@@ -58,6 +64,9 @@ const ContactText = styled.p`
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 2rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const ContactLinks = styled.div`
@@ -65,6 +74,9 @@ const ContactLinks = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-top: 0;
+  }
 `;
 
 const ContactLink = styled.a`
@@ -84,6 +96,13 @@ const ContactLink = styled.a`
     color: ${props => props.theme.colors.primary};
     transform: translateX(5px);
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem;
+    svg {
+      font-size: 1.25rem;
+    }
+  }
 `;
 
 const ContactFormContainer = styled.div`
@@ -94,9 +113,15 @@ const ContactFormContainer = styled.div`
   padding: 2rem;
   box-shadow: ${props => props.theme.shadows.medium};
   
+  
   &:hover {
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 10px 30px rgba(66, 133, 244, 0.2);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -104,6 +129,9 @@ const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: 1rem;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -115,6 +143,9 @@ const FormGroup = styled.div`
 const FormLabel = styled.label`
   font-size: 1rem;
   color: ${props => props.theme.colors.light};
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.9rem;
+  }
 `;
 
 const FormInput = styled.input`
@@ -130,6 +161,11 @@ const FormInput = styled.input`
     outline: none;
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
   }
 `;
 
@@ -148,6 +184,12 @@ const FormTextarea = styled.textarea`
     outline: none;
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    min-height: 100px;
   }
 `;
 
@@ -175,6 +217,13 @@ const SubmitButton = styled(motion.button)`
     background: #666;
     cursor: not-allowed;
     transform: none;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    max-width: 200px;
+    margin: 0 auto;
   }
 `;
 
