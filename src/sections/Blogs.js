@@ -6,7 +6,7 @@ import { FaCalendarAlt, FaHeart, FaComment, FaExternalLinkAlt } from 'react-icon
 
 const BlogsSection = styled.section`
   min-height: 100vh;
-  padding: 8rem 2rem;
+  padding: 4rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {

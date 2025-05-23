@@ -4,7 +4,7 @@ import { motion, useAnimation, useInView } from 'framer-motion';
 
 const TimelineSection = styled.section`
   min-height: 100vh;
-  padding: 8rem 2rem;
+  padding: 4rem 2rem;
   position: relative;
   overflow: hidden;
 

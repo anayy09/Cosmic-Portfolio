@@ -6,7 +6,7 @@ import emailjs from '@emailjs/browser';
 
 const ContactSection = styled.section`
   min-height: 100vh;
-  padding: 8rem 2rem;
+  padding: 4rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
