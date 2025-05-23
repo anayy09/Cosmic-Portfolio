@@ -349,29 +349,31 @@ const CosmicJourneys = () => {
                     }}
                   >
                     <motion.g
-                      animate={{ scale: hoveredMarker === place.id ? 1.8 : 1 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                      animate={{ scale: hoveredMarker === place.id ? 1.2 : 1 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                       style={{ pointerEvents: 'auto' }}
                     >
-                      <circle cx="0" cy="-3" r="10" fill="transparent" />
-                      <FaMapMarkerAlt
-                        color={hoveredMarker === place.id ? theme.colors.accentHover : theme.colors.accent}
-                        size={hoveredMarker === place.id ? "15px" : "12px"}
-                        style={{ transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                      {/* Base dot at exact coordinate */}
+                      <circle
+                        cx={0} cy={0}
+                        r={hoveredMarker === place.id ? 6 : 4}
+                        fill={theme.colors.accent}
+                        stroke={theme.colors.light}
+                        strokeWidth={0.5}
                       />
+                      {/* Pulsing ring on hover */}
                       {hoveredMarker === place.id && (
                         <motion.circle
-                          r={4}
-                          fill={theme.colors.accent}
-                          stroke={theme.colors.light}
-                          strokeWidth={0.5}
+                          cx={0} cy={0}
+                          r={8}
+                          fill="none"
+                          stroke={theme.colors.accentHover}
+                          strokeWidth={1}
                           initial={{ opacity: 0.5, scale: 1 }}
-                          animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.5, 1] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                          style={{ transform: 'translateY(-50%)' }}
+                          animate={{ opacity: [0.5, 0.1, 0.5], scale: [1, 2, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
                         />
                       )}
-                      {hoveredMarker !== place.id && <circle r={3} fill={theme.colors.accent} stroke={theme.colors.light} strokeWidth={0.5} opacity="0.7" style={{ transform: 'translateY(-50%)' }} />}
                     </motion.g>
                   </Marker>
                 ))}
