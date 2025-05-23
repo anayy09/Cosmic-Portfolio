@@ -49,7 +49,6 @@ const ProgressBar = styled(motion.div)`
 // Gentle floating stars
 const GentleStars = ({ count = 100 }) => {
   const points = React.useRef();
-  const starTexture = useLoader(THREE.TextureLoader, '/star.png');
 
   // Generate random stars
   const particlePositions = React.useMemo(() => {
@@ -101,7 +100,6 @@ const GentleStars = ({ count = 100 }) => {
         transparent
         opacity={0.7}
         sizeAttenuation={true}
-        map={starTexture}
         alphaTest={0.001}
         depthWrite={false}
       />

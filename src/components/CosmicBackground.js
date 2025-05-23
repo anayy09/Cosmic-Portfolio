@@ -49,7 +49,6 @@ const ShootingStars = () => {
   const count = 5;
   const shootingStars = useRef([]);
   const trailsGroup = useRef();
-  const starTexture = useLoader(THREE.TextureLoader, '/star.png');
   
   // Initialize shooting stars
   useMemo(() => {
@@ -174,7 +173,6 @@ const ShootingStars = () => {
       {shootingStars.current.map((star, i) => (
         <sprite key={i} position={star.position} visible={star.active}>
           <spriteMaterial
-            map={starTexture}
             transparent
             opacity={0.8}
             color="#ffffff"
