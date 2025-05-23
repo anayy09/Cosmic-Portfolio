@@ -63,6 +63,9 @@ const Description = styled(motion.p)`
   margin-bottom: 2rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+  }
 `;
 
 const ScrollIndicator = styled(motion.div)`
