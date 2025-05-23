@@ -61,16 +61,6 @@ const PublicationCard = styled(motion.div)`
   }
 `;
 
-const PublicationImagePlaceholder = styled.div`
-  display: block;
-  height: 150px; // Slightly taller for publications
-  background-color: rgba(255, 255, 255, 0.05);
-  background-image: url(${props => props.imageUrl});
-  background-size: cover;
-  background-position: center;
-  border-bottom: 1px solid rgba(66, 133, 244, 0.3);
-`;
-
 const PublicationHeader = styled.div`
   padding: 1rem 1.5rem 0.5rem; // Adjusted padding
   display: flex;
@@ -214,7 +204,7 @@ const Publications = () => {
         initial="hidden"
         animate={controls}
       >
-        Exploring the frontiers of science and technology through published work.
+        Exploring the frontiers of technology through published work.
       </SectionSubtitle>
       
       <PublicationsContainer
@@ -224,7 +214,6 @@ const Publications = () => {
       >
         {publications.map(pub => (
           <PublicationCard key={pub.id || pub.title} variants={itemVariants}>
-            {pub.imageUrl && <PublicationImagePlaceholder imageUrl={pub.imageUrl} />}
             <PublicationHeader>
               <PublicationTitle>{pub.title}</PublicationTitle>
               <PublicationLinks>

@@ -8,7 +8,6 @@ import {
   Marker,
   ZoomableGroup
 } from 'react-simple-maps';
-import { FaMapMarkerAlt } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 import worldMapData from './topo.json';
 import indiaMapData from './in.json';
@@ -237,7 +236,7 @@ const CosmicJourneys = () => {
   return (
     <CosmicJourneysSection id="journeys" ref={ref}>
       <SectionTitle variants={titleVariants} initial="hidden" animate={controls}>
-        Cosmic Journeys
+        Journeys
       </SectionTitle>
       <SectionSubtitle variants={titleVariants} initial="hidden" animate={controls}>
         {currentMap === 'world'

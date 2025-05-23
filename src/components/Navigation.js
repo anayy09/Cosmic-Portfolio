@@ -126,7 +126,7 @@ const Navigation = () => {
     { name: 'Projects', href: '#projects' },
     { name: 'Blogs', href: '#blogs' },
     { name: 'Publications', href: '#publications' },
-    { name: 'Certifications', href: '#certifications' },
+    // { name: 'Certifications', href: '#certifications' },
     { name: 'Journeys', href: '#journeys' },
     { name: 'Contact', href: '#contact' }
   ];

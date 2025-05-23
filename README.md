@@ -1,70 +1,143 @@
-# Getting Started with Create React App
+# Cosmic Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**A dynamic and interactive personal portfolio website built with React, Three.js, and modern web technologies, showcasing software engineering and machine learning projects.**
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+Cosmic Portfolio is a responsive, single-page application designed to present a comprehensive overview of Anay Sinhal's skills, projects, and experience in software development and machine learning. The portfolio features an engaging user experience with interactive 3D elements, real-time data fetching from external APIs, and a sleek, contemporary design.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* **Interactive 3D Cosmic Background**: Engaging and animated background leveraging Three.js and `@react-three/fiber` for a visually stunning experience.
+* **Dynamic Content**:
+  * **GitHub Projects**: Automatically fetches and displays project repositories from GitHub.
+  * **Hashnode Blogs**: Integrates and showcases blog posts from Hashnode.
+* **Typed Text Effect**: Professional and animated introduction text.
+* **Comprehensive Sections**:
+  * Hero section with a captivating introduction.
+  * Detailed listings for Projects (GitHub and custom).
+  * Integrated Blogs section.
+  * Certifications and Publications.
+  * Interactive Timeline for education and professional experience.
+  * Contact section with EmailJS integration for direct messaging.
+* **Theming**: Supports both Light and Dark themes for user preference.
+* **Responsive Design**: Ensures optimal viewing and interaction across various devices and screen sizes.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+The project is built using a modern technology stack:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **Core**:
+  * React 18
+  * React Router DOM for navigation
+* **Styling**:
+  * Styled-components
+  * Framer Motion for animations
+* **3D Graphics**:
+  * Three.js
+  * `@react-three/fiber`
+  * `@react-three/drei`
+  * `@react-three/postprocessing`
+* **Data Fetching & Handling**:
+  * Axios
+  * `d3-fetch`, `d3-scale`
+  * `supercluster`, `use-supercluster` (for map-related features or data clustering)
+* **Charting/Visualization**:
+  * `@amcharts/amcharts5`, `@amcharts/amcharts5-fonts`, `@amcharts/amcharts5-geodata` (For advanced charting and geographical data visualization)
+  * `react-simple-maps`
+* **Utilities**:
+  * EmailJS (`@emailjs/browser`) for the contact form.
+  * `lottie-react` for Lottie animations.
+  * `react-icons` for iconography.
+* **Development & Testing**:
+  * React Scripts (`react-scripts`)
+  * Testing Library (`@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`)
+  * ESLint for linting.
 
-### `npm run build`
+## Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The project follows a modular structure for better organization and maintainability:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```plaintext
+cosmic-portfolio/
+├── public/                   # Static assets (index.html, manifest.json, images, etc.)
+│   ├── index.html
+│   ├── manifest.json
+│   ├── moon.png
+│   ├── robots.txt
+│   ├── projects/             # Custom project images
+│   └── textures/             # Textures for 3D elements
+├── src/
+│   ├── App.css               # Main application styles
+│   ├── App.js                # Root application component
+│   ├── App.test.js           # Application tests
+│   ├── index.css             # Global styles
+│   ├── index.js              # Entry point of the React application
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── components/           # Reusable UI components (e.g., CosmicBackground, Footer)
+│   ├── config/               # Configuration files (personalInfo.js, theme.js)
+│   ├── hooks/                # Custom React Hooks (e.g., useGitHubProjects, useHashnodeBlogs)
+│   ├── sections/             # Major page sections (e.g., Hero, Projects, Blogs, Contact)
+│   │   ├── in.json           # Data for sections (potentially for amCharts)
+│   │   └── topo.json         # TopoJSON data for maps (potentially for amCharts or react-simple-maps)
+│   └── styles/               # Global and shared style definitions (e.g., GlobalStyles.js)
+├── package.json              # Project metadata and dependencies
+└── README.md                 # This file
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+Follow these instructions to set up and run the project locally.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Ensure you have the following installed:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Node.js (v18.x recommended)
+* npm or yarn
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. **Clone the repository:**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   git clone https://github.com/anayy09/cosmic-portfolio.git
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Navigate to the project directory:**
 
-### Code Splitting
+   ```bash
+   cd cosmic-portfolio
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. **Install dependencies:**
 
-### Analyzing the Bundle Size
+   ```bash
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   (or `yarn install` if you prefer yarn)
 
-### Making a Progressive Web App
+### Available Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+In the project directory, you can run the following scripts:
 
-### Advanced Configuration
+* **`npm start`**:
+  Runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will reload if you make edits.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+* **`npm run build`**:
+  Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Deployment
+## Customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Most personal information and content can be customized by editing the `src/config/personalInfo.js` file. This includes:
 
-### `npm run build` fails to minify
+* Name, professional title, contact email, and social media links.
+* Details for education, work experience, and skills.
+* Content for custom projects and publications.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Theme settings (colors, fonts, etc.) can be adjusted in `src/config/theme.js` and `src/styles/GlobalStyles.js`.
+
+**Email**: [sinhal.anay@ufl.edu](mailto:sinhal.anay@ufl.edu)

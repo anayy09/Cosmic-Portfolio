@@ -118,51 +118,95 @@ const personalInfo = {
   ],
 
   customProjects: [
+    // {
+    //   id: "custom-1",
+    //   name: "Neural Style Transfer App",
+    //   description: "Applies artistic styles to images using TensorFlow.js and React.",
+    //   url: "https://github.com/anayy09/neural-style-transfer",
+    //   homepage: "https://neural-style-demo.netlify.app",
+    //   language: "JavaScript",
+    //   topics: ["machine-learning", "tensorflow", "react", "computer-vision"],
+    //   isManual: true,
+    //   imageUrl: "https://via.placeholder.com/350x200?text=Project+Image"
+    // },
     {
-      id: "custom-1",
-      name: "Neural Style Transfer App",
-      description: "Applies artistic styles to images using TensorFlow.js and React.",
-      url: "https://github.com/anayy09/neural-style-transfer",
-      homepage: "https://neural-style-demo.netlify.app",
+      id: "custom-3",
+      name: "CampusCupid",
+      description: "Full-stack, college-exclusive dating app with a React frontend, Go backend, PostgreSQL storage, and Cypress-tested UI.",  // derived from repo README:contentReference[oaicite:0]{index=0}
+      url: "https://github.com/anayy09/CampusCupid",
+      homepage: "",
       language: "JavaScript",
-      topics: ["machine-learning", "tensorflow", "react", "computer-vision"],
+      topics: ["react", "go", "postgresql", "cypress"],
       isManual: true,
-      imageUrl: "https://via.placeholder.com/350x200?text=Project+Image"
+      imageUrl: "/projects/custom-3.png"
     },
     {
-      id: "custom-2",
-      name: "Portfolio Website",
-      description: "This portfolio website built with React and Styled Components.",
-      url: "https://github.com/anayy09/Cosmic-Portfolio",
-      homepage: "https://anay.dev",
-      language: "JavaScript",
-      topics: ["react", "styled-components", "framer-motion", "responsive-design"],
+      id: "custom-4",
+      name: "P2P File Sharing System",
+      description: "BitTorrent-style peer-to-peer file-sharing system in Java, built for the CNT5106C Computer Networks course.",  // from repo README:contentReference[oaicite:1]{index=1}
+      url: "https://github.com/anayy09/P2PFileSharing",
+      homepage: "",
+      language: "Java",
+      topics: ["java", "p2p", "file-sharing", "tcp", "networking"],
       isManual: true,
-      imageUrl: "https://via.placeholder.com/350x200?text=Portfolio+Screenshot"
+      imageUrl: "/projects/custom-4.png"
+    },
+    {
+      id: "custom-5",
+      name: "AlgoVault : Advanced Data-Structures Library",
+      description: "Curated Java-17 library (Fibonacci Heap, Red-Black Tree, KD-Tree, Bloom Filter, etc.)",
+      url: "https://github.com/anayy09/COP5536-Advanced-Data-Structures",
+      homepage: "",
+      language: "Java",
+      topics: ["java", "data-structures", "algorithms", "library", "benchmark", "junit"],
+      isManual: true,
+      imageUrl: "/projects/custom-5.png"
     }
   ],
 
   publications: [
+    // {
+    //   "id": "pub-1",
+    //   "title": "Groundbreaking Research in Cosmic Ray Anomalies",
+    //   "authors": ["Anay Sinhal", "Dr. Nova Stargazer"],
+    //   "journal": "Journal of Galactic Phenomena, Vol. 42, Issue 7",
+    //   "year": "2024",
+    //   "url": "https://example.com/link-to-publication-1",
+    //   "doi": "10.1234/jgp.2024.001",
+    //   "description": "This paper explores newly discovered anomalies in cosmic ray patterns and their potential implications for dark matter theories.",
+    //   "imageUrl": "https://via.placeholder.com/350x200?text=Publication+Visual"
+    // },
     {
-      id: "pub-1",
-      title: "Groundbreaking Research in Cosmic Ray Anomalies",
-      authors: ["Anay Sinhal", "Dr. Nova Stargazer"],
-      journal: "Journal of Galactic Phenomena, Vol. 42, Issue 7",
-      year: "2024",
-      url: "https://example.com/link-to-publication-1", // Link to the paper or DOI
-      doi: "10.1234/jgp.2024.001",
-      description: "This paper explores newly discovered anomalies in cosmic ray patterns and their potential implications for dark matter theories.",
-      imageUrl: "https://via.placeholder.com/350x200?text=Publication+Visual" // Optional: placeholder image
+      "id": "pub-3",
+      "title": "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
+      "authors": ["Anay Sinhal"],
+      "journal": "2025 IEEE International Conference on Contemporary Computing and Communications",
+      "year": "2025",
+      "description": "Explores contrastive learning with LLMs for depression detection on social media, showing improved precision, recall, and F1-scores by addressing data diversity and contextual understanding.",
     },
     {
-      id: "pub-2",
-      title: "Machine Learning Models for Predicting Supernova Events",
-      authors: ["Anay Sinhal", "Prof. Orion Nebula"],
-      journal: "Astrophysical Machine Learning Quarterly",
-      year: "2023",
-      url: "https://example.com/link-to-publication-2",
-      description: "Developed a novel ML algorithm that improves the accuracy of supernova prediction by 15%, leveraging multi-modal telescopic data.",
-      imageUrl: "https://via.placeholder.com/350x200?text=Research+Highlight" // Optional: placeholder image
+      "id": "pub-4",
+      "title": "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
+      "authors": ["Anay Sinhal"],
+      "journal": "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision",
+      "year": "2025",
+      "description": "Introduces a multimodal dataset and an ensemble ML framework using SMOTE for balanced stress state representation, improving stress monitoring for healthcare professionals.",
+    },
+    {
+      "id": "pub-5",
+      "title": "Optimizing Diagnostic Accuracy in Healthcare by using Deep Learning",
+      "authors": ["Anay Sinhal"],
+      "journal": "4th 2025 IEEE World Conference on Applied Intelligence and Computing",
+      "year": "2025",
+      "description": "Presents an AI-powered system using deep learning and NLP for enhanced disease detection, medical report analysis, and drug identification, improving diagnostic accuracy and efficiency.",
+    },
+    {
+      "id": "pub-6",
+      "title": "High-Performance and Quantum Computing in Cancer Modeling: A Review and Hybrid HPC-Quantum Approach",
+      "authors": ["Anay Sinhal"],
+      "journal": "IEEE Journal of Biomedical and Health Informatics",
+      "year": "2025",
+      "description": "Surveys HPC and quantum computing in cancer modeling, proposing a hybrid approach hypothesized to reduce simulation time by ≥30% while maintaining accuracy.",
     }
   ],
 
@@ -406,26 +450,26 @@ const personalInfo = {
   ],
 
   // Certifications
-  certifications: [
-    {
-      id: "cert-1",
-      name: "Advanced Deep Learning Specialization",
-      issuingOrganization: "Cosmic University Online",
-      logoUrl: "https://media.licdn.com/dms/image/C560BAQEEUHxMAR-Q6w/company-logo_200_200/company-logo_200_200/0/1671048448447/uflorida_logo?e=1748476800&v=beta&t=MZi8yCl8FDB46p1bAGYTBLbsKFiUEQFYtZ7Ascyjabo", // Replace with actual or placeholder
-      date: "Dec 2023",
-      credentialUrl: "https://example.com/link-to-credential-1",
-      description: "Completed a rigorous program covering advanced neural network architectures and their applications in astrophysical data analysis."
-    },
-    {
-      id: "cert-2",
-      name: "Quantum Computing Fundamentals",
-      issuingOrganization: "Institute of Galactic Tech",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C510BAQEhNteRFbyBdQ/company-logo_200_200/company-logo_200_200/0/1630585318049/indian_institute_of_technology_kanpur_logo?e=1748476800&v=beta&t=AO9ywbtnqOHJ4SWxW__d_c_NWKe76ySDE1zHx8zs2U0", // Replace with actual or placeholder
-      date: "Jun 2024",
-      credentialUrl: "https://example.com/link-to-credential-2",
-      description: "Gained foundational knowledge in quantum algorithms and their potential to revolutionize computational science."
-    }
-  ],
+  // certifications: [
+  //   {
+  //     id: "cert-1",
+  //     name: "Advanced Deep Learning Specialization",
+  //     issuingOrganization: "Cosmic University Online",
+  //     logoUrl: "https://media.licdn.com/dms/image/C560BAQEEUHxMAR-Q6w/company-logo_200_200/company-logo_200_200/0/1671048448447/uflorida_logo?e=1748476800&v=beta&t=MZi8yCl8FDB46p1bAGYTBLbsKFiUEQFYtZ7Ascyjabo", // Replace with actual or placeholder
+  //     date: "Dec 2023",
+  //     credentialUrl: "https://example.com/link-to-credential-1",
+  //     description: "Completed a rigorous program covering advanced neural network architectures and their applications in astrophysical data analysis."
+  //   },
+  //   {
+  //     id: "cert-2",
+  //     name: "Quantum Computing Fundamentals",
+  //     issuingOrganization: "Institute of Galactic Tech",
+  //     logoUrl: "https://media.licdn.com/dms/image/v2/C510BAQEhNteRFbyBdQ/company-logo_200_200/company-logo_200_200/0/1630585318049/indian_institute_of_technology_kanpur_logo?e=1748476800&v=beta&t=AO9ywbtnqOHJ4SWxW__d_c_NWKe76ySDE1zHx8zs2U0", // Replace with actual or placeholder
+  //     date: "Jun 2024",
+  //     credentialUrl: "https://example.com/link-to-credential-2",
+  //     description: "Gained foundational knowledge in quantum algorithms and their potential to revolutionize computational science."
+  //   }
+  // ],
 
   // API Configuration
   apis: {

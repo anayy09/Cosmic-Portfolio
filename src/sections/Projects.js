@@ -80,7 +80,7 @@ const ProjectCard = styled(motion.div)`
 
 const ProjectImagePlaceholder = styled.div`
   display: block;
-  height: 120px;
+  height: 180px;
   background-color: rgba(255, 255, 255, 0.05);
   background-image: url(${props => props.imageUrl});
   background-size: cover;
