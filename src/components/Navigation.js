@@ -125,7 +125,6 @@ const Navigation = () => {
     { name: 'Timeline', href: '#timeline' },
     { name: 'Projects', href: '#projects' },
     { name: 'Blogs', href: '#blogs' },
-    { name: 'Map', href: '#map' },
     { name: 'Contact', href: '#contact' }
   ];
   
