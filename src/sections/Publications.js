@@ -69,10 +69,13 @@ const PublicationHeader = styled.div`
 `;
 
 const PublicationTitle = styled.h3`
-  font-size: 1.2rem; // Slightly smaller than project title for differentiation
+  font-size: 1.2rem;
   color: ${props => props.theme.colors.light};
   margin-bottom: 0.25rem;
   line-height: 1.3;
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1rem;
+  }
 `;
 
 const PublicationLinks = styled.div`
@@ -84,7 +87,7 @@ const PublicationLinks = styled.div`
 
 const PublicationLink = styled.a`
   color: ${props => props.theme.colors.light};
-  font-size: 1.1rem; // Consistent icon size
+  font-size: 1.1rem;
   transition: all 0.2s ease;
   
   &:hover {
@@ -120,12 +123,30 @@ const PublicationDescription = styled.p`
   color: rgba(255, 255, 255, 0.8);
   flex-grow: 1;
   margin-bottom: 1rem;
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    display: none;
+  }
 `;
 
 const PublicationDOI = styled.p`
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.6);
   font-family: ${props => props.theme.fonts.code};
+`;
+
+const PublicationStatus = styled.div`
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 5px;
+  align-self: flex-start;
+  padding: 0.25rem 0.5rem;
+  color: ${props => props.theme.colors.light};
+  background-color: ${props => 
+    props.status === 'Published' ? props.theme.colors.success : 
+    props.status === 'Under Review' ? props.theme.colors.info : 
+    props.status === 'Submitted' ? props.theme.colors.warning : 
+    props.theme.colors.secondaryMuted
+  };
 `;
 
 
@@ -241,10 +262,11 @@ const Publications = () => {
             </PublicationHeader>
             
             <PublicationBody>
-              <PublicationAuthors>{pub.authors.join(', ')} - {pub.year}</PublicationAuthors>
+              <PublicationAuthors>{pub.authors.join(', ')} {pub.year}</PublicationAuthors>
               <PublicationJournal>{pub.journal}</PublicationJournal>
               {pub.description && <PublicationDescription>{pub.description}</PublicationDescription>}
               {pub.doi && <PublicationDOI>DOI: {pub.doi}</PublicationDOI>}
+              {pub.status && <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>}
             </PublicationBody>
           </PublicationCard>
         ))}

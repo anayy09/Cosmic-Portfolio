@@ -73,7 +73,7 @@ const personalInfo = {
       startDate: "Sep 2024",
       endDate: "Oct 2024",
       location: "Onsite",
-      skills: ["Signal Processing", "Biomedical Imaging", "Algorithm Optimization"]
+      skills: ["Signal Processing", "Biomedical Imaging"]
     },
     {
       title: "SDE Intern",
@@ -93,7 +93,7 @@ const personalInfo = {
       startDate: "May 2024",
       endDate: "Jul 2024",
       location: "Hybrid",
-      skills: ["Contrastive Learning", "Text Embeddings", "Classification Techniques"]
+      skills: ["Contrastive Learning", "Text Embeddings"]
     },
     {
       title: "Research Intern",
@@ -103,7 +103,7 @@ const personalInfo = {
       startDate: "Dec 2023",
       endDate: "Jan 2024",
       location: "Remote",
-      skills: ["Machine Learning", "Random Forest", "Neural Networks", "Data Analysis"]
+      skills: ["Machine Learning", "Random Forest", "Neural Networks"]
     },
     {
       title: "SDE Intern",
@@ -136,7 +136,7 @@ const personalInfo = {
       url: "https://github.com/anayy09/CampusCupid",
       homepage: "",
       language: "JavaScript",
-      topics: ["react", "go", "postgresql", "cypress"],
+      topics: ["react", "go", "postgresql"],
       isManual: true,
       imageUrl: "/projects/custom-3.png"
     },
@@ -147,7 +147,7 @@ const personalInfo = {
       url: "https://github.com/anayy09/P2PFileSharing",
       homepage: "",
       language: "Java",
-      topics: ["java", "p2p", "file-sharing", "tcp", "networking"],
+      topics: ["p2p", "file-sharing", "tcp", "networking"],
       isManual: true,
       imageUrl: "/projects/custom-4.png"
     },
@@ -158,55 +158,65 @@ const personalInfo = {
       url: "https://github.com/anayy09/COP5536-Advanced-Data-Structures",
       homepage: "",
       language: "Java",
-      topics: ["java", "data-structures", "algorithms", "library", "benchmark", "junit"],
+      topics: ["java", "DSA", "algorithms"],
       isManual: true,
       imageUrl: "/projects/custom-5.png"
+    },
+    {
+      id: "custom-6",
+      name: "Cosmic Portfolio",
+      description:
+        "Personal portfolio built with React, Styled-Components, Framer Motion animations, and a Three.js starfield.",
+      url: "https://github.com/anayy09/Cosmic-Portfolio",
+      homepage: "https://anay.live",
+      language: "JavaScript",
+      topics: [
+        "react",
+        "framer-motion",
+        "threejs",
+      ],
+      isManual: true,
+      imageUrl: "/projects/custom-6.png"
     }
+
   ],
 
   publications: [
-    // {
-    //   "id": "pub-1",
-    //   "title": "Groundbreaking Research in Cosmic Ray Anomalies",
-    //   "authors": ["Anay Sinhal", "Dr. Nova Stargazer"],
-    //   "journal": "Journal of Galactic Phenomena, Vol. 42, Issue 7",
-    //   "year": "2024",
-    //   "url": "https://example.com/link-to-publication-1",
-    //   "doi": "10.1234/jgp.2024.001",
-    //   "description": "This paper explores newly discovered anomalies in cosmic ray patterns and their potential implications for dark matter theories.",
-    //   "imageUrl": "https://via.placeholder.com/350x200?text=Publication+Visual"
-    // },
     {
       "id": "pub-3",
       "title": "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
-      "authors": ["Anay Sinhal"],
+      "authors": [""],
       "journal": "2025 IEEE International Conference on Contemporary Computing and Communications",
-      "year": "2025",
+      "year": "Feb 2025",
       "description": "Explores contrastive learning with LLMs for depression detection on social media, showing improved precision, recall, and F1-scores by addressing data diversity and contextual understanding.",
+      "status": "Under Review",
     },
     {
       "id": "pub-4",
       "title": "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
-      "authors": ["Anay Sinhal"],
+      "authors": [""],
       "journal": "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision",
-      "year": "2025",
+      "year": "Feb 2025",
       "description": "Introduces a multimodal dataset and an ensemble ML framework using SMOTE for balanced stress state representation, improving stress monitoring for healthcare professionals.",
+      "status": "Submitted"
     },
     {
       "id": "pub-5",
       "title": "Optimizing Diagnostic Accuracy in Healthcare by using Deep Learning",
-      "authors": ["Anay Sinhal"],
+      "authors": [""],
       "journal": "4th 2025 IEEE World Conference on Applied Intelligence and Computing",
-      "year": "2025",
+      "year": "May 2025",
       "description": "Presents an AI-powered system using deep learning and NLP for enhanced disease detection, medical report analysis, and drug identification, improving diagnostic accuracy and efficiency.",
+      "status": "Submitted"
     },
     {
       "id": "pub-6",
       "title": "High-Performance and Quantum Computing in Cancer Modeling: A Review and Hybrid HPC-Quantum Approach",
-      "authors": ["Anay Sinhal"],
+      "authors": [""],
       "journal": "IEEE Journal of Biomedical and Health Informatics",
-      "year": "2025",
+      "year": "May 2025",
       "description": "Surveys HPC and quantum computing in cancer modeling, proposing a hybrid approach hypothesized to reduce simulation time by ≥30% while maintaining accuracy.",
+      "status": "Submitted"
     }
   ],
 
