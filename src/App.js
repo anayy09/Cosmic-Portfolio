@@ -12,6 +12,9 @@ import Blogs from './sections/Blogs';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
 import CosmicLoader from './components/CosmicLoader';
+import Publications from './sections/Publications';
+import Certifications from './sections/Certifications';
+import CosmicJourneys from './sections/CosmicJourneys';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -47,7 +50,7 @@ function App() {
               linkedin={personalInfo.linkedin}
               email={personalInfo.email}
               blog={personalInfo.blog}
-              cv={personalInfo.cv} // Pass cv prop
+              cv={personalInfo.cv}
             />
             <Timeline 
               education={personalInfo.education}
@@ -60,6 +63,13 @@ function App() {
             <Blogs 
               hashnodeUsername={personalInfo.apis.hashnode.username}
             />
+            <Publications 
+              publications={personalInfo.publications}
+            />
+            <Certifications 
+              certifications={personalInfo.certifications}  
+            />
+            <CosmicJourneys />
             <Contact 
               email={personalInfo.email}
               linkedin={personalInfo.linkedin}
