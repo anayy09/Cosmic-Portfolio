@@ -6,12 +6,13 @@ const TypedTextContainer = styled.span`
   position: relative;
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
-  font-size: 1em; /* Base font size */
-  
+  font-size: 1em;
+  margin-left: 0.5rem;
+
   &::after {
     content: '|';
     position: absolute;
-    right: -8px; /* Adjusted for base font-size */
+    right: -8px;
     animation: blink 1s infinite;
   }
   

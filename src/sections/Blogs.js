@@ -5,7 +5,6 @@ import useHashnodeBlogs from '../hooks/useHashnodeBlogs';
 import { FaCalendarAlt, FaHeart, FaComment, FaExternalLinkAlt } from 'react-icons/fa';
 
 const BlogsSection = styled.section`
-  min-height: 100vh;
   padding: 4rem 2rem;
   position: relative;
   overflow: hidden;

@@ -5,7 +5,6 @@ import { FaEnvelope, FaLinkedin, FaGithub, FaPaperPlane, FaCheck, FaTimes } from
 import emailjs from '@emailjs/browser';
 
 const ContactSection = styled.section`
-  min-height: 100vh;
   padding: 4rem 2rem;
   position: relative;
   overflow: hidden;

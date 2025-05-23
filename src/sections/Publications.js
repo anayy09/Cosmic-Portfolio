@@ -5,7 +5,6 @@ import { FaLink, FaFilePdf, FaBookOpen } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const PublicationsSection = styled.section`
-  min-height: 100vh;
   padding: 4rem 2rem;
   position: relative;
   overflow: hidden;
