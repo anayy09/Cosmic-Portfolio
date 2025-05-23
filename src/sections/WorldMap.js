@@ -12,6 +12,9 @@ const WorldMapSection = styled.section`
   padding: 8rem 2rem;
   position: relative;
   overflow: hidden;
+    @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 2rem 2rem;
+  }
 `;
 
 const SectionTitle = styled(motion.h2)`

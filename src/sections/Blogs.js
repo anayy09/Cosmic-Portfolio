@@ -9,6 +9,9 @@ const BlogsSection = styled.section`
   padding: 8rem 2rem;
   position: relative;
   overflow: hidden;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 2rem 2rem;
+  }
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -196,22 +199,22 @@ const Blogs = ({ hashnodeUsername }) => {
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, threshold: 0.2 });
-  
+
   useEffect(() => {
     if (inView) {
       controls.start('visible');
     }
   }, [controls, inView]);
-  
+
   const titleVariants = {
     hidden: { opacity: 0, y: -50 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.6, ease: "easeOut" }
     }
   };
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -222,7 +225,7 @@ const Blogs = ({ hashnodeUsername }) => {
       }
     }
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -235,7 +238,7 @@ const Blogs = ({ hashnodeUsername }) => {
       }
     }
   };
-  
+
   return (
     <BlogsSection id="blogs" ref={ref}>
       <SectionTitle
@@ -245,7 +248,7 @@ const Blogs = ({ hashnodeUsername }) => {
       >
         Latest Articles
       </SectionTitle>
-      
+
       <SectionSubtitle
         variants={titleVariants}
         initial="hidden"
@@ -253,7 +256,7 @@ const Blogs = ({ hashnodeUsername }) => {
       >
         Thoughts, insights, and explorations on software development and machine learning
       </SectionSubtitle>
-      
+
       {loading ? (
         <LoadingContainer>
           <LoadingSpinner />
@@ -275,12 +278,12 @@ const Blogs = ({ hashnodeUsername }) => {
                 <BlogContent>
                   <BlogTitle>{blog.title}</BlogTitle>
                   <BlogExcerpt>{blog.brief}</BlogExcerpt>
-                  
+
                   <BlogMeta>
                     <BlogDate>
                       <FaCalendarAlt /> {blog.date}
                     </BlogDate>
-                    
+
                     <BlogStats>
                       <BlogStat>
                         <FaHeart /> {blog.reactions}
@@ -290,7 +293,7 @@ const Blogs = ({ hashnodeUsername }) => {
                       </BlogStat>
                     </BlogStats>
                   </BlogMeta>
-                  
+
                   <ReadMoreLink href={blog.url} target="_blank" rel="noopener noreferrer">
                     Read More <FaExternalLinkAlt />
                   </ReadMoreLink>
@@ -298,7 +301,7 @@ const Blogs = ({ hashnodeUsername }) => {
               </BlogCard>
             ))}
           </BlogsContainer>
-          
+
           <ViewAllButton
             href={`https://${hashnodeUsername}.hashnode.dev/`}
             target="_blank"
