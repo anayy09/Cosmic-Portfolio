@@ -5,7 +5,7 @@ import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const ProjectsSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -328,7 +328,7 @@ const Projects = ({ githubUsername = [] }) => {
         initial="hidden"
         animate={controls}
       >
-        A collection of my recent work and personal projects.
+        A collection of my personal projects.
       </SectionSubtitle>
       
       {sortedProjects.length === 0 ? (

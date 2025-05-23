@@ -2,10 +2,10 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import useHashnodeBlogs from '../hooks/useHashnodeBlogs';
-import { FaCalendarAlt, FaHeart, FaComment, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaExternalLinkAlt } from 'react-icons/fa';
 
 const BlogsSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -135,31 +135,14 @@ const BlogDate = styled.div`
   gap: 0.5rem;
 `;
 
-const BlogStats = styled.div`
-  display: flex;
-  gap: 1rem;
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: none;
-  }
-`;
-
-const BlogStat = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-`;
-
 const ReadMoreLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 1.5rem;
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   transition: all 0.3s ease;
-  font-size: 0.9rem; // Consistent with other links/buttons if applicable, or keep as is.
-                     // ProjectLink is 1.2rem/1.1rem, ViewAllButton is 1rem/0.9rem.
-                     // Let's make it similar to ViewAllButton for now.
+  font-size: 0.9rem;
   
   svg {
     transition: transform 0.3s ease;
@@ -312,7 +295,7 @@ const Blogs = ({ hashnodeUsername }) => {
         initial="hidden"
         animate={controls}
       >
-        Latest Articles
+        Latest Blogs
       </SectionTitle>
 
       <SectionSubtitle
@@ -320,7 +303,7 @@ const Blogs = ({ hashnodeUsername }) => {
         initial="hidden"
         animate={controls}
       >
-        Thoughts, insights, and explorations on software development and machine learning
+        Thoughts, insights, and explorations
       </SectionSubtitle>
 
       {loading ? (
@@ -350,15 +333,6 @@ const Blogs = ({ hashnodeUsername }) => {
                       <BlogDate>
                         <FaCalendarAlt /> {blog.date}
                       </BlogDate>
-
-                      <BlogStats>
-                        <BlogStat>
-                          <FaHeart /> {blog.reactions}
-                        </BlogStat>
-                        <BlogStat>
-                          <FaComment /> {blog.comments}
-                        </BlogStat>
-                      </BlogStats>
                     </div>
                     <ReadMoreLink href={blog.url} target="_blank" rel="noopener noreferrer">
                       Read More <FaExternalLinkAlt />

@@ -17,7 +17,7 @@ const MAP_JSON_PATH_WORLD = worldMapData;
 const MAP_JSON_PATH_INDIA = indiaMapData;
 
 const CosmicJourneysSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   display: flex;

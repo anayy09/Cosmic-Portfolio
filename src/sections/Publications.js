@@ -5,7 +5,7 @@ import { FaLink, FaFilePdf, FaBookOpen } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const PublicationsSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {

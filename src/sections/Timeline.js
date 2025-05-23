@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
 
 const TimelineSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
 

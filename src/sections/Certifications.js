@@ -5,7 +5,7 @@ import { FaCertificate, FaLink } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const CertificationsSection = styled.section`
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
