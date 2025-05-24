@@ -17,10 +17,8 @@ const personalInfo = {
   skills: [
     "CS Grad",
     "Software Developer",
-    "Machine Learning Engineer",
-    "Geography Enthusiast",
-    "Astronomy Buff",
-    "Avid Traveler",
+    "Machine Learning Enthusiast",
+    "Geography Nerd",
   ],
 
   // Education

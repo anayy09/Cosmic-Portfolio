@@ -217,7 +217,7 @@ const Publications = () => {
         initial="hidden"
         animate={controls}
       >
-        My Research Contributions
+        My Publications
       </SectionTitle>
       
       <SectionSubtitle

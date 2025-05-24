@@ -1,16 +1,16 @@
 const theme = {
   colors: {
-    primary: '#4285F4',       // Rich cosmic blue
-    secondary: '#8A2BE2',     // Deep purple
-    accent: '#FF1493',        // Bright pink for highlights
-    dark: '#121212',          // Near black for backgrounds
-    darkBlue: '#0A192F',      // Dark blue for depth
-    light: '#F8F9FA',         // Light color for text
-    nebula: 'rgba(66, 133, 244, 0.1)', // Transparent blue for overlays
-    success: 'rgba(72, 187, 120, 0.4)',  // Vibrant green with transparency
-    warning: 'rgba(255, 193, 7, 0.4)',   // Bright amber with transparency
-    error: 'rgba(244, 67, 54, 0.4)',     // Bold red with transparency
-    info: 'rgba(33, 150, 243, 0.4)',     // Crisp blue with transparency
+    primary: '#4285F4',   
+    secondary: '#8A2BE2', 
+    accent: '#FF1493',    
+    dark: '#121212',      
+    darkBlue: '#0A192F',  
+    light: '#F8F9FA',     
+    nebula: 'rgba(66, 133, 244, 0.1)', 
+    success: 'rgba(72, 187, 120, 0.4)',
+    warning: 'rgba(255, 193, 7, 0.4)', 
+    error: 'rgba(244, 67, 54, 0.4)',   
+    info: 'rgba(33, 150, 243, 0.4)',   
   },
   gradients: {
     cosmic: 'linear-gradient(135deg, #121212 0%, #0A192F 50%, #4285F4 100%)',
