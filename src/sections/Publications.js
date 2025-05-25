@@ -123,6 +123,11 @@ const PublicationDescription = styled.p`
   color: rgba(255, 255, 255, 0.8);
   flex-grow: 1;
   margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     display: none;
   }
@@ -132,6 +137,7 @@ const PublicationDOI = styled.p`
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.6);
   font-family: ${props => props.theme.fonts.code};
+  margin-right: 1rem; // Add some space between DOI and Status
 `;
 
 const PublicationStatus = styled.div`
@@ -149,6 +155,12 @@ const PublicationStatus = styled.div`
   };
 `;
 
+const PublicationMeta = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto; // Push to the bottom of the card
+`;
 
 const Publications = () => {
   const { publications } = personalInfo;
@@ -265,8 +277,10 @@ const Publications = () => {
               <PublicationAuthors>{pub.authors.join(', ')} {pub.year}</PublicationAuthors>
               <PublicationJournal>{pub.journal}</PublicationJournal>
               {pub.description && <PublicationDescription>{pub.description}</PublicationDescription>}
-              {pub.doi && <PublicationDOI>DOI: {pub.doi}</PublicationDOI>}
-              {pub.status && <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>}
+              <PublicationMeta>
+                {pub.doi && <PublicationDOI>DOI: {pub.doi}</PublicationDOI>}
+                {pub.status && <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>}
+              </PublicationMeta>
             </PublicationBody>
           </PublicationCard>
         ))}
