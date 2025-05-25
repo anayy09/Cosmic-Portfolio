@@ -157,7 +157,7 @@ const CosmicJourneys = () => {
 
   const worldMapInitialConfig = {
     projectionConfig: { scale: 135, center: [0, 20] },
-    zoomableGroup: { center: [1, 20], zoom: 1 },
+    zoomableGroup: { center: [0, 20], zoom: 1 }, // Corrected center for world map consistency
     geoJson: MAP_JSON_PATH_WORLD,
     label: "World Map"
   };
@@ -170,6 +170,24 @@ const CosmicJourneys = () => {
   };
 
   const [activeMapConfig, setActiveMapConfig] = useState(worldMapInitialConfig);
+
+  // State for current map view (center and zoom)
+  const [mapView, setMapView] = useState({
+    center: activeMapConfig.zoomableGroup.center,
+    zoom: activeMapConfig.zoomableGroup.zoom,
+  });
+
+  // Effect to reset mapView when activeMapConfig changes (e.g., switching maps)
+  useEffect(() => {
+    setMapView({
+      center: activeMapConfig.zoomableGroup.center,
+      zoom: activeMapConfig.zoomableGroup.zoom,
+    });
+  }, [activeMapConfig]);
+
+  const handleMapMoveEnd = ({ coordinates, zoom }) => {
+    setMapView({ center: coordinates, zoom });
+  };
 
   useEffect(() => {
     if (inView) {
@@ -282,8 +300,11 @@ const CosmicJourneys = () => {
               style={{ width: "100%", height: "100%" }}
             >
               <ZoomableGroup
-                center={activeMapConfig.zoomableGroup.center}
-                zoom={activeMapConfig.zoomableGroup.zoom}
+                center={mapView.center} // Use mapView state
+                zoom={mapView.zoom}     // Use mapView state
+                onMoveEnd={handleMapMoveEnd} // Handle map movements
+                minZoom={0.5} // Optional: set min zoom
+                maxZoom={10}  // Optional: set max zoom
               >
                 <Geographies geography={activeMapConfig.geoJson}>
                   {({ geographies }) =>
@@ -334,48 +355,61 @@ const CosmicJourneys = () => {
                     })
                   }
                 </Geographies>
-                {displayedPlaces.map((place) => (
-                  <Marker
-                    key={place.id}
-                    coordinates={place.coordinates}
-                    onMouseEnter={() => {
-                      setTooltipContent({ name: place.name, story: place.story, significance: place.significance });
-                      setHoveredMarker(place.id);
-                    }}
-                    onMouseLeave={() => {
-                      setTooltipContent(null);
-                      setHoveredMarker(null);
-                    }}
-                  >
-                    <motion.g
-                      animate={{ scale: hoveredMarker === place.id ? 1.2 : 1 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                      style={{ pointerEvents: 'auto' }}
+                {displayedPlaces.map((place) => {
+                  const currentZoom = mapView.zoom || 1; // Fallback to 1 if zoom is undefined initially
+                  const baseDotRadius = hoveredMarker === place.id ? 6 : 4;
+                  const basePulsingRadius = 8;
+                  const baseStrokeWidth = 0.5;
+                  const basePulsingStrokeWidth = 1;
+
+                  const dynamicDotRadius = Math.max(1, baseDotRadius / currentZoom);
+                  const dynamicPulsingRadius = Math.max(2, basePulsingRadius / currentZoom);
+                  const dynamicStrokeWidth = Math.max(0.1, baseStrokeWidth / currentZoom);
+                  const dynamicPulsingStrokeWidth = Math.max(0.2, basePulsingStrokeWidth / currentZoom);
+
+                  return (
+                    <Marker
+                      key={place.id}
+                      coordinates={place.coordinates}
+                      onMouseEnter={() => {
+                        setTooltipContent({ name: place.name, story: place.story, significance: place.significance });
+                        setHoveredMarker(place.id);
+                      }}
+                      onMouseLeave={() => {
+                        setTooltipContent(null);
+                        setHoveredMarker(null);
+                      }}
                     >
-                      {/* Base dot at exact coordinate */}
-                      <circle
-                        cx={0} cy={0}
-                        r={hoveredMarker === place.id ? 6 : 4}
-                        fill={theme.colors.accent}
-                        stroke={theme.colors.light}
-                        strokeWidth={0.5}
-                      />
-                      {/* Pulsing ring on hover */}
-                      {hoveredMarker === place.id && (
-                        <motion.circle
+                      <motion.g
+                        animate={{ scale: hoveredMarker === place.id ? 1.2 : 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        style={{ pointerEvents: 'auto' }}
+                      >
+                        {/* Base dot at exact coordinate */}
+                        <circle
                           cx={0} cy={0}
-                          r={8}
-                          fill="none"
-                          stroke={theme.colors.accentHover}
-                          strokeWidth={1}
-                          initial={{ opacity: 0.5, scale: 1 }}
-                          animate={{ opacity: [0.5, 0.1, 0.5], scale: [1, 2, 1] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
+                          r={dynamicDotRadius}
+                          fill={theme.colors.accent}
+                          stroke={theme.colors.light}
+                          strokeWidth={dynamicStrokeWidth}
                         />
-                      )}
-                    </motion.g>
-                  </Marker>
-                ))}
+                        {/* Pulsing ring on hover */}
+                        {hoveredMarker === place.id && (
+                          <motion.circle
+                            cx={0} cy={0}
+                            r={dynamicPulsingRadius}
+                            fill="none"
+                            stroke={theme.colors.accentHover}
+                            strokeWidth={dynamicPulsingStrokeWidth}
+                            initial={{ opacity: 0.5, scale: 1 }}
+                            animate={{ opacity: [0.5, 0.1, 0.5], scale: [1, 2, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          />
+                        )}
+                      </motion.g>
+                    </Marker>
+                  );
+                })}
               </ZoomableGroup>
             </ComposableMap>
           </motion.div>

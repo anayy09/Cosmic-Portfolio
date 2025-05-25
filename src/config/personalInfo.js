@@ -188,6 +188,7 @@ const personalInfo = {
       "year": "Feb 2025",
       "description": "Explores contrastive learning with LLMs for depression detection on social media, showing improved precision, recall, and F1-scores by addressing data diversity and contextual understanding.",
       "status": "Under Review",
+      "url": "https://papers.ssrn.com/abstract=5268305"
     },
     {
       "id": "pub-4",
@@ -196,7 +197,8 @@ const personalInfo = {
       "journal": "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision",
       "year": "Feb 2025",
       "description": "Introduces a multimodal dataset and an ensemble ML framework using SMOTE for balanced stress state representation, improving stress monitoring for healthcare professionals.",
-      "status": "Submitted"
+      "status": "Submitted",
+      "url": "https://papers.ssrn.com/abstract=5268307"
     },
     {
       "id": "pub-5",
@@ -205,7 +207,8 @@ const personalInfo = {
       "journal": "4th 2025 IEEE World Conference on Applied Intelligence and Computing",
       "year": "May 2025",
       "description": "Presents an AI-powered system using deep learning and NLP for enhanced disease detection, medical report analysis, and drug identification, improving diagnostic accuracy and efficiency.",
-      "status": "Submitted"
+      "status": "Submitted",
+      "url": "https://papers.ssrn.com/abstract=5268317"
     },
     {
       "id": "pub-6",
@@ -214,7 +217,8 @@ const personalInfo = {
       "journal": "IEEE Journal of Biomedical and Health Informatics",
       "year": "May 2025",
       "description": "Surveys HPC and quantum computing in cancer modeling, proposing a hybrid approach hypothesized to reduce simulation time by ≥30% while maintaining accuracy.",
-      "status": "Submitted"
+      "status": "Submitted",
+      "url": "https://papers.ssrn.com/abstract=5268297"
     }
   ],
 
@@ -378,12 +382,6 @@ const personalInfo = {
       story: "School trip",
     },
     {
-      id: "place-40",
-      name: "Haridwar, India",
-      coordinates: [78.1452985, 29.9384473],
-      story: "College trip",
-    },
-    {
       id: "place-41",
       name: "Rishikesh, India",
       coordinates: [78.2916193, 30.1086537],
@@ -402,12 +400,6 @@ const personalInfo = {
       story: "Family vacation",
     },
     {
-      id: "place-48",
-      name: "New York, USA",
-      coordinates: [-74.0060152, 40.7127281],
-      story: "Layover during travel",
-    },
-    {
       id: "place-49",
       name: "Orlando, USA",
       coordinates: [-81.3790304, 28.5421109],
@@ -420,40 +412,10 @@ const personalInfo = {
       story: "University of Florida",
     },
     {
-      id: "place-51",
-      name: "Los Angeles, USA",
-      coordinates: [-118.242766, 34.0536909],
-      story: "Visited during travel",
-    },
-    {
-      id: "place-52",
-      name: "Tokyo, Japan",
-      coordinates: [139.7594549, 35.6828387],
-      story: "Layover during travel",
-    },
-    {
-      id: "place-53",
-      name: "Helsinki, Finland",
-      coordinates: [24.9427473, 60.1674881],
-      story: "Layover during travel",
-    },
-    {
-      id: "place-54",
-      name: "Miami, USA",
-      coordinates: [-80.22256439, 25.7820042],
-      story: "Visited during travel",
-    },
-    {
       id: "place-55",
       name: "Atlanta, USA",
       coordinates: [-84.3902644, 33.7489924],
       story: "Visited during travel",
-    },
-    {
-      id: "place-56",
-      name: "Istanbul, Turkey",
-      coordinates: [28.9662187, 41.0091982],
-      story: "Layover during travel",
     }
   ],
 
