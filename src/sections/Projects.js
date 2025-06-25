@@ -260,7 +260,7 @@ const ViewAllButton = styled(motion.a)`
   }
 `;
 
-const Projects = ({ githubUsername = [] }) => {
+const Projects = ({ githubUsername = '' }) => {
   const customProjects = personalInfo.customProjects || [];
   const controls = useAnimation();
   const ref = useRef(null);
