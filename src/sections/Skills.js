@@ -2,16 +2,29 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import {
-  SiJavascript,
+  SiC,
+  SiCplusplus,
   SiPython,
   SiOpenjdk,
-  SiReact,
-  SiNodedotjs,
+  SiJavascript,
   SiGo,
-  SiPostgresql,
-  SiThreedotjs,
+  SiTypescript,
+  SiPhp,
+  SiReact,
+  SiNextdotjs,
+  SiDjango,
   SiTensorflow,
-  SiDocker
+  SiKeras,
+  SiPytorch,
+  SiHuggingface,
+  SiMysql,
+  SiGit,
+  SiDocker,
+  SiUnrealengine,
+  SiBlender,
+  SiZoho,
+  SiFigma,
+  SiWordpress
 } from 'react-icons/si';
 import personalInfo from '../config/personalInfo';
 
@@ -50,16 +63,26 @@ const SkillsGrid = styled(motion.div)`
   justify-items: center;
 `;
 
-const SkillCard = styled(motion.div)`
+const SkillIcon = styled.div`
+  font-size: 3rem;
+  color: ${props => props.theme.colors.primary};
+`;
+
+const SkillCard = styled(motion.a)`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-`;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease;
 
-const SkillIcon = styled.div`
-  font-size: 3rem;
-  color: ${props => props.theme.colors.primary};
+  &:hover {
+    transform: translateY(-5px);
+  }
+  &:hover ${SkillIcon} {
+    color: ${props => props.theme.colors.accent};
+  }
 `;
 
 const SkillName = styled.p`
@@ -69,16 +92,29 @@ const SkillName = styled.p`
 `;
 
 const iconMap = {
-  'JavaScript': SiJavascript,
+  'C': SiC,
+  'C++': SiCplusplus,
   'Python': SiPython,
   'Java': SiOpenjdk,
-  'React': SiReact,
-  'Node.js': SiNodedotjs,
-  'Go': SiGo,
-  'PostgreSQL': SiPostgresql,
-  'Three.js': SiThreedotjs,
+  'JavaScript': SiJavascript,
+  'Golang': SiGo,
+  'TypeScript': SiTypescript,
+  'PHP': SiPhp,
+  'React.js': SiReact,
+  'Next.js': SiNextdotjs,
+  'Django': SiDjango,
   'TensorFlow': SiTensorflow,
+  'Keras': SiKeras,
+  'PyTorch': SiPytorch,
+  'Hugging Face': SiHuggingface,
+  'MySQL': SiMysql,
+  'Git': SiGit,
   'Docker': SiDocker,
+  'Unreal Engine': SiUnrealengine,
+  'Blender': SiBlender,
+  'Zoho Creator': SiZoho,
+  'Figma': SiFigma,
+  'WordPress': SiWordpress,
 };
 
 const Skills = () => {
@@ -139,12 +175,19 @@ const Skills = () => {
         Technologies and tools I frequently work with
       </SectionSubtitle>
       <SkillsGrid variants={containerVariants} initial="hidden" animate={controls}>
-        {techStack.map((skill) => {
-          const Icon = iconMap[skill] || SiJavascript;
+        {techStack.map(({ name, url }) => {
+          const Icon = iconMap[name] || SiJavascript;
           return (
-            <SkillCard key={skill} variants={itemVariants}>
+            <SkillCard
+              key={name}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              variants={itemVariants}
+              whileHover={{ scale: 1.1 }}
+            >
               <SkillIcon><Icon /></SkillIcon>
-              <SkillName>{skill}</SkillName>
+              <SkillName>{name}</SkillName>
             </SkillCard>
           );
         })}
