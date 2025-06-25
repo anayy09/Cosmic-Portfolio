@@ -21,6 +21,33 @@ const personalInfo = {
     "Geography Nerd",
   ],
 
+  // Technologies and tools for dedicated Skills section
+  techStack: [
+    { name: "C", url: "https://en.wikipedia.org/wiki/C_(programming_language)" },
+    { name: "C++", url: "https://isocpp.org" },
+    { name: "Python", url: "https://www.python.org" },
+    { name: "Java", url: "https://www.java.com" },
+    { name: "JavaScript", url: "https://developer.mozilla.org/docs/Web/JavaScript" },
+    { name: "Golang", url: "https://go.dev" },
+    { name: "TypeScript", url: "https://www.typescriptlang.org" },
+    { name: "PHP", url: "https://www.php.net" },
+    { name: "React.js", url: "https://react.dev" },
+    { name: "Next.js", url: "https://nextjs.org" },
+    { name: "Django", url: "https://www.djangoproject.com" },
+    { name: "TensorFlow", url: "https://www.tensorflow.org" },
+    { name: "Keras", url: "https://keras.io" },
+    { name: "PyTorch", url: "https://pytorch.org" },
+    { name: "Hugging Face", url: "https://huggingface.co" },
+    { name: "MySQL", url: "https://www.mysql.com" },
+    { name: "Git", url: "https://git-scm.com" },
+    { name: "Docker", url: "https://www.docker.com" },
+    { name: "Unreal Engine", url: "https://www.unrealengine.com" },
+    { name: "Blender", url: "https://www.blender.org" },
+    { name: "Zoho Creator", url: "https://www.zoho.com/creator" },
+    { name: "Figma", url: "https://www.figma.com" },
+    { name: "WordPress", url: "https://wordpress.org" },
+  ],
+
   // Education
   education: [
     {

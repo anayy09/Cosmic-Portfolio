@@ -16,6 +16,7 @@ Cosmic Portfolio is a responsive, single-page application designed to present a 
 * **Comprehensive Sections**:
   * Hero section with a captivating introduction.
   * Detailed listings for Projects (GitHub and custom).
+  * Interactive skills section with hoverable icons linking to official resources.
   * Integrated Blogs section.
   * Certifications and Publications.
   * Interactive Timeline for education and professional experience.
@@ -135,7 +136,7 @@ In the project directory, you can run the following scripts:
 Most personal information and content can be customized by editing the `src/config/personalInfo.js` file. This includes:
 
 * Name, professional title, contact email, and social media links.
-* Details for education, work experience, and skills.
+* Details for education, work experience, and skills (the tech stack is an array of objects with a `name` and `url`).
 * Content for custom projects and publications.
 
 Theme settings (colors, fonts, etc.) can be adjusted in `src/config/theme.js` and `src/styles/GlobalStyles.js`.
