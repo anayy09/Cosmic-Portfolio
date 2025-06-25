@@ -53,7 +53,6 @@ function App() {
               blog={personalInfo.blog}
               cv={personalInfo.cv}
             />
-            <Skills />
             <Timeline
               education={personalInfo.education}
               experience={personalInfo.experience}
@@ -62,6 +61,7 @@ function App() {
               githubUsername={personalInfo.apis.github.username}
               customProjects={personalInfo.customProjects}
             />
+            <Skills />
             <Blogs 
               hashnodeUsername={personalInfo.apis.hashnode.username}
             />
