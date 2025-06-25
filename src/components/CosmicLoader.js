@@ -107,8 +107,8 @@ const GentleStars = ({ count = 100 }) => {
   );
 };
 
-// Earth globe component with minimal continent outlines
-const Earth = () => {
+// Moon globe component rendered with lunar texture
+const Moon = () => {
     const mesh = React.useRef();
     const texture = useLoader(THREE.TextureLoader, '/textures/2k_moon.jpg');
 
@@ -133,7 +133,7 @@ const StarField = () => {
     <>
       <ambientLight intensity={0.3} />
       <pointLight position={[10, 5, 10]} intensity={0.6} />
-      <Earth />
+      <Moon />
       <GentleStars count={150} />
 
       <EffectComposer>
