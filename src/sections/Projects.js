@@ -204,9 +204,9 @@ const ProjectTags = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.7rem;
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: None;
+    display: none;
   }
 `;
 
