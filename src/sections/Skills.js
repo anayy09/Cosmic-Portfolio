@@ -4,12 +4,12 @@ import { motion, useAnimation, useInView } from 'framer-motion';
 import {
   SiJavascript,
   SiPython,
-  SiJava,
+  SiOpenjdk,
   SiReact,
   SiNodedotjs,
   SiGo,
   SiPostgresql,
-  SiThreejs,
+  SiThreedotjs,
   SiTensorflow,
   SiDocker
 } from 'react-icons/si';
@@ -71,12 +71,12 @@ const SkillName = styled.p`
 const iconMap = {
   'JavaScript': SiJavascript,
   'Python': SiPython,
-  'Java': SiJava,
+  'Java': SiOpenjdk,
   'React': SiReact,
   'Node.js': SiNodedotjs,
   'Go': SiGo,
   'PostgreSQL': SiPostgresql,
-  'Three.js': SiThreejs,
+  'Three.js': SiThreedotjs,
   'TensorFlow': SiTensorflow,
   'Docker': SiDocker,
 };
