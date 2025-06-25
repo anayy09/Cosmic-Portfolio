@@ -6,6 +6,7 @@ import personalInfo from './config/personalInfo';
 import CosmicBackground from './components/CosmicBackground';
 import Navigation from './components/Navigation';
 import Hero from './sections/Hero';
+import Skills from './sections/Skills';
 import Timeline from './sections/Timeline';
 import Projects from './sections/Projects';
 import Blogs from './sections/Blogs';
@@ -42,7 +43,7 @@ function App() {
           <CosmicBackground />
           <Navigation />
           <div className="App">
-            <Hero 
+            <Hero
               name={personalInfo.name}
               skills={personalInfo.skills}
               description={personalInfo.description}
@@ -52,7 +53,8 @@ function App() {
               blog={personalInfo.blog}
               cv={personalInfo.cv}
             />
-            <Timeline 
+            <Skills />
+            <Timeline
               education={personalInfo.education}
               experience={personalInfo.experience}
             />

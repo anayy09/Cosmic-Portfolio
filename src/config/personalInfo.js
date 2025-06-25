@@ -21,6 +21,20 @@ const personalInfo = {
     "Geography Nerd",
   ],
 
+  // Technologies and tools for dedicated Skills section
+  techStack: [
+    "JavaScript",
+    "Python",
+    "Java",
+    "React",
+    "Node.js",
+    "Go",
+    "PostgreSQL",
+    "Three.js",
+    "TensorFlow",
+    "Docker"
+  ],
+
   // Education
   education: [
     {
