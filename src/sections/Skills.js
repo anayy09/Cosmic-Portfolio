@@ -61,11 +61,21 @@ const SkillsGrid = styled(motion.div)`
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 2rem;
   justify-items: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 100%;
+  }
 `;
 
 const SkillIcon = styled.div`
   font-size: 3rem;
   color: ${props => props.theme.colors.primary};
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2rem;
+  }
 `;
 
 const SkillCard = styled(motion.a)`
@@ -83,12 +93,20 @@ const SkillCard = styled(motion.a)`
   &:hover ${SkillIcon} {
     color: ${props => props.theme.colors.accent};
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 0.25rem;
+  }
 `;
 
 const SkillName = styled.p`
   color: ${props => props.theme.colors.light};
   font-size: 0.9rem;
   text-align: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 0.75rem;
+  }
 `;
 
 const iconMap = {
