@@ -8,7 +8,7 @@ const personalInfo = {
   github: "https://github.com/anayy09",
   linkedin: "https://linkedin.com/in/anaysinhal",
   blog: "https://anay09.hashnode.dev/",
-  cv: "https://drive.google.com/file/d/1mEWJhZ6u5jKCf2g3hoV1iSEbPDGFX9a-/view?usp=sharing",
+  cv: "/cv",
 
   // About Me
   description: "A passionate software and ML developer specializing in creating exceptional digital experiences. Currently focused on building accessible, human-centered products with cutting-edge technologies.",

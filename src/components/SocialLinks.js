@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope, FaRss, FaFilePdf } from 'react-icons/fa';
 
 const SocialLinksContainer = styled.div`
@@ -25,7 +26,7 @@ const SocialLink = styled(motion.a)`
   }
 `;
 
-const CvButton = styled(motion.a)`
+const CvButton = styled(motion.div)`
   display: inline-flex;
   align-items: center;
   padding: 0.8rem 1.5rem;
@@ -38,19 +39,25 @@ const CvButton = styled(motion.a)`
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.3s ease; /* Only for background, framer-motion handles transform */
+  transition: background 0.3s ease;
   max-width: 200px;
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
   
   &:hover {
     background: rgba(66, 133, 244, 0.1);
     color: ${props => props.theme.colors.primary};
     transform: translateY(-3px);
   }
-  
-  /* &:active handled by framer-motion whileTap */
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 0.6rem 1rem; /* Adjusted padding */
+    padding: 0.6rem 1rem;
     font-size: 1rem;
     max-width: 180px;
   }
@@ -91,19 +98,27 @@ const SocialLinks = ({ github, linkedin, email, blog, cv }) => {
     <SocialLinksContainer>
       {allLinks.map((link, i) => {
         if (link.type === 'cv') {
+          // Check if CV link is internal (starts with /) or external
+          const isInternalLink = link.url.startsWith('/');
+          
           return (
             <CvButton
               key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label={link.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0, transition: { delay: (allLinks.length + 0.5 + i * 0.1), type: "spring", stiffness: 100 } }}
               whileHover={{ y: -3, transition: { type: "spring", stiffness: 300 } }}
               whileTap={{ y: 0 }}
             >
-              View CV <FaFilePdf style={{ marginLeft: '0.5rem' }} />
+              {isInternalLink ? (
+                <Link to={link.url}>
+                  View CV <FaFilePdf style={{ marginLeft: '0.5rem' }} />
+                </Link>
+              ) : (
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  View CV <FaFilePdf style={{ marginLeft: '0.5rem' }} />
+                </a>
+              )}
             </CvButton>
           );
         } else { // 'social'
