@@ -6,6 +6,51 @@ import { Stars } from '@react-three/drei'; // Added Stars from drei
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import styled from 'styled-components';
 
+// Helper for random numbers in a range
+const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+// Data for constellations
+const constellationsData = [
+  // Ursa Major (part of it)
+  {
+    name: 'Ursa Major',
+    scale: 3,
+    position: [-60, 50, -180],
+    stars: [
+      { pos: [1, 2, 0], size: 1.5 }, { pos: [3.5, 1.8, 0], size: 1.5 },
+      { pos: [5, 1, 0], size: 1.5 }, { pos: [6.5, 1.5, 0], size: 1.5 },
+      { pos: [9, 2.5, 0], size: 1.5 }, { pos: [8.5, 4.5, 0], size: 1.5 },
+      { pos: [6, 4, 0], size: 1.5 }
+    ],
+    lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [3, 6]]
+  },
+  // Cassiopeia
+  {
+    name: 'Cassiopeia',
+    scale: 3,
+    position: [60, 30, -150],
+    stars: [
+      { pos: [0, 0, 0], size: 1.5 }, { pos: [2, 1.5, 0], size: 1.5 },
+      { pos: [4, 0, 0], size: 1.5 }, { pos: [6, 1.5, 0], size: 1.5 },
+      { pos: [8, 0, 0], size: 1.5 }
+    ],
+    lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+  },
+  // Orion
+  {
+    name: 'Orion',
+    scale: 4,
+    position: [10, -40, -120],
+    stars: [
+      { pos: [0, 10, 0], size: 2.0 }, { pos: [2, 9.5, 0], size: 2.0 },
+      { pos: [1, 8, 0], size: 1.5 }, { pos: [0.5, 6, 0], size: 1.5 },
+      { pos: [1.5, 6, 0], size: 1.5 }, { pos: [1, 4, 0], size: 2.0 },
+      { pos: [3, 4.5, 0], size: 2.0 }
+    ],
+    lines: [[0, 1], [0, 3], [1, 2], [1, 4], [3, 5], [4, 5], [2,3], [2,4]]
+  }
+];
+
 // Styled component for the canvas container
 const BackgroundContainer = styled.div`
   position: fixed;
@@ -34,8 +79,8 @@ function AnimatedStars() {
       ref={starsRef}
       radius={100} // Radius of the sphere on which stars are generated
       depth={50} // Depth of the star sphere
-      count={2500} // Number of stars
-      factor={4} // Star size factor
+      count={500} // Number of stars
+      factor={10} // Star size factor
       saturation={0} // Star color saturation (0 for white)
       fade // Stars disappear when they are too far away
       speed={1} // Animation speed (if applicable to the internal animation)
@@ -269,6 +314,78 @@ const RealMoon = () => {
   );
 };
 
+// A single constellation
+const Constellation = ({ data }) => {
+  const { stars, lines, scale, position } = data;
+
+  const starPoints = useMemo(() => 
+    stars.map(star => new THREE.Vector3(...star.pos).multiplyScalar(scale)),
+    [stars, scale]
+  );
+
+  const linePoints = useMemo(() => {
+    const points = [];
+    lines.forEach(([start, end]) => {
+      points.push(starPoints[start]);
+      points.push(starPoints[end]);
+    });
+    return points;
+  }, [lines, starPoints]);
+
+  const lineGeometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(linePoints), [linePoints]);
+
+  return (
+    <group position={position}>
+      <points>
+        <bufferGeometry attach="geometry">
+          <bufferAttribute
+            attach="attributes-position"
+            count={starPoints.length}
+            array={new Float32Array(starPoints.flatMap(p => p.toArray()))}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          attach="material"
+          color="#ffffff"
+          size={0.5}
+          sizeAttenuation
+          transparent
+          opacity={0.7}
+        />
+      </points>
+      <lineSegments geometry={lineGeometry}>
+        <lineBasicMaterial
+          attach="material"
+          color="#ffffff"
+          transparent
+          opacity={0.2}
+        />
+      </lineSegments>
+    </group>
+  );
+};
+
+// Group of all constellations with rotation
+const Constellations = () => {
+  const groupRef = useRef();
+
+  useFrame(({ clock }) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.01;
+      groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.005) * 0.05;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {constellationsData.map(constellation => (
+        <Constellation key={constellation.name} data={constellation} />
+      ))}
+    </group>
+  );
+};
+
 // Main cosmic scene
 const CosmicScene = () => {
   return (
@@ -278,6 +395,7 @@ const CosmicScene = () => {
       
       <AnimatedStars /> {/* Replaced custom Stars with AnimatedStars */}
       <ShootingStars />
+      <Constellations />
       <RealMoon />
       
       <EffectComposer>
