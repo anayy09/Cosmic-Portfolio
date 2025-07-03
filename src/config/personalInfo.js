@@ -45,7 +45,6 @@ const personalInfo = {
     { name: "Blender", url: "https://www.blender.org" },
     { name: "Zoho Creator", url: "https://www.zoho.com/creator" },
     { name: "Figma", url: "https://www.figma.com" },
-    { name: "WordPress", url: "https://wordpress.org" },
   ],
 
   // Education
@@ -143,66 +142,105 @@ const personalInfo = {
   ],
 
   customProjects: [
-    // {
-    //   id: "custom-1",
-    //   name: "Neural Style Transfer App",
-    //   description: "Applies artistic styles to images using TensorFlow.js and React.",
-    //   url: "https://github.com/anayy09/neural-style-transfer",
-    //   homepage: "https://neural-style-demo.netlify.app",
-    //   language: "JavaScript",
-    //   topics: ["machine-learning", "tensorflow", "react", "computer-vision"],
-    //   isManual: true,
-    //   imageUrl: "https://via.placeholder.com/350x200?text=Project+Image"
-    // },
+    {
+      id: "custom-1",
+      name: "Navigator AI Console",
+      description: "Next.js 14 + TypeScript web console unifying chat, embeddings, and Whisper STT across 12 LLM endpoints via LiteLLM gateway with ≤200ms median latency. PostgreSQL + Redis metering with NextAuth for quota management.",
+      url: "https://github.com/anayy09/navigator-ai-console",
+      homepage: "https://navigator-console.vercel.app/",
+      language: "TypeScript",
+      topics: ["nextjs", "llm"],
+      isManual: true,
+      imageUrl: "/projects/custom-1.png"
+    },
+    {
+      id: "custom-2",
+      name: "P2P File Sharing System",
+      description: "Re-implemented BitTorrent protocol in Java 17 with novel Disaster Mode (fountain coding + super-peer election) sustaining >85% goodput on 40% loss testbed. Multi-threaded architecture 4× faster than baseline.",
+      url: "https://github.com/anayy09/P2PFileSharing",
+      homepage: "",
+      language: "Java",
+      topics: ["tcp", "networking"],
+      isManual: true,
+      imageUrl: "/projects/custom-2.png"
+    },
     {
       id: "custom-3",
-      name: "CampusCupid",
-      description: "Full-stack, college-exclusive dating app with a React frontend, Go backend, PostgreSQL storage, and Cypress-tested UI.",  // derived from repo README:contentReference[oaicite:0]{index=0}
-      url: "https://github.com/anayy09/CampusCupid",
+      name: "License Plate Management System",
+      description: "Custom Red-Black Tree implementation for registering, searching, and range-querying 100k plates in O(log n). 99th-percentile lookup = 0.4ms with dual-fee revenue model and CLI.",
+      url: "https://github.com/anayy09/License-Plate-Management-System",
       homepage: "",
-      language: "JavaScript",
-      topics: ["react", "go", "postgresql"],
+      language: "Java",
+      topics: ["data-structures", "algorithms"],
       isManual: true,
       imageUrl: "/projects/custom-3.png"
     },
     {
       id: "custom-4",
-      name: "P2P File Sharing System",
-      description: "BitTorrent-style peer-to-peer file-sharing system in Java, built for the CNT5106C Computer Networks course.",  // from repo README:contentReference[oaicite:1]{index=1}
-      url: "https://github.com/anayy09/P2PFileSharing",
+      name: "Local News Analytics",
+      description: "End-to-end NLP pipeline (spaCy, BERTopic, BART) clustering ≥2k Seattle news items per day and flagging emergent events with F1 0.83. Flask + APScheduler dashboard with 6-hourly updates.",
+      url: "https://github.com/anayy09/Local-News-Analytics",
       homepage: "",
-      language: "Java",
-      topics: ["p2p", "file-sharing", "tcp", "networking"],
+      language: "Python",
+      topics: ["nlp", "spacy", "bert"],
       isManual: true,
       imageUrl: "/projects/custom-4.png"
     },
     {
       id: "custom-5",
-      name: "AlgoVault : Advanced Data-Structures Library",
-      description: "Curated Java-17 library (Fibonacci Heap, Red-Black Tree, KD-Tree, Bloom Filter, etc.)",
-      url: "https://github.com/anayy09/COP5536-Advanced-Data-Structures",
+      name: "CampusCupid",
+      description: "Led 4-dev team building full-stack dating platform with Go/Gin backend, PostgreSQL, React frontend. Secure JWT auth, swipe-matching, Cloudinary image storage. CI/CD on Render with Cypress E2E testing.",
+      url: "https://github.com/anayy09/CampusCupid",
       homepage: "",
-      language: "Java",
-      topics: ["java", "DSA", "algorithms"],
+      language: "JavaScript",
+      topics: ["react", "go"],
       isManual: true,
       imageUrl: "/projects/custom-5.png"
     },
     {
       id: "custom-6",
-      name: "Cosmic Portfolio",
-      description:
-        "Personal portfolio built with React, Styled-Components, Framer Motion animations, and a Three.js starfield.",
-      url: "https://github.com/anayy09/Cosmic-Portfolio",
-      homepage: "https://anay.live",
-      language: "JavaScript",
-      topics: [
-        "react",
-        "framer-motion",
-        "threejs",
-      ],
+      name: "FinMate - Finance Manager",
+      description: "Integrated Plaid API and ML (Random Forest prediction, Isolation Forest anomaly detection) in Django backend. React + Chakra UI dashboard with D3/Plotly visualizations and personalized budget alerts.",
+      url: "https://github.com/anayy09/Finmate",
+      homepage: "",
+      language: "Python",
+      topics: ["django", "ml", "plaid"],
       isManual: true,
       imageUrl: "/projects/custom-6.png"
-    }
+    },
+    {
+      id: "custom-7",
+      name: "Cosmic Portfolio",
+      description: "Stunning, interactive personal portfolio website built with React, Three.js, and modern web technologies. Features immersive 3D cosmic background, GitHub/Hashnode API integration, interactive world map, and responsive design with smooth animations.",
+      url: "https://github.com/anayy09/Cosmic-Portfolio",
+      homepage: "https://anaysinhal.vercel.app/",
+      language: "JavaScript",
+      topics: ["threejs", "framer-motion"],
+      isManual: true,
+      imageUrl: "/projects/custom-7.png"
+    },
+    {
+      id: "custom-8",
+      name: "AuroraPDF - PDF Toolkit",
+      description: "Comprehensive PDF manipulation tool built with React, TypeScript, and Bulma CSS. Features merge, split, compress, PDF-to-Word conversion, rotation, drag-and-drop interface, dark mode, and responsive design with real-time processing feedback.",
+      url: "https://github.com/anayy09/PDF-Studio",
+      homepage: "https://pdf-studio.vercel.app/",
+      language: "TypeScript",
+      topics: ["pdf-lib", "bulma"],
+      isManual: true,
+      imageUrl: "/projects/custom-8.png"
+    },
+    {
+      id: "custom-9",
+      name: "UniFlow - Campus App",
+      description: "Comprehensive React Native app for university life management. Features schedule management, task tracking with priority levels, Pomodoro timer with subject tracking, progress analytics, dark/light theme, and modern UI with smooth animations.",
+      url: "https://github.com/anayy09/UniFlow",
+      homepage: "",
+      language: "TypeScript",
+      topics: ["react-native", "expo"],
+      isManual: true,
+      imageUrl: "/projects/custom-9.png"
+    },
 
   ],
 
