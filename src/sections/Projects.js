@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
@@ -265,6 +265,18 @@ const Projects = ({ githubUsername = '' }) => {
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, threshold: 0.1 });
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   useEffect(() => {
     if (inView) {
@@ -279,6 +291,9 @@ const Projects = ({ githubUsername = '' }) => {
     if (a.sortOrder && b.sortOrder) return a.sortOrder - b.sortOrder;
     return 0; 
   });
+
+  // Show only first 4 projects on mobile
+  const projectsToShow = isMobile ? sortedProjects.slice(0, 4) : sortedProjects;
 
   const titleVariants = {
     hidden: { opacity: 0, y: -30 }, 
@@ -331,7 +346,7 @@ const Projects = ({ githubUsername = '' }) => {
         A collection of my personal projects.
       </SectionSubtitle>
       
-      {sortedProjects.length === 0 ? (
+      {projectsToShow.length === 0 ? (
         <SectionSubtitle 
             variants={titleVariants}
             initial="hidden"
@@ -345,7 +360,7 @@ const Projects = ({ githubUsername = '' }) => {
           initial="hidden"
           animate={controls}
         >
-          {sortedProjects.map(project => (
+          {projectsToShow.map(project => (
             <ProjectCard key={project.id || project.name} variants={itemVariants}>
               {project.imageUrl && <ProjectImagePlaceholder imageUrl={project.imageUrl} />}
               <ProjectHeader>

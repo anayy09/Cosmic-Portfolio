@@ -10,6 +10,10 @@ const CVContainer = styled.div`
   padding: 2rem;
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.5rem;
+  }
 `;
 
 const BackgroundEffects = styled.div`
@@ -45,8 +49,10 @@ const Header = styled(motion.header)`
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     align-items: stretch;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
   }
 `;
 
@@ -70,6 +76,12 @@ const BackButton = styled(Link)`
     box-shadow: ${props => props.theme.shadows.glow};
     transform: translateY(-2px);
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
 `;
 
 const Title = styled(motion.h1)`
@@ -81,7 +93,8 @@ const Title = styled(motion.h1)`
   text-align: center;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    margin: 0;
   }
 `;
 
@@ -91,8 +104,7 @@ const Controls = styled(motion.div)`
   align-items: center;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    justify-content: center;
-    flex-wrap: wrap;
+    display: none;
   }
 `;
 
@@ -126,6 +138,16 @@ const ControlButton = styled.button`
       box-shadow: none;
     }
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    gap: 0.3rem;
+    
+    .button-text {
+      display: none;
+    }
+  }
 `;
 
 const ZoomLevel = styled.span`
@@ -143,6 +165,11 @@ const PDFContainer = styled(motion.div)`
   align-items: center;
   min-height: calc(100vh - 200px);
   padding: 1rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.25rem;
+    min-height: calc(100vh - 120px);
+  }
 `;
 
 const PDFWrapper = styled.div`
@@ -162,8 +189,13 @@ const PDFWrapper = styled.div`
   transform-origin: center center;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 1rem;
-    border-radius: 15px;
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin: 0;
+    width: 100%;
+    box-shadow: 
+      ${props => props.theme.shadows.medium},
+      0 0 20px rgba(66, 133, 244, 0.2);
   }
 `;
 
@@ -180,8 +212,10 @@ const PDFEmbed = styled.iframe`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    width: 100%;
-    height: ${props => props.fullscreen ? '75vh' : '500px'};
+    width: 100vw;
+    height: 85vh;
+    border-radius: 8px;
+    min-height: 500px;
   }
 `;
 
@@ -258,10 +292,9 @@ const CVViewer = () => {
             Curriculum Vitae
           </Title>
           
-          <Controls variants={itemVariants}>         
+          <Controls variants={itemVariants}>            
             <ControlButton onClick={toggleFullscreen}>
               <FiMaximize />
-              {fullscreen ? 'Exit' : 'Fullscreen'}
             </ControlButton>
           </Controls>
         </Header>
