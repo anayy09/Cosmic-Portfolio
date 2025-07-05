@@ -252,7 +252,7 @@ const personalInfo = {
       "journal": "2025 IEEE International Conference on Contemporary Computing and Communications",
       "year": "Feb 2025",
       "description": "Explores contrastive learning with LLMs for depression detection on social media, showing improved precision, recall, and F1-scores by addressing data diversity and contextual understanding.",
-      "status": "Under Review",
+      "status": "Submitted",
       "url": "https://papers.ssrn.com/abstract=5268305"
     },
     {
@@ -263,7 +263,7 @@ const personalInfo = {
       "year": "Feb 2025",
       "description": "Introduces a multimodal dataset and an ensemble ML framework using SMOTE for balanced stress state representation, improving stress monitoring for healthcare professionals.",
       "status": "Submitted",
-      "url": "https://papers.ssrn.com/abstract=5268307"
+      "url": ""
     },
     {
       "id": "pub-5",
@@ -273,7 +273,7 @@ const personalInfo = {
       "year": "May 2025",
       "description": "Presents an AI-powered system using deep learning and NLP for enhanced disease detection, medical report analysis, and drug identification, improving diagnostic accuracy and efficiency.",
       "status": "Submitted",
-      "url": "https://papers.ssrn.com/abstract=5268317"
+      "url": ""
     },
     {
       "id": "pub-6",
