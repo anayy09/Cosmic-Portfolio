@@ -149,8 +149,9 @@ const PublicationStatus = styled.div`
   color: ${props => props.theme.colors.light};
   background-color: ${props => 
     props.status === 'Published' ? props.theme.colors.success : 
-    props.status === 'Under Review' ? props.theme.colors.info : 
-    props.status === 'Submitted' ? props.theme.colors.warning : 
+    props.status === 'Peer Review' ? props.theme.colors.info :
+    props.status === 'Presented' ? props.theme.colors.warning :
+    props.status === 'Submitted' ? props.theme.colors.info : 
     props.theme.colors.secondaryMuted
   };
 `;
