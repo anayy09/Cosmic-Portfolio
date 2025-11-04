@@ -49,16 +49,16 @@ const personalInfo = {
     {
       title: "Master's in CS",
       organization: "University of Florida",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C560BAQEEUHxMAR-Q6w/company-logo_200_200/company-logo_200_200/0/1671048448447/uflorida_logo?e=1756339200&v=beta&t=LnxhLkSFAxSbf2cL8OUONvq9GiZDQfXRsNWGHvduCQs",
+      logoUrl: "/logos/uf.png",
       description: "Final semester of Bachelor's transitioned into Master's.",
       startDate: "Jan 2025",
-      endDate: "May 2026",
-      skills: ["Adv Data Structures", "Software Engineering", "Networks"]
+      endDate: "Dec 2026",
+      skills: ["Adv Data Structures", "Networks", "Algorithms", "Distributed Systems", "Data Science"]
     },
     {
       title: "Semester Exchange",
       organization: "IIT Kanpur",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C510BAQEhNteRFbyBdQ/company-logo_200_200/company-logo_200_200/0/1630585318049/indian_institute_of_technology_kanpur_logo?e=1756339200&v=beta&t=nuRJutoIsSbJ8E43nIq53S6ziW6mKHl89-XqbMtL8Rs",
+      logoUrl: "/logos/iitk.png",
       description: "Sixth Semester of Bachelor's.",
       startDate: "Jan 2024",
       endDate: "May 2024",
@@ -67,7 +67,7 @@ const personalInfo = {
     {
       title: "Semester Exchange",
       organization: "IIT Gandhinagar",
-      logoUrl: "https://media.licdn.com/dms/image/v2/D4D0BAQEPsIf1VUt26g/company-logo_200_200/company-logo_200_200/0/1691123756514/indian_institute_of_technology_gandhinagar_iitgn__logo?e=1756339200&v=beta&t=4Xav9uFapfw9HyYN0E1GtycPuuEMOFI_iqwoZH9RXzw",
+      logoUrl: "/logos/iitgn.png",
       description: "Third Semester of Bachelor's.",
       startDate: "Aug 2022",
       endDate: "Dec 2022",
@@ -76,7 +76,7 @@ const personalInfo = {
     {
       title: "Bachelor's in CS",
       organization: "JK Lakshmipat University",
-      logoUrl: "https://media.licdn.com/dms/image/v2/D560BAQEhHegnOesEEA/company-logo_200_200/company-logo_200_200/0/1705928528681/jk_lakshmipat_university_jaipur_logo?e=1756339200&v=beta&t=CeS6Zl8k25onzXI9nKoH_g3h3pNvBQ5bbMZEy-KSj2E",
+      logoUrl: "/logos/jklu.png",
       description: "Bachelor's in Computer Science.",
       startDate: "Aug 2021",
       endDate: "May 2025",
@@ -87,9 +87,19 @@ const personalInfo = {
   // Experience
   experience: [
     {
+      title: "Graduate Research Assistant",
+      organization: "UF Intelligent Clinical Care Center (IC3)",
+      logoUrl: "/logos/ic3.png",
+      description: "Conducting research & development in health technologies.",
+      startDate: "Sep 2025",
+      endDate: "Dec 2026",
+      location: "Onsite",
+      skills: ["Data Analysis", "Full-Stack Development"]
+    },
+    {
       title: "Research Assistant",
       organization: "IIIT Delhi",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C560BAQG8G8yRaFuoBQ/company-logo_200_200/company-logo_200_200/0/1631351289400?e=1756339200&v=beta&t=sJFAXWVYj0rvZoYQU0znhid-xofyhqaSmZhLfMw6Mno",
+      logoUrl: "/logos/iiitd.png",
       description: "Optimized algorithms for medical image enhancement in SBI Lab.",
       startDate: "Sep 2024",
       endDate: "Oct 2024",
@@ -99,7 +109,7 @@ const personalInfo = {
     {
       title: "SDE Intern",
       organization: "GeeksforGeeks, Noida",
-      logoUrl: "https://media.licdn.com/dms/image/v2/D560BAQFEl-c-MprDFQ/company-logo_200_200/company-logo_200_200/0/1735198653833/geeksforgeeks_logo?e=1756339200&v=beta&t=D3zX_rVBhcGm_5vSiaC9f5T26rGipLc60kaDy-xcIf4",
+      logoUrl: "/logos/gfg.png",
       description: "Built and optimized interactive modules using Next.js and React.js.",
       startDate: "May 2024",
       endDate: "Sep 2024",
@@ -109,7 +119,7 @@ const personalInfo = {
     {
       title: "Research Intern",
       organization: "SVNIT, Surat",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C510BAQGKtwqfp5Ihhg/company-logo_200_200/company-logo_200_200/0/1630595735933/sardar_vallabhbhai_national_institute_of_technology_surat_logo?e=1756339200&v=beta&t=2gWngzbQqv9ozXOm8yGY1LN8KKitLdBtR9jeFKY8S5k",
+      logoUrl: "/logos/svnit.png",
       description: "Enhanced depression detection model with contrastive learning.",
       startDate: "May 2024",
       endDate: "Jul 2024",
@@ -119,7 +129,7 @@ const personalInfo = {
     {
       title: "Research Intern",
       organization: "IIT Jammu",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C4E0BAQH0K4yxRRPjOw/company-logo_200_200/company-logo_200_200/0/1630618807478/iitjammu_logo?e=1756339200&v=beta&t=cgdlpZy815BXR45t34S1Ys1HnDVAXQc8irm5xQJrunY",
+      logoUrl: "/logos/iitjmu.png",
       description: "Developed ML model for stress prediction using physiological data.",
       startDate: "Dec 2023",
       endDate: "Jan 2024",
@@ -129,7 +139,7 @@ const personalInfo = {
     {
       title: "SDE Intern",
       organization: "Dexpert Systems, Pune",
-      logoUrl: "https://media.licdn.com/dms/image/v2/C4E0BAQGHPdb0xLU41Q/company-logo_200_200/company-logo_200_200/0/1630635885096/wizmind_classes_logo?e=1756339200&v=beta&t=aKgOT-HqnKS9p31PJkLxnSDigvTANBwmsH_QD_z5QYc",
+      logoUrl: "/logos/dexpert.png",
       description: "Built ReactJS apps and integrated Zoho CRM with backend systems.",
       startDate: "Jun 2023",
       endDate: "Jul 2023",
