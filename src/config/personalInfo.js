@@ -254,63 +254,72 @@ const personalInfo = {
   publications: [
     {
       id: "pub-1",
-      title: "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
+      title: "Battery-Aware Super-Peer and Fountain Coding in Java P2P Systems",
       authors: [""],
-      journal: "2025 IEEE International Conference on Contemporary Computing and Communications",
-      year: "March 2025",
-      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, and F1-scores.",
-      status: "Presented",
-      url: "https://papers.ssrn.com/abstract=5268305"
+      journal: "Discover Internet of Things, Springer Nature",
+      year: "Nov 2025",
+      description: "Enhances BitTorrent with battery-aware super-peer selection and fountain coding for improved resilience in disaster scenarios.",
+      status: "Published",
+      url: "https://doi.org/10.1007/s43926-025-00240-3"
     },
     {
       id: "pub-2",
-      title: "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
+      title: "Optimizing Diagnostic Accuracy in Healthcare by Using Deep Learning",
       authors: [""],
-      journal: "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision",
-      year: "June 2025",
-      description: "Introduces a multimodal dataset and ensemble ML framework for stress monitoring, improving predictive accuracy and class balance.",
-      status: "Presented",
-      url: "https://papers.ssrn.com/abstract=5346661"
+      journal: "2025 IEEE 4th World Conference on Applied Intelligence and Computing (AIC)",
+      year: "Nov 2025",
+      description: "Presents an AI-powered system integrating deep learning and NLP for enhanced disease detection and medical report analysis.",
+      status: "Published",
+      url: "https://doi.org/10.1109/AIC66080.2025.11211920"
     },
     {
       id: "pub-3",
-      title: "Optimizing Diagnostic Accuracy in Healthcare by using Deep Learning",
+      title: "LoRA-Tuned Segment Anything Model for Few-Shot Polyp Segmentation in Colonoscopy Images",
       authors: [""],
-      journal: "4th 2025 IEEE World Conference on Applied Intelligence and Computing",
-      year: "July 2025",
-      description: "Presents an AI-powered system integrating deep learning and NLP for enhanced disease detection and medical report analysis.",
-      status: "Presented",
-      url: ""
+      journal: "Journal of Carcinogenesis",
+      year: "Sep 2025",
+      description: "Explores adapting SAM for polyp segmentation with minimal labeled samples, achieving high accuracy with few-shot learning.",
+      status: "Published",
+      url: "https://doi.org/10.64149/J.Carcinog.24.3.372-386"
     },
     {
       id: "pub-4",
-      title: "High-Performance and Quantum Computing in Cancer Modeling: A Review and Hybrid HPC-Quantum Approach",
+      title: "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
       authors: [""],
-      journal: "IEEE Journal of Biomedical and Health Informatics",
-      year: "July 2025",
-      description: "Surveys HPC and quantum computing in cancer modeling, proposing a hybrid approach to reduce simulation time while maintaining accuracy.",
-      status: "Submitted",
-      url: "https://www.researchsquare.com/article/rs-7151271/v1"
+      journal: "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision (Springer)",
+      year: "2025",
+      description: "Introduces a multimodal dataset and ensemble ML framework for stress monitoring, improving predictive accuracy and class balance.",
+      status: "Accepted",
+      url: ""
     },
     {
       id: "pub-5",
-      title: "LoRA-Tuned Segment Anything Model for Few-Shot Polyp Segmentation in Colonoscopy Images",
+      title: "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
       authors: [""],
-      journal: "BMC Medical Imaging",
-      year: "July 2025",
-      description: "Explores adapting SAM for polyp segmentation with minimal labeled samples, achieving high accuracy with few-shot learning.",
-      status: "Peer Review",
+      journal: "2025 IEEE International Conference on Contemporary Computing and Communications",
+      year: "2025",
+      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, and F1-scores.",
+      status: "Accepted",
       url: ""
+    }
+  ],
+
+  patents: [
+    {
+      id: "patent-1",
+      title: "A Method for Disaster-Resilient Digital File Dissemination via Fountain-Coded Broadcast with Super-Peer Election and Sparse Acknowledgement",
+      applicationNo: "202511063465",
+      country: "India",
+      date: "Jul 2025",
+      status: "Published"
     },
     {
-      id: "pub-6",
-      title: "Battery-Aware Super-Peer and Fountain Coding in Java P2P Systems",
-      authors: [""],
-      journal: "Discover Internet of Things",
-      year: "July 2025",
-      description: "Enhances BitTorrent with battery-aware super-peer selection and fountain coding for improved resilience in disaster scenarios.",
-      status: "Peer Review",
-      url: ""
+      id: "patent-2",
+      title: "A Stress Monitoring System Using Wearable Sensor Data Integrated with an Ensemble Machine-Learning Model",
+      applicationNo: "202511044124",
+      country: "India",
+      date: "May 2025",
+      status: "Published"
     }
   ],
 
