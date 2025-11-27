@@ -3,6 +3,7 @@ const personalInfo = {
   name: "Anay Sinhal",
   title: "Software & ML Developer",
   email: "sinhal.anay@ufl.edu",
+  mobile: "+1 (352) 219-5579",
 
   // Social Links
   github: "https://github.com/anayy09",
@@ -11,7 +12,7 @@ const personalInfo = {
   cv: "/cv",
 
   // About Me
-  description: "A passionate software and ML developer specializing in creating exceptional digital experiences. Currently focused on building accessible, human-centered products with cutting-edge technologies.",
+  description: "A passionate software & ML developer specializing in creating exceptional digital experiences. Currently focused on building accessible, human-centered products with cutting-edge technologies. Available for Summer 2026 internships (May to Aug 2026).",
 
   // Skills for typing animation
   skills: [
@@ -21,7 +22,7 @@ const personalInfo = {
     "Geography Nerd",
   ],
 
-  // Technologies and tools for dedicated Skills section
+  // Technologies & tools for dedicated Skills section
   techStack: [
     { name: "C", url: "https://en.wikipedia.org/wiki/C_(programming_language)" },
     { name: "C++", url: "https://isocpp.org" },
@@ -30,17 +31,27 @@ const personalInfo = {
     { name: "JavaScript", url: "https://developer.mozilla.org/docs/Web/JavaScript" },
     { name: "Golang", url: "https://go.dev" },
     { name: "TypeScript", url: "https://www.typescriptlang.org" },
+    { name: "Gleam", url: "https://gleam.run" },
     { name: "React.js", url: "https://react.dev" },
     { name: "Next.js", url: "https://nextjs.org" },
+    { name: "Node.js", url: "https://nodejs.org" },
     { name: "Django", url: "https://www.djangoproject.com" },
+    { name: "FastAPI", url: "https://fastapi.tiangolo.com" },
+    { name: "Spring Boot", url: "https://spring.io/projects/spring-boot" },
+    { name: "HTML/CSS", url: "https://developer.mozilla.org/docs/Web/HTML" },
     { name: "TensorFlow", url: "https://www.tensorflow.org" },
     { name: "Keras", url: "https://keras.io" },
     { name: "PyTorch", url: "https://pytorch.org" },
-    // { name: "Hugging Face", url: "https://huggingface.co" },
+    { name: "Hugging Face", url: "https://huggingface.co" },
+    { name: "PostgreSQL", url: "https://www.postgresql.org" },
+    { name: "MongoDB", url: "https://www.mongodb.com" },
+    { name: "Redis", url: "https://redis.io" },
     { name: "MySQL", url: "https://www.mysql.com" },
     { name: "Docker", url: "https://www.docker.com" },
-    { name: "Unreal Engine", url: "https://www.unrealengine.com" },
-    { name: "Blender", url: "https://www.blender.org" },
+    { name: "AWS", url: "https://aws.amazon.com" },
+    { name: "Git", url: "https://git-scm.com" },
+    { name: "Bash", url: "https://www.gnu.org/software/bash" },
+    { name: "Postman", url: "https://www.postman.com" },
     { name: "Figma", url: "https://www.figma.com" },
   ],
 
@@ -87,7 +98,7 @@ const personalInfo = {
   // Experience
   experience: [
     {
-      title: "Graduate Research Assistant",
+      title: "Graduate Student Assistant",
       organization: "UF Intelligent Clinical Care Center (IC3)",
       logoUrl: "/logos/ic3.png",
       description: "Conducting research & development in health technologies.",
@@ -110,7 +121,7 @@ const personalInfo = {
       title: "SDE Intern",
       organization: "GeeksforGeeks, Noida",
       logoUrl: "/logos/gfg.png",
-      description: "Built and optimized interactive modules using Next.js and React.js.",
+      description: "Built & optimized interactive modules using Next.js & React.js.",
       startDate: "May 2024",
       endDate: "Sep 2024",
       location: "Onsite",
@@ -140,7 +151,7 @@ const personalInfo = {
       title: "SDE Intern",
       organization: "Dexpert Systems, Pune",
       logoUrl: "/logos/dexpert.png",
-      description: "Built ReactJS apps and integrated Zoho CRM with backend systems.",
+      description: "Built ReactJS apps & integrated Zoho CRM with backend systems.",
       startDate: "Jun 2023",
       endDate: "Jul 2023",
       location: "Onsite",
@@ -150,126 +161,94 @@ const personalInfo = {
 
   customProjects: [
     {
-      id: "custom-1",
-      name: "Navigator AI Console",
-      description: "Next.js 14 + TypeScript web console unifying chat, embeddings, and Whisper STT across 12 LLM endpoints via LiteLLM gateway with ≤200ms median latency. PostgreSQL + Redis metering with NextAuth for quota management.",
-      url: "https://github.com/anayy09/navigator-ai-console",
-      homepage: "https://navigator-console.vercel.app/",
+      id: "medlyze",
+      name: "Medlyze: AI Powered Diagnostic Support Platform",
+      description: "Next.js 15 + PostgreSQL/Prisma web application with encrypted medical report intake using AES 256, regex-based de-identification, & role-based access. Features multimodal analysis across PDFs & images using LLM & vision models, with longitudinal biomarker tracking & risk scoring views.",
+      url: "https://github.com/anayy09/Medlyze",
+      homepage: "",
       language: "TypeScript",
-      topics: ["nextjs", "llm"],
+      topics: ["nextjs", "postgresql", "llm", "healthcare"],
       isManual: true,
-      imageUrl: "/projects/custom-1.png"
+      imageUrl: "/projects/medlyze.png"
     },
     {
-      id: "custom-2",
-      name: "P2P File Sharing System",
-      description: "Re-implemented BitTorrent protocol in Java 17 with novel Disaster Mode (fountain coding + super-peer election) sustaining >85% goodput on 40% loss testbed. Multi-threaded architecture 4× faster than baseline.",
-      url: "https://github.com/anayy09/P2PFileSharing",
-      homepage: "",
-      language: "Java",
-      topics: ["tcp", "networking"],
-      isManual: true,
-      imageUrl: "/projects/custom-2.png"
-    },
-    {
-      id: "custom-3",
-      name: "License Plate Management System",
-      description: "Custom Red-Black Tree implementation for registering, searching, and range-querying 100k plates in O(log n). 99th-percentile lookup = 0.4ms with dual-fee revenue model and CLI.",
-      url: "https://github.com/anayy09/License-Plate-Management-System",
-      homepage: "",
-      language: "Java",
-      topics: ["data-structures", "algorithms"],
-      isManual: true,
-      imageUrl: "/projects/custom-3.png"
-    },
-    {
-      id: "custom-4",
-      name: "Local News Analytics",
-      description: "End-to-end NLP pipeline (spaCy, BERTopic, BART) clustering ≥2k Seattle news items per day and flagging emergent events with F1 0.83. Flask + APScheduler dashboard with 6-hourly updates.",
-      url: "https://github.com/anayy09/Local-News-Analytics",
+      id: "ehr-timeline-triage",
+      name: "EHR Timeline Triage",
+      description: "Built a research prototype that converts longitudinal EHR events into 4 hour binned timelines & trains Logistic Regression, GRU, & Transformer models for 30 day readmission & 48 hour ICU mortality prediction with AUROC, AUPRC, Brier score, & calibration evaluation. Implemented a FastAPI inference service & Next.js dashboard for interactive risk visualization, with feature attribution based explanations & a synthetic EHR data generator to simulate hospital workloads.",
+      url: "https://github.com/anayy09/EHR-Timeline-Triage",
       homepage: "",
       language: "Python",
-      topics: ["nlp", "spacy", "bert"],
+      topics: ["python", "pytorch", "fastapi", "nextjs", "healthcare"],
       isManual: true,
-      imageUrl: "/projects/custom-4.png"
+      imageUrl: "/projects/ehr.png"
     },
     {
-      id: "custom-5",
-      name: "CampusCupid",
-      description: "Led 4-dev team building full-stack dating platform with Go/Gin backend, PostgreSQL, React frontend. Secure JWT auth, swipe-matching, Cloudinary image storage. CI/CD on Render with Cypress E2E testing.",
-      url: "https://github.com/anayy09/CampusCupid",
+      id: "radiology-copilot",
+      name: "Radiology Copilot",
+      description: "Developed a full stack radiology decision support app where clinicians can upload chest X rays, run a multimodal CLIP style model combining ViT image encoder & ClinicalBERT text encoder to classify 14 findings, & view Grad CAM saliency overlays with calibrated uncertainty. Orchestrated GPU backed ML microservice, Express API gateway, & PostgreSQL study store behind a Next.js dashboard with study lifecycle tracking, AI drafted radiology reports, & editing/export workflow.",
+      url: "https://github.com/anayy09/Radiology-Copilot",
       homepage: "",
-      language: "JavaScript",
-      topics: ["react", "go"],
+      language: "Python",
+      topics: ["pytorch", "monai", "fastapi", "nextjs", "healthcare"],
       isManual: true,
-      imageUrl: "/projects/custom-5.png"
+      imageUrl: "/projects/radiology.png"
     },
     {
-      id: "custom-6",
-      name: "FinMate - Finance Manager",
-      description: "Integrated Plaid API and ML (Random Forest prediction, Isolation Forest anomaly detection) in Django backend. React + Chakra UI dashboard with D3/Plotly visualizations and personalized budget alerts.",
+      id: "sepsis-sentinel",
+      name: "Sepsis Sentinel",
+      description: "Python-based sepsis detection system using XGBoost & LightGBM models trained on EHR data with AUROC 0.89. Includes FastAPI service & React dashboard for real-time risk scores & trends, enabling up to 4-hour earlier alerts in simulations.",
+      url: "https://github.com/anayy09/Sepsis-Sentinel",
+      homepage: "",
+      language: "Python",
+      topics: ["fastapi", "xgboost", "react", "healthcare"],
+      isManual: true,
+      imageUrl: "/projects/sepsis.png"
+    },
+    {
+      id: "finmate",
+      name: "FinMate - Personal Finance Manager",
+      description: "Django backend integrated with Plaid API, Random Forest forecasting, & Isolation Forest anomaly detection. React + Chakra UI dashboard with D3/Plotly interactive charts & personalized budget alerts via email & in-app notifications.",
       url: "https://github.com/anayy09/Finmate",
       homepage: "",
       language: "Python",
-      topics: ["django", "ml", "plaid"],
+      topics: ["django", "react", "ml", "finance"],
       isManual: true,
-      imageUrl: "/projects/custom-6.png"
+      imageUrl: "/projects/finmate.png"
     },
     {
-      id: "custom-7",
-      name: "Cosmic Portfolio",
-      description: "Stunning, interactive personal portfolio website built with React, Three.js, and modern web technologies. Features immersive 3D cosmic background, GitHub/Hashnode API integration, interactive world map, and responsive design with smooth animations.",
-      url: "https://github.com/anayy09/Cosmic-Portfolio",
-      homepage: "https://anaysinhal.vercel.app/",
-      language: "JavaScript",
-      topics: ["threejs", "framer-motion"],
-      isManual: true,
-      imageUrl: "/projects/custom-7.png"
-    },
-    {
-      id: "custom-8",
-      name: "AuroraPDF - PDF Toolkit",
-      description: "Comprehensive PDF manipulation tool built with React, TypeScript, and Bulma CSS. Features merge, split, compress, PDF-to-Word conversion, rotation, drag-and-drop interface, dark mode, and responsive design with real-time processing feedback.",
-      url: "https://github.com/anayy09/PDF-Studio",
-      homepage: "https://pdf-studio.vercel.app/",
-      language: "TypeScript",
-      topics: ["pdf-lib", "bulma"],
-      isManual: true,
-      imageUrl: "/projects/custom-8.png"
-    },
-    {
-      id: "custom-9",
-      name: "UniFlow - Campus App",
-      description: "Comprehensive React Native app for university life management. Features schedule management, task tracking with priority levels, Pomodoro timer with subject tracking, progress analytics, dark/light theme, and modern UI with smooth animations.",
-      url: "https://github.com/anayy09/UniFlow",
+      id: "local-news-analytics",
+      name: "Intelligent Local News Analytics Platform",
+      description: "End-to-end NLP pipeline using spaCy, BERTopic, & BART to cluster over 2k news items daily & flag emerging events with F1 score 0.83. Flask dashboard with scheduled updates for automated monitoring.",
+      url: "https://github.com/anayy09/Local-News-Analytics",
       homepage: "",
-      language: "TypeScript",
-      topics: ["react-native", "expo"],
+      language: "Python",
+      topics: ["nlp", "spacy", "flask", "bert"],
       isManual: true,
-      imageUrl: "/projects/custom-9.png"
-    },
-
+      imageUrl: "/projects/news.png"
+    }
   ],
 
   publications: [
     {
       id: "pub-1",
-      title: "Battery-Aware Super-Peer and Fountain Coding in Java P2P Systems",
+      title: "Battery-Aware Super-Peer & Fountain Coding in Java P2P Systems",
       authors: [""],
-      journal: "Discover Internet of Things, Springer Nature",
+      journal: "Discover Internet of Things",
       year: "Nov 2025",
-      description: "Enhances BitTorrent with battery-aware super-peer selection and fountain coding for improved resilience in disaster scenarios.",
+      description: "Enhances BitTorrent with battery-aware super-peer selection & fountain coding for improved resilience in disaster scenarios.",
       status: "Published",
+      type: "Journal",
       url: "https://doi.org/10.1007/s43926-025-00240-3"
     },
     {
       id: "pub-2",
       title: "Optimizing Diagnostic Accuracy in Healthcare by Using Deep Learning",
       authors: [""],
-      journal: "2025 IEEE 4th World Conference on Applied Intelligence and Computing (AIC)",
+      journal: "2025 IEEE 4th World Conference on Applied Intelligence & Computing",
       year: "Nov 2025",
-      description: "Presents an AI-powered system integrating deep learning and NLP for enhanced disease detection and medical report analysis.",
+      description: "Presents an AI-powered system integrating deep learning & NLP for enhanced disease detection & medical report analysis.",
       status: "Published",
+      type: "Conference",
       url: "https://doi.org/10.1109/AIC66080.2025.11211920"
     },
     {
@@ -280,26 +259,29 @@ const personalInfo = {
       year: "Sep 2025",
       description: "Explores adapting SAM for polyp segmentation with minimal labeled samples, achieving high accuracy with few-shot learning.",
       status: "Published",
+      type: "Journal",
       url: "https://doi.org/10.64149/J.Carcinog.24.3.372-386"
     },
     {
       id: "pub-4",
       title: "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
       authors: [""],
-      journal: "Fifth International Conference on Innovations in Computational Intelligence and Computer Vision (Springer)",
+      journal: "5th International Conference on Innovations in Computational Intelligence & Computer Vision",
       year: "2025",
-      description: "Introduces a multimodal dataset and ensemble ML framework for stress monitoring, improving predictive accuracy and class balance.",
+      description: "Introduces a multimodal dataset & ensemble ML framework for stress monitoring, improving predictive accuracy & class balance.",
       status: "Accepted",
+      type: "Conference",
       url: ""
     },
     {
       id: "pub-5",
-      title: "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
+      title: "Contrastive Learning & Large Language Models for Depression Detection from Social Media",
       authors: [""],
-      journal: "2025 IEEE International Conference on Contemporary Computing and Communications",
+      journal: "2025 IEEE International Conference on Contemporary Computing & Communications",
       year: "2025",
-      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, and F1-scores.",
+      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, & F1-scores.",
       status: "Accepted",
+      type: "Conference",
       url: ""
     }
   ],
@@ -307,7 +289,7 @@ const personalInfo = {
   patents: [
     {
       id: "patent-1",
-      title: "A Method for Disaster-Resilient Digital File Dissemination via Fountain-Coded Broadcast with Super-Peer Election and Sparse Acknowledgement",
+      title: "A Method for Disaster-Resilient Digital File Dissemination via Fountain-Coded Broadcast with Super-Peer Election & Sparse Acknowledgement",
       applicationNo: "202511063465",
       country: "India",
       date: "Jul 2025",
@@ -529,7 +511,7 @@ const personalInfo = {
   //     logoUrl: "https://media.licdn.com/dms/image/C560BAQEEUHxMAR-Q6w/company-logo_200_200/company-logo_200_200/0/1671048448447/uflorida_logo?e=1748476800&v=beta&t=MZi8yCl8FDB46p1bAGYTBLbsKFiUEQFYtZ7Ascyjabo", // Replace with actual or placeholder
   //     date: "Dec 2023",
   //     credentialUrl: "https://example.com/link-to-credential-1",
-  //     description: "Completed a rigorous program covering advanced neural network architectures and their applications in astrophysical data analysis."
+  //     description: "Completed a rigorous program covering advanced neural network architectures & their applications in astrophysical data analysis."
   //   },
   //   {
   //     id: "cert-2",
@@ -538,7 +520,7 @@ const personalInfo = {
   //     logoUrl: "https://media.licdn.com/dms/image/v2/C510BAQEhNteRFbyBdQ/company-logo_200_200/company-logo_200_200/0/1630585318049/indian_institute_of_technology_kanpur_logo?e=1748476800&v=beta&t=AO9ywbtnqOHJ4SWxW__d_c_NWKe76ySDE1zHx8zs2U0", // Replace with actual or placeholder
   //     date: "Jun 2024",
   //     credentialUrl: "https://example.com/link-to-credential-2",
-  //     description: "Gained foundational knowledge in quantum algorithms and their potential to revolutionize computational science."
+  //     description: "Gained foundational knowledge in quantum algorithms & their potential to revolutionize computational science."
   //   }
   // ],
 
