@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import theme from '../config/theme';
 
 const GlobalStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Yatra+One:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap');
   
   * {
     box-sizing: border-box;
@@ -16,10 +16,12 @@ const GlobalStyles = createGlobalStyle`
     color: ${theme.colors.light};
     overflow-x: hidden;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   body::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   
   body::-webkit-scrollbar-track {
@@ -27,23 +29,29 @@ const GlobalStyles = createGlobalStyle`
   }
   
   body::-webkit-scrollbar-thumb {
-    background-color: ${theme.colors.primary}CC; /* Adding translucency */
-    border-radius: 20px;
+    background-color: ${theme.colors.primaryMuted};
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: ${theme.colors.primary};
+    }
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: ${theme.fonts.heading};
-    font-weight: 600;
-    line-height: 1.2;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
   }
   
   a {
     color: ${theme.colors.primary};
     text-decoration: none;
-    transition: ${theme.transitions.standard};
+    transition: ${theme.transitions.fast};
     
     &:hover {
       color: ${theme.colors.accent};
+      opacity: 0.9;
     }
   }
   
@@ -54,9 +62,14 @@ const GlobalStyles = createGlobalStyle`
     outline: none;
   }
   
+  p {
+    line-height: 1.7;
+    color: ${theme.colors.light};
+  }
+  
   .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 0 ${theme.spacing.lg};
     
@@ -79,6 +92,11 @@ const GlobalStyles = createGlobalStyle`
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  ::selection {
+    background: ${theme.colors.primary};
+    color: ${theme.colors.light};
   }
 `;
 
