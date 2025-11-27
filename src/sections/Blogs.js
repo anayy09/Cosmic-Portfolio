@@ -14,7 +14,7 @@ const BlogsSection = styled.section`
 `;
 
 const SectionHeader = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto 3rem;
   display: flex;
   justify-content: space-between;
@@ -72,7 +72,7 @@ const ViewAllLink = styled(motion.a)`
 `;
 
 const BlogsGrid = styled(motion.div)`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -92,7 +92,7 @@ const FeaturedBlog = styled(motion.a)`
   backdrop-filter: blur(16px);
   border-radius: 20px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 2rem;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -125,7 +125,7 @@ const FeaturedBlog = styled(motion.a)`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-column: 1;
     grid-row: auto;
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 16px;
   }
 `;
@@ -154,19 +154,19 @@ const FeaturedTitle = styled.h3`
   font-weight: 600;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 `;
 
 const FeaturedExcerpt = styled.p`
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.7;
   color: ${props => props.theme.colors.muted};
   flex-grow: 1;
   margin: 0 0 1.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     -webkit-line-clamp: 3;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -178,7 +178,7 @@ const FeaturedMeta = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: ${props => props.theme.colors.muted};
 `;
 
@@ -188,7 +188,7 @@ const MetaItem = styled.span`
   gap: 0.4rem;
   
   svg {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: ${props => props.theme.colors.primaryMuted};
   }
 `;
@@ -215,7 +215,7 @@ const BlogCard = styled(motion.a)`
   backdrop-filter: blur(16px);
   border-radius: 16px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 1.25rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -229,7 +229,7 @@ const BlogCard = styled(motion.a)`
 `;
 
 const BlogTitle = styled.h4`
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: ${props => props.theme.colors.light};
   margin: 0 0 0.75rem;
   line-height: 1.4;
@@ -242,7 +242,7 @@ const BlogTitle = styled.h4`
 `;
 
 const BlogExcerpt = styled.p`
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: ${props => props.theme.colors.muted};
   flex-grow: 1;
@@ -262,7 +262,7 @@ const BlogMeta = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: ${props => props.theme.colors.muted};
 `;
 
@@ -272,7 +272,7 @@ const BlogDate = styled.span`
   gap: 0.35rem;
   
   svg {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: ${props => props.theme.colors.primaryMuted};
   }
 `;
@@ -285,7 +285,7 @@ const BlogReadMore = styled.span`
   gap: 0.3rem;
   
   svg {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     transition: transform 0.3s ease;
   }
   

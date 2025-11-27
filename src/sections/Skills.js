@@ -62,7 +62,7 @@ const SectionTitle = styled(motion.h2)`
 `;
 
 const SkillsContainer = styled(motion.div)`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -79,7 +79,7 @@ const SkillCategory = styled(motion.div)`
   backdrop-filter: blur(16px);
   border-radius: 20px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 1.75rem;
+  padding: 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
@@ -88,7 +88,7 @@ const SkillCategory = styled(motion.div)`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1.5rem;
+    padding: 1.75rem;
     border-radius: 16px;
   }
 `;
@@ -103,18 +103,18 @@ const CategoryHeader = styled.div`
 `;
 
 const CategoryIcon = styled.div`
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   background: ${props => props.gradient || props.theme.gradients.nebulaSubtle};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
 `;
 
 const CategoryTitle = styled.h3`
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: ${props => props.theme.colors.light};
   margin: 0;
   font-weight: 600;
@@ -131,7 +131,7 @@ const SkillItem = styled(motion.a)`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.85rem 0.5rem;
+  padding: 1rem 1rem;
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   border: 1px solid transparent;
@@ -147,7 +147,7 @@ const SkillItem = styled(motion.a)`
 `;
 
 const SkillIcon = styled.div`
-  font-size: 1.5rem;
+  font-size: 2.15rem;
   color: ${props => props.theme.colors.primaryMuted};
   transition: color 0.3s ease;
   
@@ -156,13 +156,13 @@ const SkillIcon = styled.div`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 `;
 
 const SkillName = styled.span`
   color: ${props => props.theme.colors.muted};
-  font-size: 0.7rem;
+  font-size: 1rem;
   text-align: center;
   line-height: 1.2;
   transition: color 0.3s ease;

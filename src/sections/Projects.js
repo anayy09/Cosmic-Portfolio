@@ -124,6 +124,7 @@ const ProjectCard = styled(motion.div)`
   }
   
   ${props => props.isFeatured && css`
+    position: relative;
     background: linear-gradient(135deg, 
       ${props.theme.colors.surface} 0%, 
       rgba(91, 141, 239, 0.08) 100%
@@ -136,7 +137,7 @@ const ProjectCard = styled(motion.div)`
 `;
 
 const ProjectImage = styled.div`
-  height: ${props => props.isFeatured ? '220px' : '140px'};
+  height: ${props => props.isFeatured ? '600px' : '250px'};
   background: linear-gradient(135deg, rgba(22, 30, 48, 0.8) 0%, rgba(15, 23, 41, 0.9) 100%);
   background-image: url(${props => props.imageUrl});
   background-size: cover;
@@ -147,7 +148,7 @@ const ProjectImage = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, ${props => props.theme.colors.surface});
+    background: linear-gradient(to bottom, transparent ${props => props.isFeatured ? '70%' : '50%'}, ${props => props.theme.colors.surface});
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -160,6 +161,15 @@ const ProjectContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  
+  ${props => props.isFeatured && css`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(15, 23, 41, 0.95) 0%, transparent 100%);
+    padding: 2rem;
+  `}
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     padding: 1rem;
@@ -175,7 +185,7 @@ const ProjectHeader = styled.div`
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: ${props => props.isFeatured ? '1.5rem' : '1.1rem'};
+  font-size: ${props => props.isFeatured ? '1.5rem' : '1.25rem'};
   color: ${props => props.theme.colors.light};
   line-height: 1.3;
   margin: 0;
@@ -213,7 +223,7 @@ const ProjectLink = styled.a`
 `;
 
 const ProjectDescription = styled.p`
-  font-size: ${props => props.isFeatured ? '0.95rem' : '0.85rem'};
+  font-size: ${props => props.isFeatured ? '1.25rem' : '1.1rem'};
   line-height: 1.65;
   color: ${props => props.theme.colors.muted};
   flex-grow: 1;
@@ -246,7 +256,7 @@ const ProjectTags = styled.div`
 `;
 
 const ProjectTag = styled.span`
-  font-size: 0.7rem;
+  font-size: 1rem;
   padding: 0.3rem 0.75rem;
   border-radius: 50px;
   background: rgba(91, 141, 239, 0.1);
@@ -259,7 +269,7 @@ const ProjectLanguage = styled.div`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: ${props => props.theme.colors.muted};
   
   &::before {

@@ -64,7 +64,7 @@ const TabButton = styled.button`
 `;
 
 const TimelineWrapper = styled(motion.div)`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr auto 1fr;

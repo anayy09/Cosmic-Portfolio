@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
-import { FaLink, FaFilePdf, FaBookOpen, FaScroll, FaGraduationCap } from 'react-icons/fa';
+import { FaLink, FaFilePdf, FaBookOpen, FaScroll, FaGraduationCap, FaUniversity, FaBook } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const PublicationsSection = styled.section`
@@ -81,18 +81,23 @@ const Tab = styled.button`
 `;
 
 const ContentContainer = styled(motion.div)`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 `;
 
 const PublicationsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
@@ -305,9 +310,14 @@ const PatentDetail = styled.span`
 `;
 
 const PatentsGrid = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 `;
 
 const EmptyState = styled.div`
@@ -320,6 +330,48 @@ const EmptyState = styled.div`
     margin-bottom: 1rem;
     opacity: 0.4;
   }
+`;
+
+const PublicationsSubSection = styled.div`
+  margin-bottom: 2.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const SubSectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+`;
+
+const SubSectionIcon = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #333 0%, #6e5494 100%)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+`;
+
+const SubSectionTitle = styled.h3`
+  font-size: 1.25rem;
+  color: ${props => props.theme.colors.light};
+  margin: 0;
+  font-weight: 600;
+`;
+
+const SubSectionCount = styled.span`
+  font-size: 1rem;
+  color: ${props => props.theme.colors.muted};
+  font-family: ${props => props.theme.fonts.code};
 `;
 
 const Publications = () => {
@@ -370,6 +422,10 @@ const Publications = () => {
 
   const hasPublications = publications && publications.length > 0;
   const hasPatents = patents && patents.length > 0;
+  
+  // Separate journals and conferences
+  const journals = publications?.filter(pub => pub.type === 'Journal') || [];
+  const conferences = publications?.filter(pub => pub.type === 'Conference') || [];
 
   if (!hasPublications && !hasPatents) {
     return (
@@ -419,45 +475,101 @@ const Publications = () => {
       <ContentContainer>
         <AnimatePresence mode="wait">
           {activeTab === 'publications' ? (
-            <PublicationsGrid
+            <motion.div
               key="publications"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
               exit={{ opacity: 0, y: -20 }}
             >
-              {publications?.map(pub => (
-                <PublicationCard key={pub.id || pub.title} variants={itemVariants} status={pub.status}>
-                  <PublicationHeader>
-                    <PublicationTitle>{pub.title}</PublicationTitle>
-                    <PublicationLinks>
-                      {pub.url && (
-                        <PublicationLink
-                          href={pub.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Read ${pub.title}`}
-                        >
-                          {pub.url.toLowerCase().includes('pdf') ? <FaFilePdf /> : <FaLink />}
-                        </PublicationLink>
-                      )}
-                    </PublicationLinks>
-                  </PublicationHeader>
+              {/* Journals Section */}
+              {journals.length > 0 && (
+                <PublicationsSubSection>
+                  <SubSectionHeader>
+                    <SubSectionIcon gradient="linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)">
+                      <FaBook />
+                    </SubSectionIcon>
+                    <SubSectionTitle>Journals</SubSectionTitle>
+                    <SubSectionCount>({journals.length})</SubSectionCount>
+                  </SubSectionHeader>
+                  <PublicationsGrid variants={containerVariants}>
+                    {journals.map(pub => (
+                      <PublicationCard key={pub.id || pub.title} variants={itemVariants} status={pub.status}>
+                        <PublicationHeader>
+                          <PublicationTitle>{pub.title}</PublicationTitle>
+                          <PublicationLinks>
+                            {pub.url && (
+                              <PublicationLink
+                                href={pub.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Read ${pub.title}`}
+                              >
+                                {pub.url.toLowerCase().includes('pdf') ? <FaFilePdf /> : <FaLink />}
+                              </PublicationLink>
+                            )}
+                          </PublicationLinks>
+                        </PublicationHeader>
 
-                  <PublicationMeta style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ width: '100%' }}>
-                      <PublicationJournal>{pub.journal}</PublicationJournal>
-                    </div>
-                    <div style={{ width: '100%', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                      <PublicationYear>{pub.year}</PublicationYear>
-                      <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>
-                    </div>
-                  </PublicationMeta>
+                        <PublicationMeta style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
+                          <div style={{ width: '100%' }}>
+                            <PublicationJournal>{pub.journal}</PublicationJournal>
+                          </div>
+                          <div style={{ width: '100%', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <PublicationYear>{pub.year}</PublicationYear>
+                            <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>
+                          </div>
+                        </PublicationMeta>
+                      </PublicationCard>
+                    ))}
+                  </PublicationsGrid>
+                </PublicationsSubSection>
+              )}
+              
+              {/* Conferences Section */}
+              {conferences.length > 0 && (
+                <PublicationsSubSection>
+                  <SubSectionHeader>
+                    <SubSectionIcon gradient="linear-gradient(135deg, #f97316 0%, #fb923c 100%)">
+                      <FaUniversity />
+                    </SubSectionIcon>
+                    <SubSectionTitle>Conferences</SubSectionTitle>
+                    <SubSectionCount>({conferences.length})</SubSectionCount>
+                  </SubSectionHeader>
+                  <PublicationsGrid variants={containerVariants}>
+                    {conferences.map(pub => (
+                      <PublicationCard key={pub.id || pub.title} variants={itemVariants} status={pub.status}>
+                        <PublicationHeader>
+                          <PublicationTitle>{pub.title}</PublicationTitle>
+                          <PublicationLinks>
+                            {pub.url && (
+                              <PublicationLink
+                                href={pub.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Read ${pub.title}`}
+                              >
+                                {pub.url.toLowerCase().includes('pdf') ? <FaFilePdf /> : <FaLink />}
+                              </PublicationLink>
+                            )}
+                          </PublicationLinks>
+                        </PublicationHeader>
 
-                  {/* {pub.description && <PublicationDescription>{pub.description}</PublicationDescription>} */}
-                </PublicationCard>
-              ))}
-            </PublicationsGrid>
+                        <PublicationMeta style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
+                          <div style={{ width: '100%' }}>
+                            <PublicationJournal>{pub.journal}</PublicationJournal>
+                          </div>
+                          <div style={{ width: '100%', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <PublicationYear>{pub.year}</PublicationYear>
+                            <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>
+                          </div>
+                        </PublicationMeta>
+                      </PublicationCard>
+                    ))}
+                  </PublicationsGrid>
+                </PublicationsSubSection>
+              )}
+            </motion.div>
           ) : (
             <PatentsGrid
               key="patents"

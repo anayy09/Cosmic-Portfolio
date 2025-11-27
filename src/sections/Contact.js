@@ -14,7 +14,7 @@ const ContactSection = styled.section`
 `;
 
 const ContactWrapper = styled.div`
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
 `;
 
@@ -66,23 +66,23 @@ const ContactInfoCard = styled(motion.div)`
   backdrop-filter: blur(16px);
   border-radius: 20px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 2rem;
+  padding: 2.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 16px;
   }
 `;
 
 const InfoHeading = styled.h3`
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: ${props => props.theme.colors.light};
   margin: 0 0 0.5rem;
   font-weight: 600;
 `;
 
 const InfoText = styled.p`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: ${props => props.theme.colors.muted};
   margin: 0 0 1.5rem;
   line-height: 1.6;
@@ -102,12 +102,12 @@ const ContactLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  padding: 0.85rem 1rem;
+  padding: 1rem 1.25rem;
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   border: 1px solid transparent;
   color: ${props => props.theme.colors.light};
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-decoration: none;
   transition: all 0.3s ease;
   
@@ -119,20 +119,20 @@ const ContactLink = styled.a`
 `;
 
 const LinkIcon = styled.div`
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: ${props => props.gradient || props.theme.gradients.nebulaSubtle};
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 `;
 
 const LinkText = styled.span`
   color: ${props => props.theme.colors.muted};
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 `;
 
 const ContactFormCard = styled(motion.div)`
@@ -140,7 +140,7 @@ const ContactFormCard = styled(motion.div)`
   backdrop-filter: blur(16px);
   border-radius: 20px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 2rem;
+  padding: 2.5rem;
   transition: all 0.4s ease;
   
   &:hover {
@@ -148,7 +148,7 @@ const ContactFormCard = styled(motion.div)`
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 16px;
   }
 `;
@@ -176,18 +176,18 @@ const FormGroup = styled.div`
 `;
 
 const FormLabel = styled.label`
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: ${props => props.theme.colors.muted};
   font-weight: 500;
 `;
 
 const FormInput = styled.input`
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.25rem;
   background: rgba(15, 23, 41, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
   color: ${props => props.theme.colors.light};
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.3s ease;
   
   &:focus {
@@ -203,12 +203,12 @@ const FormInput = styled.input`
 `;
 
 const FormTextarea = styled.textarea`
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.25rem;
   background: rgba(15, 23, 41, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
   color: ${props => props.theme.colors.light};
-  font-size: 0.9rem;
+  font-size: 1rem;
   min-height: 120px;
   resize: vertical;
   transition: all 0.3s ease;
@@ -231,12 +231,12 @@ const SubmitButton = styled(motion.button)`
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 0.9rem 1.75rem;
+  padding: 1rem 2rem;
   background: ${props => props.theme.gradients.nebula};
   color: white;
   border: none;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -265,7 +265,7 @@ const FormStatus = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   
   &.success {
     background: rgba(46, 213, 115, 0.12);
@@ -383,7 +383,7 @@ const Contact = ({ email, linkedin, github }) => {
             
             <ContactLinks>
               <ContactLink href={`mailto:${email}`}>
-                <LinkIcon gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <LinkIcon gradient="linear-gradient(135deg, #333 0%, #6e5494 100%)">
                   <FaEnvelope />
                 </LinkIcon>
                 <div>
@@ -393,7 +393,7 @@ const Contact = ({ email, linkedin, github }) => {
               </ContactLink>
               
               <ContactLink href={linkedin} target="_blank" rel="noopener noreferrer">
-                <LinkIcon gradient="linear-gradient(135deg, #0077B5 0%, #00a0dc 100%)">
+                <LinkIcon gradient="linear-gradient(135deg, #333 0%, #6e5494 100%)">
                   <FaLinkedin />
                 </LinkIcon>
                 <div>

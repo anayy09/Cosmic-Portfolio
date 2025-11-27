@@ -134,7 +134,7 @@ const StatIcon = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  background: ${props => props.theme.gradients.subtle};
+  background: linear-gradient(135deg, #333 0%, #6e5494 100%);
   display: flex;
   align-items: center;
   justify-content: center;
