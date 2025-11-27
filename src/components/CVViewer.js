@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiDownload, FiArrowLeft, FiZoomIn, FiZoomOut, FiMaximize } from 'react-icons/fi';
+import { FiArrowLeft, FiMaximize } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const CVContainer = styled.div`
@@ -150,13 +150,6 @@ const ControlButton = styled.button`
   }
 `;
 
-const ZoomLevel = styled.span`
-  color: ${props => props.theme.colors.light};
-  font-weight: 500;
-  min-width: 50px;
-  text-align: center;
-`;
-
 const PDFContainer = styled(motion.div)`
   position: relative;
   z-index: 5;
@@ -184,9 +177,6 @@ const PDFWrapper = styled.div`
   max-width: 100%;
   max-height: 100%;
   overflow: auto;
-  transform: scale(${props => props.zoom});
-  transition: transform 0.3s ease;
-  transform-origin: center center;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     padding: 0.5rem;
@@ -242,7 +232,6 @@ const LoadingSpinner = styled.div`
 `;
 
 const CVViewer = () => {
-  const [zoom, setZoom] = useState(1);
   const [fullscreen, setFullscreen] = useState(false);
   const [loading, setLoading] = useState(true);
   
@@ -300,7 +289,7 @@ const CVViewer = () => {
         </Header>
         
         <PDFContainer variants={itemVariants}>
-          <PDFWrapper zoom={zoom}>
+          <PDFWrapper>
             {loading && (
               <LoadingSpinner>
                 <div className="spinner"></div>

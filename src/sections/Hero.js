@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import TypedText from '../components/TypedText';
 import SocialLinks from '../components/SocialLinks';
-import { FaGraduationCap, FaBriefcase, FaFileAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaGraduationCap, FaBriefcase, FaFileAlt, FaCode } from 'react-icons/fa';
 
 const HeroContainer = styled.section`
   min-height: 100vh;
@@ -276,7 +276,7 @@ const Hero = ({ name, skills, description, github, linkedin, email, blog, cv }) 
     { icon: <FaGraduationCap />, value: "MS", label: "CS @ University of Florida" },
     { icon: <FaBriefcase />, value: "6+", label: "Internships" },
     { icon: <FaFileAlt />, value: "7", label: "Publications & Patents" },
-    { icon: <FaMapMarkerAlt />, value: "30+", label: "Places Visited" },
+    { icon: <FaCode />, value: "29", label: "Technologies" },
   ];
   
   return (

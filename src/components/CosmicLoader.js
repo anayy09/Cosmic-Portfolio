@@ -1,9 +1,28 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as THREE from 'three';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
+
+// Keyframe animations
+const twinkle = keyframes`
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+`;
+
+const float = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+`;
+
+const orbitPulse = keyframes`
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+`;
 
 // Container for the loader
 const LoaderContainer = styled(motion.div)`
@@ -12,33 +31,102 @@ const LoaderContainer = styled(motion.div)`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #0D0D12;
+  background: linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  overflow: hidden;
+`;
+
+// Floating stars background
+const StarsContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const Star = styled.div`
+  position: absolute;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  background: radial-gradient(circle, rgba(232, 236, 244, 0.9) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: ${twinkle} ${props => props.duration}s ease-in-out infinite;
+  animation-delay: ${props => props.delay}s;
+  left: ${props => props.left}%;
+  top: ${props => props.top}%;
+`;
+
+// Central cosmic orb
+const OrbContainer = styled(motion.div)`
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ${float} 4s ease-in-out infinite;
+`;
+
+const CosmicOrb = styled(motion.div)`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(201, 160, 220, 0.4) 0%,
+    rgba(123, 104, 182, 0.3) 40%,
+    rgba(91, 141, 239, 0.2) 70%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 40px rgba(91, 141, 239, 0.3),
+    0 0 80px rgba(123, 104, 182, 0.2),
+    inset 0 0 30px rgba(201, 160, 220, 0.1);
+  animation: ${orbitPulse} 3s ease-in-out infinite;
+`;
+
+// Orbiting rings
+const OrbitRing = styled(motion.div)`
+  position: absolute;
+  border: 1px solid rgba(91, 141, 239, ${props => props.opacity || 0.2});
+  border-radius: 50%;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+`;
+
+// Small orbiting dot
+const OrbitDot = styled(motion.div)`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: ${props => props.color || 'rgba(201, 160, 220, 0.8)'};
+  border-radius: 50%;
+  box-shadow: 0 0 10px ${props => props.color || 'rgba(201, 160, 220, 0.5)'};
 `;
 
 const LoadingText = styled(motion.div)`
   color: #E8ECF4;
-  font-family: ${props => props.theme.fonts.main};
-  font-size: clamp(0.9rem, 1.8vw, 1.25rem);
-  font-weight: 400;
-  letter-spacing: 0.15em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 300;
+  letter-spacing: 0.25em;
   text-transform: lowercase;
   opacity: 0.7;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 `;
 
 const ProgressContainer = styled(motion.div)`
-  margin-top: 1.25rem;
-  width: 100px;
-  height: 1px;
-  background: rgba(232, 236, 244, 0.08);
+  margin-top: 1.5rem;
+  width: 120px;
+  height: 2px;
+  background: rgba(91, 141, 239, 0.1);
   overflow: hidden;
   position: relative;
-  border-radius: 1px;
+  border-radius: 2px;
 `;
 
 const ProgressBar = styled(motion.div)`
@@ -46,135 +134,48 @@ const ProgressBar = styled(motion.div)`
   top: 0;
   left: 0;
   height: 100%;
-  background: rgba(232, 236, 244, 0.5);
-  border-radius: 1px;
+  background: linear-gradient(90deg, 
+    rgba(91, 141, 239, 0.6) 0%, 
+    rgba(123, 104, 182, 0.7) 50%,
+    rgba(201, 160, 220, 0.8) 100%
+  );
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(91, 141, 239, 0.3);
 `;
 
-// Gentle floating stars
-const GentleStars = ({ count = 100 }) => {
-  const points = React.useRef();
-
-  // Generate random stars
-  const particlePositions = React.useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const scales = new Float32Array(count);
-
-    for (let i = 0; i < count; i++) {
-      const distance = 5 + Math.random() * 15;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      // Convert spherical to cartesian coordinates
-      positions[i * 3] = distance * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = distance * Math.sin(phi) * Math.sin(theta);
-      positions[i * 3 + 2] = distance * Math.cos(phi);
-
-      // Random sizes for the stars
-      scales[i] = Math.random() * 0.5 + 0.1;
-    }
-
-    return { positions, scales };
-  }, [count]);
-
-  useFrame(({ clock }) => {
-    if (points.current) {
-      points.current.rotation.y = clock.getElapsedTime() * 0.02;
-    }
-  });
-
-  return (
-    <points ref={points}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={particlePositions.positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          count={count}
-          array={particlePositions.scales}
-          itemSize={1}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.08}
-        color="#E8ECF4"
-        transparent
-        opacity={0.6}
-        sizeAttenuation={true}
-        alphaTest={0.001}
-        depthWrite={false}
-      />
-    </points>
-  );
+// Generate random stars
+const generateStars = (count) => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 2 + 1,
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    duration: Math.random() * 3 + 2,
+    delay: Math.random() * 3,
+  }));
 };
 
-// Moon globe component rendered with lunar texture
-const Moon = () => {
-    const mesh = React.useRef();
-    const texture = useLoader(THREE.TextureLoader, '/textures/2k_moon.jpg');
-
-    useFrame(({ clock }) => {
-      if (mesh.current) {
-        mesh.current.rotation.y = clock.getElapsedTime() * 0.04;
-      }
-    });
-
-    return (
-      <mesh ref={mesh}>
-        <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial map={texture} metalness={0.1} roughness={0.8} />
-      </mesh>
-    );
-  };
-  
-
-// Gentle star field
-const StarField = () => {
-  return (
-    <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 5, 10]} intensity={0.6} />
-      <Moon />
-      <GentleStars count={150} />
-
-      <EffectComposer>
-        <Bloom
-          intensity={0.35}
-          luminanceThreshold={0.2}
-          luminanceSmoothing={0.95}
-          radius={0.5}
-        />
-      </EffectComposer>
-    </>
-  );
-};
+const stars = generateStars(50);
 
 const CosmicLoader = ({ finishLoading }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Faster loading progress
     const interval = setInterval(() => {
       setProgress(prevProgress => {
-        const newProgress = prevProgress + Math.random() * 5;
+        const newProgress = prevProgress + Math.random() * 4 + 1;
 
         if (newProgress >= 100) {
           clearInterval(interval);
-
-          // Shorter delay after reaching 100%
           setTimeout(() => {
             finishLoading();
-          }, 300);
-
+          }, 400);
           return 100;
         }
 
         return newProgress;
       });
-    }, 40);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [finishLoading]);
@@ -182,9 +183,10 @@ const CosmicLoader = ({ finishLoading }) => {
   const containerVariants = {
     exit: {
       opacity: 0,
+      scale: 1.05,
       transition: {
-        duration: 0.8,
-        ease: 'easeInOut'
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
       }
     }
   };
@@ -192,14 +194,68 @@ const CosmicLoader = ({ finishLoading }) => {
   return (
     <AnimatePresence mode="wait">
       <LoaderContainer key="loader" variants={containerVariants} exit="exit">
-        <Canvas
-          camera={{ position: [0, 0, 12], fov: 45 }}
-          dpr={[1, 2]}
-          style={{ width: '100%', height: '100%', position: 'absolute' }}
-        >
-          <StarField />
-        </Canvas>
+        {/* Background stars */}
+        <StarsContainer>
+          {stars.map(star => (
+            <Star
+              key={star.id}
+              size={star.size}
+              left={star.left}
+              top={star.top}
+              duration={star.duration}
+              delay={star.delay}
+            />
+          ))}
+        </StarsContainer>
 
+        {/* Central cosmic orb with orbiting elements */}
+        <OrbContainer
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          {/* Orbiting rings */}
+          <OrbitRing 
+            size={90} 
+            opacity={0.15}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          />
+          <OrbitRing 
+            size={110} 
+            opacity={0.1}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          />
+          
+          {/* Orbiting dots */}
+          <motion.div
+            style={{ position: 'absolute', width: 90, height: 90 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+          >
+            <OrbitDot 
+              color="rgba(91, 141, 239, 0.9)"
+              style={{ top: 0, left: '50%', transform: 'translateX(-50%)' }}
+            />
+          </motion.div>
+          
+          <motion.div
+            style={{ position: 'absolute', width: 110, height: 110 }}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+          >
+            <OrbitDot 
+              color="rgba(201, 160, 220, 0.9)"
+              style={{ top: 0, left: '50%', transform: 'translateX(-50%)' }}
+            />
+          </motion.div>
+
+          {/* Central orb */}
+          <CosmicOrb />
+        </OrbContainer>
+
+        {/* Text and progress */}
         <motion.div
           style={{
             position: 'relative',
@@ -208,10 +264,11 @@ const CosmicLoader = ({ finishLoading }) => {
             flexDirection: 'column',
             alignItems: 'center'
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { delay: 0.4, duration: 1 } }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <LoadingText>welcome</LoadingText>
+          <LoadingText>exploring the cosmos</LoadingText>
 
           <ProgressContainer>
             <ProgressBar
@@ -219,8 +276,8 @@ const CosmicLoader = ({ finishLoading }) => {
               animate={{
                 width: `${progress}%`,
                 transition: {
-                  duration: 0.1,
-                  ease: 'linear'
+                  duration: 0.15,
+                  ease: 'easeOut'
                 }
               }}
             />

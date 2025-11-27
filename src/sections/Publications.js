@@ -223,23 +223,6 @@ const PublicationStatus = styled.span`
   letter-spacing: 0.03em;
 `;
 
-const PublicationDescription = styled.p`
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: ${props => props.theme.colors.muted};
-  margin: 0;
-  flex-grow: 1;
-  
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    display: none;
-  }
-`;
-
 // Patent specific styles
 const PatentCard = styled(motion.div)`
   background: ${props => props.theme.colors.surface};

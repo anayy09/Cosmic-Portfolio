@@ -1,13 +1,10 @@
 // src/components/CosmicBackground.js
-import React, { useRef, useMemo, useEffect, useState, Suspense } from 'react';
+import React, { useRef, useMemo, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { Stars } from '@react-three/drei'; // Added Stars from drei
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import styled from 'styled-components';
-
-// Helper for random numbers in a range
-const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
 // Data for constellations
 const constellationsData = [
@@ -187,7 +184,7 @@ const ShootingStars = () => {
           for (let i = 0; i < points.length; i++) {
             const i3 = i * 3;
             // Head of the trail is brighter
-            const alpha = 1 - i / points.length;
+            const _alpha = 1 - i / points.length; // eslint-disable-line no-unused-vars
             colors[i3] = 1;     // R
             colors[i3 + 1] = 1; // G
             colors[i3 + 2] = 1; // B
