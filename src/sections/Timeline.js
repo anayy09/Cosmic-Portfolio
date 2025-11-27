@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
+import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 
 const TimelineSection = styled.section`
   padding: 6rem 2rem;
@@ -8,269 +9,364 @@ const TimelineSection = styled.section`
   overflow: hidden;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 2rem 2rem;
+    padding: 3rem 1.5rem;
   }
 `;
 
-const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 5vw, 3.5rem);
+const SectionHeader = styled.div`
+  max-width: 1000px;
+  margin: 0 auto 3rem;
   text-align: center;
-  margin-bottom: 4rem;
+`;
+
+const SectionLabel = styled(motion.span)`
+  font-family: ${props => props.theme.fonts.code};
+  color: ${props => props.theme.colors.primary};
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(2rem, 4vw, 3rem);
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0 0 1.5rem 0;
 `;
 
-const TimelineContainer = styled.div`
+const TabsWrapper = styled(motion.div)`
+  display: inline-flex;
+  gap: 0.5rem;
+  background: ${props => props.theme.colors.surface};
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid ${props => props.theme.colors.border};
+`;
+
+const TabButton = styled.button`
+  padding: 0.6rem 1.25rem;
+  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.muted};
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background: ${props => props.active ? props.theme.colors.primary : 'rgba(91, 141, 239, 0.1)'};
+    color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.light};
+  }
+`;
+
+const TimelineWrapper = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
   
-  &::before {
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: auto 1fr;
+  }
+`;
+
+/* Center spine */
+const TimelineSpine = styled.div`
+  position: relative;
+  width: 5px;
+  background: linear-gradient(
+    180deg,
+    ${props => props.theme.colors.primary}50 0%,
+    ${props => props.theme.colors.secondary}50 100%
+  );
+  border-radius: 3px;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    width: 2px;
+    margin: 0 1rem;
+  }
+`;
+
+/* Timeline entries container */
+const EntriesLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const EntriesRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding-left: 0;
+  }
+`;
+
+/* Individual entry */
+const TimelineEntry = styled(motion.div)`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const EntryConnector = styled.div`
+  position: absolute;
+  width: 2rem;
+  height: 2px;
+  background: ${props => props.$type === 'experience' 
+    ? 'rgba(91, 141, 239, 0.4)' 
+    : 'rgba(139, 92, 246, 0.4)'};
+  top: 1.5rem;
+  ${props => props.$side === 'left' ? 'right: -2rem;' : 'left: -2rem;'}
+  
+  &::after {
     content: '';
     position: absolute;
-    width: 6px;
-    background: ${props => props.theme.gradients.nebula};
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(66, 133, 244, 0.5);
+    ${props => props.$side === 'left' ? 'right: -12px;' : 'left: -12px;'}
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: ${props => props.$active 
+      ? (props.$type === 'experience' ? props.theme.colors.primary : props.theme.colors.secondary)
+      : props.theme.colors.surface};
+    border: 3px solid ${props => props.$active 
+      ? (props.$type === 'experience' ? props.theme.colors.primary : props.theme.colors.secondary)
+      : (props.$type === 'experience' ? 'rgba(91, 141, 239, 0.5)' : 'rgba(139, 92, 246, 0.5)')};
+    transition: all 0.3s ease;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    left: -1rem;
+    right: auto;
+    width: 1rem;
     
-    @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-      left: 30px;
+    &::after {
+      left: -6px;
+      right: auto;
     }
   }
 `;
 
-const TimelineItem = styled(motion.div)`
-  padding: 1rem 0;
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: ${props => props.position === 'left' ? 'flex-start' : 'flex-end'};
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    justify-content: flex-start;
-    padding-left: 60px;
-  }
-`;
-
-const TimelineContent = styled(motion.div)`
-  width: 45%;
-  padding: 1.5rem;
-  background: rgba(10, 25, 47, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: 1px solid rgba(66, 133, 244, 0.3);
-  box-shadow: ${props => props.theme.shadows.medium};
-  position: relative;
-  
+const EntryCard = styled(motion.div)`
+  background: ${props => props.$active 
+    ? props.theme.colors.surface 
+    : 'rgba(255, 255, 255, 0.02)'};
+  border: 1px solid ${props => props.$active 
+    ? (props.$type === 'experience' ? 'rgba(91, 141, 239, 0.4)' : 'rgba(139, 92, 246, 0.4)')
+    : props.theme.colors.border};
+  border-radius: 16px;
+  padding: ${props => props.$active ? '1.25rem' : '1rem'};
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: ${props => props.$active ? 'blur(16px)' : 'none'};
+  border-left: 3px solid ${props => props.$type === 'experience' 
+    ? 'rgba(91, 141, 239, 0.6)' 
+    : 'rgba(139, 92, 246, 0.6)'};
   
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 20px rgba(66, 133, 244, 0.5);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    width: 100%;
-    padding: 0.75rem;
-  }
-`;
-
-const TimelineDot = styled(motion.div)`
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: ${props => props.theme.colors.primary};
-  left: 49%;
-  top: 46%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  box-shadow: 0 0 10px ${props => props.theme.colors.primary};
-  
-  &::before {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: ${props => props.theme.colors.dark};
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    left: 5%;
+    background: ${props => props.theme.colors.surface};
+    border-color: ${props => props.$type === 'experience' 
+      ? 'rgba(91, 141, 239, 0.3)' 
+      : 'rgba(139, 92, 246, 0.3)'};
+    border-left-color: ${props => props.$type === 'experience' 
+      ? props.theme.colors.primary 
+      : props.theme.colors.secondary};
+    transform: translateY(-2px);
   }
 `;
 
-const TimelineDate = styled.div`
-  position: absolute;
-  top: -26px;
-  ${props => props.position === 'left' ? 'right: 0;' : 'left: 0;'}
-  font-family: ${props => props.theme.fonts.code};
-  color: ${props => props.theme.colors.primary};
-  font-size: 0.9rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    left: 0;
-    right: auto;
-    font-size: 0.8rem; // Smaller font size for mobile
-  }
-`;
-
-const TimelineHeader = styled.div`
+const EntryHeader = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: 0.5rem; // Smaller margin for mobile
-  }
+  gap: 0.75rem;
 `;
 
-const LogoContainer = styled.div`
-  width: 55px;
-  height: 55px;
-  border-radius: 32px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.1);
+const EntryIcon = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: ${props => props.$type === 'experience' 
+    ? 'rgba(91, 141, 239, 0.15)' 
+    : 'rgba(139, 92, 246, 0.15)'};
+  border: 1px solid ${props => props.$type === 'experience' 
+    ? 'rgba(91, 141, 239, 0.25)' 
+    : 'rgba(139, 92, 246, 0.25)'};
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  
+  svg {
+    font-size: 1.2rem;
+    color: ${props => props.$type === 'experience' 
+      ? props.theme.colors.primary 
+      : props.theme.colors.secondary};
+  }
+`;
+
+const TypeLabel = styled.span`
+  font-size: 0.65rem;
+  font-family: ${props => props.theme.fonts.code};
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: ${props => props.$type === 'experience' 
+    ? 'rgba(91, 141, 239, 0.12)' 
+    : 'rgba(139, 92, 246, 0.12)'};
+  color: ${props => props.$type === 'experience' 
+    ? props.theme.colors.primary 
+    : props.theme.colors.secondary};
+  margin-left: auto;
+`;
+
+const EntryMeta = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const EntryTitle = styled.h3`
+  font-size: ${props => props.$active ? '1.5rem' : '1.25rem'};
+  color: ${props => props.theme.colors.light};
+  margin: 0;
+  font-weight: 600;
+  white-space: ${props => props.$active ? 'normal' : 'nowrap'};
+  overflow: ${props => props.$active ? 'visible' : 'hidden'};
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+`;
+
+const EntryOrg = styled.p`
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: ${props => props.theme.colors.primaryMuted};
+  margin: 0.15rem 0 0 0;
+`;
+
+const EntryDate = styled.span`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 1rem;
+  color: ${props => props.theme.colors.muted};
+  white-space: nowrap;
+`;
+
+const EntryHeaderRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+`;
+
+/* Expanded content */
+const ExpandedContent = styled(motion.div)`
+  overflow: hidden;
+`;
+
+const ExpandedInner = styled.div`
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 1rem;
+`;
+
+const LogoRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+`;
+
+const LogoContainer = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
-    transform: scale(1.1);
   }
 `;
 
-const TitleContainer = styled.div`
-  flex-grow: 1;
-`;
-
-const TimelineTitle = styled.h3`
-  font-size: 1.5rem;
-  margin: 0 0 0.3rem 0;
-  color: ${props => props.theme.colors.light};
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem; // Smaller font size for mobile
-  }
-`;
-
-const TimelineSubtitle = styled.h4`
-  font-size: 1.1rem;
-  margin: 0;
-  color: ${props => props.theme.colors.primary};
-  font-weight: 500;
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.9rem; // Smaller font size for mobile
-  }
-`;
-
-const TimelineDescription = styled.p`
-  font-size: 1rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.8rem;
-    margin-bottom: 0;
-  }
-`;
-
-const TimelineTags = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: none; // Hide on mobile
-  }
-`;
-
-const TimelineTag = styled.span`
-  font-size: 0.8rem;
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  background: rgba(66, 133, 244, 0.2);
-  color: ${props => props.theme.colors.primary};
-  font-family: ${props => props.theme.fonts.code};
-`;
-
-const TimelineToggle = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-`;
-
-const ToggleButton = styled.button`
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.light};
-  border: 1px solid ${props => props.theme.colors.primary};
-  padding: 0.5rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:first-child {
-    border-radius: 5px 0 0 5px;
-  }
-  
-  &:last-child {
-    border-radius: 0 5px 5px 0;
-  }
-  
-  &:hover {
-    background: ${props => props.active ? props.theme.colors.primary : 'rgba(66, 133, 244, 0.1)'};
-  }
-`;
-
-// Fallback logo component for when a logo URL is not provided
 const FallbackLogo = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.theme.gradients.nebula};
+  background: ${props => props.theme.gradients.nebulaSubtle};
   color: ${props => props.theme.colors.light};
   font-weight: 600;
-  font-size: 1.2rem;
-  
-  &::after {
-    content: '${props => props.initials || "?"}';
-  }
+  font-size: 1rem;
+`;
 
+const FullDate = styled.div`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.85rem;
+  color: ${props => props.theme.colors.muted};
+`;
+
+const EntryDescription = styled.p`
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: ${props => props.theme.colors.muted};
+  margin: 0;
+`;
+
+const SkillTags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+`;
+
+const SkillTag = styled.span`
+  font-size: 0.65rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(91, 141, 239, 0.1);
+  color: ${props => props.theme.colors.primaryMuted};
+  font-family: ${props => props.theme.fonts.code};
+  border: 1px solid rgba(91, 141, 239, 0.15);
+`;
+
+/* Mobile only - single column */
+const MobileEntries = styled.div`
+  display: none;
+  
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem; // Smaller font size for mobile
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 `;
 
-// New component to handle logo display and fallback
 const LogoDisplay = ({ logoUrl, organizationName, getInitials }) => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    setHasError(false); // Reset error state if logoUrl changes
+    setHasError(false);
   }, [logoUrl]);
 
   if (logoUrl && !hasError) {
@@ -279,37 +375,27 @@ const LogoDisplay = ({ logoUrl, organizationName, getInitials }) => {
         src={logoUrl}
         alt={`${organizationName} logo`}
         onError={() => setHasError(true)}
-        // Styles for img are handled by LogoContainer's styled-component rules
       />
     );
   }
-  return <FallbackLogo initials={getInitials(organizationName)} />;
+  return <FallbackLogo>{getInitials(organizationName)}</FallbackLogo>;
 };
 
 const Timeline = ({ education, experience }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [timelineItems, setTimelineItems] = useState([]);
-  const sectionControls = useAnimation(); // For the SectionTitle
+  const [expandedId, setExpandedId] = useState(null);
+  const sectionControls = useAnimation();
   const ref = useRef(null);
-  // Ensure useInView triggers every time, not just once, if section scrolls out and back in.
-  const inView = useInView(ref, { once: false, threshold: 0.2 });
-
-  // State to control the TimelineContainer's animation target
-  const [containerAnimateState, setContainerAnimateState] = useState("hidden");
+  const inView = useInView(ref, { once: false, threshold: 0.1 });
 
   useEffect(() => {
     if (inView) {
       sectionControls.start('visible');
-      setContainerAnimateState("visible");
-    } else {
-      // If you want the title to hide when out of view too:
-      // sectionControls.start('hidden');
-      setContainerAnimateState("hidden");
     }
   }, [sectionControls, inView]);
   
   useEffect(() => {
-    // Combine and sort education and experience by date
     let items = [];
     
     if (activeTab === 'all' || activeTab === 'education') {
@@ -327,21 +413,9 @@ const Timeline = ({ education, experience }) => {
     });
     
     setTimelineItems(items);
-
-    // When activeTab changes, force re-animation of the container if it's in view.
-    // The TimelineContainer will re-mount due to its key={activeTab} prop.
-    // This sequence ensures its animate prop changes, triggering the animation.
-    if (inView) {
-      setContainerAnimateState("hidden"); // Set to hidden first
-      requestAnimationFrame(() => { // Then set to visible in the next frame
-        setContainerAnimateState("visible");
-      });
-    }
-    // If not inView, containerAnimateState is already "hidden" from the other effect,
-    // so the new instance will mount hidden and animate in when scrolled into view.
-  }, [activeTab, education, experience, inView]); // inView dependency is important here
+    setExpandedId(null);
+  }, [activeTab, education, experience]);
   
-  // Get organization initials for fallback logo
   const getInitials = (name) => {
     return name
       .split(' ')
@@ -350,130 +424,174 @@ const Timeline = ({ education, experience }) => {
       .substring(0, 2)
       .toUpperCase();
   };
+
+  const getShortDate = (startDate, endDate) => {
+    const end = endDate || 'Present';
+    const startYear = startDate?.split(' ').pop() || '';
+    const endYear = end === 'Present' ? 'Now' : end.split(' ').pop();
+    return `${startYear} - ${endYear}`;
+  };
+
+  const toggleExpand = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
   
-  const titleVariants = {
-    hidden: { opacity: 0, y: -50 },
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
   
-  const containerVariants = {
+  const wrapperVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-        // delayChildren: 0.3, // Removed for more instant re-animation
-      }
+      transition: { staggerChildren: 0.08, delayChildren: 0.2 }
     }
   };
-  
-  const itemVariants = {
+
+  const entryVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
+    visible: { 
+      opacity: 1, 
       y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
+      transition: { type: "spring", stiffness: 100, damping: 15 }
     }
   };
-  
-  const dotVariants = {
-    hidden: { scale: 0 },
-    visible: {
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 15
-      }
-    }
+
+  // Split items for left and right columns (desktop)
+  const leftItems = timelineItems.filter((_, i) => i % 2 === 0);
+  const rightItems = timelineItems.filter((_, i) => i % 2 === 1);
+
+  const renderEntry = (item, side = 'right') => {
+    const id = `${item.type}-${item.organization}-${item.title}`;
+    const isExpanded = expandedId === id;
+    
+    return (
+      <TimelineEntry key={id} variants={entryVariants}>
+        <EntryConnector $side={side} $active={isExpanded} $type={item.type} />
+        <EntryCard 
+          $active={isExpanded}
+          $type={item.type}
+          onClick={() => toggleExpand(id)}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+        >
+          <EntryHeader>
+            <EntryIcon $type={item.type}>
+              {item.type === 'experience' ? <FaBriefcase /> : <FaGraduationCap />}
+            </EntryIcon>
+            <EntryMeta>
+              <EntryTitle $active={isExpanded}>{item.title}</EntryTitle>
+              <EntryOrg>{item.organization}</EntryOrg>
+            </EntryMeta>
+            <EntryHeaderRight>
+              <TypeLabel $type={item.type}>
+                {item.type === 'experience' ? 'Work' : 'Study'}
+              </TypeLabel>
+              <EntryDate>{getShortDate(item.startDate, item.endDate)}</EntryDate>
+            </EntryHeaderRight>
+          </EntryHeader>
+          
+          <AnimatePresence>
+            {isExpanded && (
+              <ExpandedContent
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                <ExpandedInner>
+                  <LogoRow>
+                    <LogoContainer>
+                      <LogoDisplay
+                        logoUrl={item.logoUrl}
+                        organizationName={item.organization}
+                        getInitials={getInitials}
+                      />
+                    </LogoContainer>
+                    <FullDate>{item.startDate} — {item.endDate || 'Present'}</FullDate>
+                  </LogoRow>
+                  
+                  <EntryDescription>{item.description}</EntryDescription>
+                  
+                  {item.skills && item.skills.length > 0 && (
+                    <SkillTags>
+                      {item.skills.map((skill, i) => (
+                        <SkillTag key={i}>{skill}</SkillTag>
+                      ))}
+                    </SkillTags>
+                  )}
+                </ExpandedInner>
+              </ExpandedContent>
+            )}
+          </AnimatePresence>
+        </EntryCard>
+      </TimelineEntry>
+    );
   };
   
   return (
     <TimelineSection id="timeline" ref={ref}>
-      <SectionTitle
-        variants={titleVariants}
-        initial="hidden"
-        animate={sectionControls} // Use sectionControls for the title
-      >
-        Timeline
-      </SectionTitle>
-      
-      <TimelineToggle>
-        <ToggleButton 
-          active={activeTab === 'all'} 
-          onClick={() => setActiveTab('all')}
-        >
-          All
-        </ToggleButton>
-        <ToggleButton 
-          active={activeTab === 'education'} 
-          onClick={() => setActiveTab('education')}
-        >
-          Education
-        </ToggleButton>
-        <ToggleButton 
-          active={activeTab === 'experience'} 
-          onClick={() => setActiveTab('experience')}
-        >
-          Experience
-        </ToggleButton>
-      </TimelineToggle>
-      
-      <TimelineContainer
-        key={activeTab} // This key is crucial for re-mounting the container
-        as={motion.div}
-        variants={containerVariants}
-        initial="hidden" // Always start hidden on mount/re-mount
-        animate={containerAnimateState} // Animate to the current state value
-      >
-        {timelineItems.map((item, index) => (
-          <TimelineItem 
-            key={`${item.type}-${item.organization}-${item.title}`} // More stable key
-            position={index % 2 === 0 ? 'right' : 'left'}
-            variants={itemVariants}
+      <SectionHeader>
+        <SectionLabel variants={headerVariants} initial="hidden" animate={sectionControls}>
+          Journey
+        </SectionLabel>
+        <SectionTitle variants={headerVariants} initial="hidden" animate={sectionControls}>
+          Experience & Education
+        </SectionTitle>
+        
+        <TabsWrapper variants={headerVariants} initial="hidden" animate={sectionControls}>
+          <TabButton 
+            active={activeTab === 'all'} 
+            onClick={() => setActiveTab('all')}
           >
-            <TimelineContent>
-              <TimelineDate position={index % 2 === 0 ? 'right' : 'left'}>
-                {item.startDate} - {item.endDate || 'Present'}
-              </TimelineDate>
-              
-              <TimelineHeader>
-                <LogoContainer>
-                  <LogoDisplay
-                    logoUrl={item.logoUrl}
-                    organizationName={item.organization}
-                    getInitials={getInitials}
-                  />
-                </LogoContainer>
-                
-                <TitleContainer>
-                  <TimelineTitle>{item.title}</TimelineTitle>
-                  <TimelineSubtitle>{item.organization}</TimelineSubtitle>
-                </TitleContainer>
-              </TimelineHeader>
-              
-              <TimelineDescription>{item.description}</TimelineDescription>
-              
-              {item.skills && (
-                <TimelineTags>
-                  {item.skills.map((skill, i) => (
-                    <TimelineTag key={i}>{skill}</TimelineTag>
-                  ))}
-                </TimelineTags>
-              )}
-            </TimelineContent>
-            <TimelineDot variants={dotVariants} />
-          </TimelineItem>
-        ))}
-      </TimelineContainer>
+            All
+          </TabButton>
+          <TabButton 
+            active={activeTab === 'experience'} 
+            onClick={() => setActiveTab('experience')}
+          >
+            Work
+          </TabButton>
+          <TabButton 
+            active={activeTab === 'education'} 
+            onClick={() => setActiveTab('education')}
+          >
+            Study
+          </TabButton>
+        </TabsWrapper>
+      </SectionHeader>
+      
+      <AnimatePresence mode="wait">
+        <TimelineWrapper 
+          key={activeTab}
+          variants={wrapperVariants} 
+          initial="hidden" 
+          animate="visible"
+        >
+          {/* Desktop: Alternating two-column layout */}
+          <EntriesLeft>
+            {leftItems.map(item => renderEntry(item, 'left'))}
+          </EntriesLeft>
+          
+          <TimelineSpine />
+          
+          <EntriesRight>
+            {/* Add spacer for first item offset */}
+            <div style={{ height: '3rem' }} />
+            {rightItems.map(item => renderEntry(item, 'right'))}
+          </EntriesRight>
+          
+          {/* Mobile: Single column */}
+          <MobileEntries>
+            {timelineItems.map(item => renderEntry(item, 'right'))}
+          </MobileEntries>
+        </TimelineWrapper>
+      </AnimatePresence>
     </TimelineSection>
   );
 };

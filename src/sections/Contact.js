@@ -9,60 +9,84 @@ const ContactSection = styled.section`
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 2rem 2rem;
+    padding: 3rem 1.5rem;
   }
+`;
+
+const ContactWrapper = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3rem;
+`;
+
+const SectionLabel = styled(motion.span)`
+  font-family: ${props => props.theme.fonts.code};
+  color: ${props => props.theme.colors.primary};
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0 0 1rem;
 `;
 
 const SectionSubtitle = styled(motion.p)`
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 4rem;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
+  max-width: 500px;
+  margin: 0 auto;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.muted};
+  line-height: 1.6;
 `;
 
-const ContactContainer = styled(motion.div)`
-  max-width: 1200px;
-  margin: 0 auto;
+const ContactGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  align-items: start;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 1.5rem;
   }
 `;
 
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const ContactHeading = styled.h3`
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: ${props => props.theme.colors.light};
+const ContactInfoCard = styled(motion.div)`
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid ${props => props.theme.colors.border};
+  padding: 2rem;
+  
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 16px;
   }
 `;
 
-const ContactText = styled.p`
-  font-size: 1.1rem;
+const InfoHeading = styled.h3`
+  font-size: 1.25rem;
+  color: ${props => props.theme.colors.light};
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+`;
+
+const InfoText = styled.p`
+  font-size: 0.9rem;
+  color: ${props => props.theme.colors.muted};
+  margin: 0 0 1.5rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 2rem;
+  
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
@@ -71,65 +95,77 @@ const ContactText = styled.p`
 const ContactLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-top: 0;
-  }
+  gap: 0.75rem;
 `;
 
 const ContactLink = styled.a`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid transparent;
   color: ${props => props.theme.colors.light};
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+  text-decoration: none;
   transition: all 0.3s ease;
   
-  svg {
-    color: ${props => props.theme.colors.primary};
-    font-size: 1.5rem;
-  }
-  
   &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateX(5px);
-  }
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem;
-    svg {
-      font-size: 1.25rem;
-    }
+    background: rgba(91, 141, 239, 0.08);
+    border-color: rgba(91, 141, 239, 0.2);
+    transform: translateX(4px);
   }
 `;
 
-const ContactFormContainer = styled.div`
-  background: rgba(10, 25, 47, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: 1px solid rgba(66, 133, 244, 0.3);
+const LinkIcon = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: ${props => props.gradient || props.theme.gradients.nebulaSubtle};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.95rem;
+`;
+
+const LinkText = styled.span`
+  color: ${props => props.theme.colors.muted};
+  font-size: 0.85rem;
+`;
+
+const ContactFormCard = styled(motion.div)`
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid ${props => props.theme.colors.border};
   padding: 2rem;
-  box-shadow: ${props => props.theme.shadows.medium};
-  
+  transition: all 0.4s ease;
   
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 10px 30px rgba(66, 133, 244, 0.2);
+    border-color: rgba(91, 141, 239, 0.2);
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     padding: 1.5rem;
-    margin-bottom: 2rem;
+    border-radius: 16px;
   }
 `;
 
 const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    gap: 1rem;
+  gap: 1.25rem;
+`;
+
+const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -140,55 +176,53 @@ const FormGroup = styled.div`
 `;
 
 const FormLabel = styled.label`
-  font-size: 1rem;
-  color: ${props => props.theme.colors.light};
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.9rem;
-  }
+  font-size: 0.85rem;
+  color: ${props => props.theme.colors.muted};
+  font-weight: 500;
 `;
 
 const FormInput = styled.input`
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
+  padding: 0.9rem 1rem;
+  background: rgba(15, 23, 41, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
   color: ${props => props.theme.colors.light};
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   
   &:focus {
     outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    border-color: rgba(91, 141, 239, 0.4);
+    background: rgba(15, 23, 41, 0.7);
   }
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.9rem;
-    padding: 0.6rem 0.8rem;
+  
+  &::placeholder {
+    color: ${props => props.theme.colors.muted};
+    opacity: 0.5;
   }
 `;
 
 const FormTextarea = styled.textarea`
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
+  padding: 0.9rem 1rem;
+  background: rgba(15, 23, 41, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
   color: ${props => props.theme.colors.light};
-  font-size: 1rem;
-  min-height: 150px;
+  font-size: 0.9rem;
+  min-height: 120px;
   resize: vertical;
   transition: all 0.3s ease;
+  font-family: inherit;
   
   &:focus {
     outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    border-color: rgba(91, 141, 239, 0.4);
+    background: rgba(15, 23, 41, 0.7);
   }
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.9rem;
-    padding: 0.6rem 0.8rem;
-    min-height: 100px;
+  
+  &::placeholder {
+    color: ${props => props.theme.colors.muted};
+    opacity: 0.5;
   }
 `;
 
@@ -196,52 +230,53 @@ const SubmitButton = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  background: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.dark};
+  gap: 0.6rem;
+  padding: 0.9rem 1.75rem;
+  background: ${props => props.theme.gradients.nebula};
+  color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  align-self: flex-start;
   
-  &:hover {
-    background: ${props => props.theme.colors.primary}CC;
+  &:hover:not(:disabled) {
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(91, 141, 239, 0.3);
   }
   
   &:disabled {
-    background: #666;
+    opacity: 0.6;
     cursor: not-allowed;
     transform: none;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
-    max-width: 200px;
-    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
   }
 `;
 
 const FormStatus = styled(motion.div)`
-  padding: 1rem;
-  border-radius: 5px;
-  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  font-size: 0.9rem;
   
   &.success {
-    background: rgba(46, 213, 115, 0.2);
+    background: rgba(46, 213, 115, 0.12);
     color: #2ed573;
+    border: 1px solid rgba(46, 213, 115, 0.2);
   }
   
   &.error {
-    background: rgba(255, 71, 87, 0.2);
+    background: rgba(255, 71, 87, 0.12);
     color: #ff4757;
+    border: 1px solid rgba(255, 71, 87, 0.2);
   }
 `;
 
@@ -252,7 +287,7 @@ const Contact = ({ email, linkedin, github }) => {
   
   const controls = useAnimation();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.2 });
+  const inView = useInView(ref, { once: false, threshold: 0.1 });
   
   useEffect(() => {
     if (inView) {
@@ -280,19 +315,18 @@ const Contact = ({ email, linkedin, github }) => {
     } finally {
       setIsSubmitting(false);
       
-      // Clear status after 5 seconds
       setTimeout(() => {
         setFormStatus(null);
       }, 5000);
     }
   };
   
-  const titleVariants = {
-    hidden: { opacity: 0, y: -50 },
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
   
@@ -301,20 +335,20 @@ const Contact = ({ email, linkedin, github }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.15,
+        delayChildren: 0.2
       }
     }
   };
   
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 25 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 100,
+        stiffness: 80,
         damping: 12
       }
     }
@@ -322,83 +356,89 @@ const Contact = ({ email, linkedin, github }) => {
   
   return (
     <ContactSection id="contact" ref={ref}>
-      <SectionTitle
-        variants={titleVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        Get In Touch
-      </SectionTitle>
-      
-      <SectionSubtitle
-        variants={titleVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        Have a question or want to work together? Feel free to reach out!
-      </SectionSubtitle>
-      
-      <ContactContainer
-        variants={containerVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        <ContactInfo>
-          <motion.div variants={itemVariants}>
-            <ContactHeading>Let's Connect</ContactHeading>
-            <ContactText>
-              I'm always open to new opportunities, collaborations, or just a friendly chat about technology and innovation. Don't hesitate to reach out through the form or via any of the channels below.
-            </ContactText>
-          </motion.div>
-          
-          <ContactLinks>
-            <motion.div variants={itemVariants}>
-              <ContactLink href={`mailto:${email}`}>
-                <FaEnvelope />
-                {email}
-              </ContactLink>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <ContactLink href={linkedin} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin />
-                LinkedIn Profile
-              </ContactLink>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <ContactLink href={github} target="_blank" rel="noopener noreferrer">
-                <FaGithub />
-                GitHub Profile
-              </ContactLink>
-            </motion.div>
-          </ContactLinks>
-        </ContactInfo>
+      <ContactWrapper>
+        <SectionHeader>
+          <SectionLabel variants={headerVariants} initial="hidden" animate={controls}>
+            Contact
+          </SectionLabel>
+          <SectionTitle variants={headerVariants} initial="hidden" animate={controls}>
+            Get In Touch
+          </SectionTitle>
+          <SectionSubtitle variants={headerVariants} initial="hidden" animate={controls}>
+            Have a question or want to work together? Feel free to reach out!
+          </SectionSubtitle>
+        </SectionHeader>
         
-        <motion.div variants={itemVariants}>
-          <ContactFormContainer>
-            <ContactForm ref={formRef} onSubmit={handleSubmit}>
-              <FormGroup>
-                <FormLabel htmlFor="name">Name</FormLabel>
-                <FormInput
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  placeholder="Your Name"
-                />
-              </FormGroup>
+        <ContactGrid
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          style={{ alignItems: 'stretch' }}
+        >
+          <ContactInfoCard variants={itemVariants} style={{ height: '100%' }}>
+            <InfoHeading>Let's Connect</InfoHeading>
+            <InfoText>
+              I'm always open to new opportunities and collaborations. Don't hesitate to reach out!
+            </InfoText>
+            
+            <ContactLinks>
+              <ContactLink href={`mailto:${email}`}>
+                <LinkIcon gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                  <FaEnvelope />
+                </LinkIcon>
+                <div>
+                  <div style={{ fontWeight: 500 }}>Email</div>
+                  <LinkText>{email}</LinkText>
+                </div>
+              </ContactLink>
               
-              <FormGroup>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FormInput
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  placeholder="your.email@example.com"
-                />
-              </FormGroup>
+              <ContactLink href={linkedin} target="_blank" rel="noopener noreferrer">
+                <LinkIcon gradient="linear-gradient(135deg, #0077B5 0%, #00a0dc 100%)">
+                  <FaLinkedin />
+                </LinkIcon>
+                <div>
+                  <div style={{ fontWeight: 500 }}>LinkedIn</div>
+                  <LinkText>Connect with me</LinkText>
+                </div>
+              </ContactLink>
+              
+              <ContactLink href={github} target="_blank" rel="noopener noreferrer">
+                <LinkIcon gradient="linear-gradient(135deg, #333 0%, #6e5494 100%)">
+                  <FaGithub />
+                </LinkIcon>
+                <div>
+                  <div style={{ fontWeight: 500 }}>GitHub</div>
+                  <LinkText>View my work</LinkText>
+                </div>
+              </ContactLink>
+            </ContactLinks>
+          </ContactInfoCard>
+          
+          <ContactFormCard variants={itemVariants} style={{ height: '100%' }}>
+            <ContactForm ref={formRef} onSubmit={handleSubmit}>
+              <FormRow>
+                <FormGroup>
+                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <FormInput
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Your name"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormInput
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="your@email.com"
+                  />
+                </FormGroup>
+              </FormRow>
               
               <FormGroup>
                 <FormLabel htmlFor="subject">Subject</FormLabel>
@@ -407,7 +447,7 @@ const Contact = ({ email, linkedin, github }) => {
                   id="subject"
                   name="subject"
                   required
-                  placeholder="What is this regarding?"
+                  placeholder="What's this about?"
                 />
               </FormGroup>
               
@@ -417,15 +457,16 @@ const Contact = ({ email, linkedin, github }) => {
                   id="message"
                   name="message"
                   required
-                  placeholder="Your message here..."
+                  placeholder="Your message..."
                 />
               </FormGroup>
               
               <SubmitButton
                 type="submit"
                 disabled={isSubmitting}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{ alignSelf: 'flex-end' }}
               >
                 {isSubmitting ? 'Sending...' : (
                   <>
@@ -446,9 +487,9 @@ const Contact = ({ email, linkedin, github }) => {
                 </FormStatus>
               )}
             </ContactForm>
-          </ContactFormContainer>
-        </motion.div>
-      </ContactContainer>
+          </ContactFormCard>
+        </ContactGrid>
+      </ContactWrapper>
     </ContactSection>
   );
 };

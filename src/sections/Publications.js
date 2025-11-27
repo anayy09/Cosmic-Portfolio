@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, useInView } from 'framer-motion';
-import { FaLink, FaFilePdf, FaBookOpen } from 'react-icons/fa';
+import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
+import { FaLink, FaFilePdf, FaBookOpen, FaScroll, FaGraduationCap } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
 const PublicationsSection = styled.section`
@@ -9,283 +9,491 @@ const PublicationsSection = styled.section`
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 2rem 2rem;
+    padding: 3rem 1.5rem;
   }
 `;
 
-const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 5vw, 3.5rem);
+const SectionHeader = styled.div`
+  max-width: 1200px;
+  margin: 0 auto 2rem;
   text-align: center;
-  margin-bottom: 1rem;
+`;
+
+const SectionLabel = styled(motion.span)`
+  font-family: ${props => props.theme.fonts.code};
+  color: ${props => props.theme.colors.primary};
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(2rem, 4vw, 3rem);
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 `;
 
-const SectionSubtitle = styled(motion.p)`
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 4rem;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
+const TabsContainer = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2.5rem auto 3rem;
+  max-width: 400px;
+  background: ${props => props.theme.colors.surface};
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
-const PublicationsContainer = styled(motion.div)`
+const Tab = styled.button`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.muted};
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  svg {
+    font-size: 0.85rem;
+  }
+  
+  &:hover:not(:disabled) {
+    background: ${props => props.active ? props.theme.colors.primary : 'rgba(91, 141, 239, 0.1)'};
+    color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.light};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+`;
+
+const ContentContainer = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
+`;
+
+const PublicationsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 `;
 
 const PublicationCard = styled(motion.div)`
-  background: rgba(10, 25, 47, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: 1px solid rgba(66, 133, 244, 0.3);
-  overflow: hidden;
-  transition: all 0.3s ease;
-  height: 100%;
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid ${props => props.theme.colors.border};
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: ${props =>
+    props.status === 'Published' ? 'linear-gradient(180deg, #2ed573 0%, #26de81 100%)' :
+      props.status === 'Accepted' ? 'linear-gradient(180deg, #4facfe 0%, #00f2fe 100%)' :
+        'linear-gradient(180deg, #f093fb 0%, #f5576c 100%)'
+  };
+    opacity: 0.8;
+  }
   
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(66, 133, 244, 0.2);
-    border-color: ${props => props.theme.colors.primary};
+    border-color: rgba(91, 141, 239, 0.35);
+    box-shadow: 0 16px 50px rgba(91, 141, 239, 0.12);
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1.25rem;
+    border-radius: 14px;
   }
 `;
 
 const PublicationHeader = styled.div`
-  padding: 1rem 1.5rem 0.5rem; // Adjusted padding
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 `;
 
 const PublicationTitle = styled.h3`
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: ${props => props.theme.colors.light};
-  margin-bottom: 0.25rem;
-  line-height: 1.3;
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 600;
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 `;
 
 const PublicationLinks = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-left: 0.5rem; // Space from title
-  flex-shrink: 0; // Prevent shrinking
+  gap: 0.5rem;
+  flex-shrink: 0;
 `;
 
 const PublicationLink = styled.a`
-  color: ${props => props.theme.colors.light};
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.colors.muted};
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-2px);
+    background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.dark};
   }
 `;
 
-const PublicationBody = styled.div`
-  padding: 0 1.5rem 1.5rem; // Consistent padding
-  flex-grow: 1;
+const PublicationMeta = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  // margin-bottom: 0.75rem;
 `;
 
-const PublicationAuthors = styled.p`
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 0.5rem;
-  font-style: italic;
-`;
-
-const PublicationJournal = styled.p`
-  font-size: 0.9rem;
+const PublicationJournal = styled.span`
+  font-size: 1.1rem;
+  color: ${props => props.theme.colors.primaryMuted};
   font-weight: 500;
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: 0.75rem;
+`;
+
+const PublicationYear = styled.span`
+  font-size: 1rem;
+  color: ${props => props.theme.colors.muted};
+  font-family: ${props => props.theme.fonts.code};
+`;
+
+const PublicationStatus = styled.span`
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  background: ${props =>
+    props.status === 'Published' ? 'rgba(46, 213, 115, 0.15)' :
+      props.status === 'Accepted' ? 'rgba(79, 172, 254, 0.15)' :
+        'rgba(240, 147, 251, 0.15)'
+  };
+  color: ${props =>
+    props.status === 'Published' ? '#2ed573' :
+      props.status === 'Accepted' ? '#4facfe' :
+        '#f093fb'
+  };
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 `;
 
 const PublicationDescription = styled.p`
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${props => props.theme.colors.muted};
+  margin: 0;
   flex-grow: 1;
-  margin-bottom: 1rem;
+  
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     display: none;
   }
 `;
 
-const PublicationDOI = styled.p`
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: ${props => props.theme.fonts.code};
-  margin-right: 1rem; // Add some space between DOI and Status
-`;
-
-const PublicationStatus = styled.div`
-  font-size: 0.8rem;
-  font-weight: bold;
-  border-radius: 5px;
-  align-self: flex-start;
-  padding: 0.25rem 0.5rem;
-  color: ${props => props.theme.colors.light};
-  background-color: ${props => 
-    props.status === 'Published' ? props.theme.colors.success : 
-    props.status === 'Peer Review' ? props.theme.colors.info :
-    props.status === 'Presented' ? props.theme.colors.warning :
-    props.status === 'Submitted' ? props.theme.colors.info : 
-    props.theme.colors.secondaryMuted
-  };
-`;
-
-const PublicationMeta = styled.div`
+// Patent specific styles
+const PatentCard = styled(motion.div)`
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid ${props => props.theme.colors.border};
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
-  justify-content: space-between;
+  gap: 1.25rem;
+  align-items: flex-start;
+  
+  &:hover {
+    border-color: rgba(91, 141, 239, 0.35);
+    box-shadow: 0 16px 50px rgba(91, 141, 239, 0.12);
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+`;
+
+const PatentIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%);
+  display: flex;
   align-items: center;
-  margin-top: auto; // Push to the bottom of the card
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+`;
+
+const PatentContent = styled.div`
+  flex: 1;
+`;
+
+const PatentTitle = styled.h3`
+  font-size: 1.25rem;
+  color: ${props => props.theme.colors.light};
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+  font-weight: 600;
+`;
+
+const PatentDetails = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 1rem;
+  
+  color: ${props => props.theme.colors.muted};
+`;
+
+const PatentDetail = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  
+  strong {
+    color: ${props => props.theme.colors.light};
+    font-weight: 500;
+  }
+`;
+
+const PatentsGrid = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 3rem 2rem;
+  color: ${props => props.theme.colors.muted};
+  
+  svg {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
 `;
 
 const Publications = () => {
-  const { publications } = personalInfo;
+  const { publications, patents } = personalInfo;
+  const [activeTab, setActiveTab] = useState('publications');
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, threshold: 0.1 });
-  
+
   useEffect(() => {
     if (inView) {
       controls.start('visible');
-    } else {
-      // controls.start('hidden');
     }
   }, [controls, inView]);
-  
-  const titleVariants = {
-    hidden: { opacity: 0, y: -30 }, 
-    visible: { 
-      opacity: 1, 
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" } 
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08, 
-        delayChildren: 0.2 
+        staggerChildren: 0.1,
+        delayChildren: 0.1
       }
     }
   };
-  
+
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 }, 
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 120, 
-        damping: 10 
+        stiffness: 100,
+        damping: 12
       }
     }
   };
-  
-  if (!publications || publications.length === 0) {
+
+  const hasPublications = publications && publications.length > 0;
+  const hasPatents = patents && patents.length > 0;
+
+  if (!hasPublications && !hasPatents) {
     return (
       <PublicationsSection id="publications" ref={ref}>
-        <SectionTitle variants={titleVariants} initial="hidden" animate={controls}>
-          Publications
-        </SectionTitle>
-        <SectionSubtitle variants={titleVariants} initial="hidden" animate={controls}>
-          No publications listed at the moment.
-        </SectionSubtitle>
+        <SectionHeader>
+          <SectionLabel variants={headerVariants} initial="hidden" animate={controls}>
+            Research
+          </SectionLabel>
+          <SectionTitle variants={headerVariants} initial="hidden" animate={controls}>
+            Publications & Patents
+          </SectionTitle>
+        </SectionHeader>
+        <EmptyState>
+          <FaGraduationCap />
+          <p>No publications or patents listed at the moment.</p>
+        </EmptyState>
       </PublicationsSection>
     );
   }
-  
+
   return (
     <PublicationsSection id="publications" ref={ref}>
-      <SectionTitle
-        variants={titleVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        My Publications
-      </SectionTitle>
-      
-      <SectionSubtitle
-        variants={titleVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        Exploring the frontiers of technology through published work.
-      </SectionSubtitle>
-      
-      <PublicationsContainer
-        variants={containerVariants}
-        initial="hidden"
-        animate={controls}
-      >
-        {publications.map(pub => (
-          <PublicationCard key={pub.id || pub.title} variants={itemVariants}>
-            <PublicationHeader>
-              <PublicationTitle>{pub.title}</PublicationTitle>
-              <PublicationLinks>
-                {pub.url && (
-                  <PublicationLink 
-                    href={pub.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    aria-label={`Read ${pub.title}`}
-                  >
-                    {pub.url.toLowerCase().includes('pdf') ? <FaFilePdf /> : <FaLink />}
-                  </PublicationLink>
-                )}
-                 {pub.doi && (
-                  <PublicationLink
-                    href={`https://doi.org/${pub.doi}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`View DOI for ${pub.title}`}
-                  >
-                    <FaBookOpen />
-                  </PublicationLink>
-                )}
-              </PublicationLinks>
-            </PublicationHeader>
-            
-            <PublicationBody>
-              <PublicationAuthors>{pub.authors.join(', ')} {pub.year}</PublicationAuthors>
-              <PublicationJournal>{pub.journal}</PublicationJournal>
-              {pub.description && <PublicationDescription>{pub.description}</PublicationDescription>}
-              <PublicationMeta>
-                {pub.doi && <PublicationDOI>DOI: {pub.doi}</PublicationDOI>}
-                {pub.status && <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>}
-              </PublicationMeta>
-            </PublicationBody>
-          </PublicationCard>
-        ))}
-      </PublicationsContainer>
+      <SectionHeader>
+        <SectionLabel variants={headerVariants} initial="hidden" animate={controls}>
+          Research
+        </SectionLabel>
+        <SectionTitle variants={headerVariants} initial="hidden" animate={controls}>
+          Publications & Patents
+        </SectionTitle>
+      </SectionHeader>
+
+      <TabsContainer variants={headerVariants} initial="hidden" animate={controls}>
+        <Tab
+          active={activeTab === 'publications'}
+          onClick={() => setActiveTab('publications')}
+        >
+          <FaBookOpen /> Publications {hasPublications && `(${publications.length})`}
+        </Tab>
+        <Tab
+          active={activeTab === 'patents'}
+          onClick={() => setActiveTab('patents')}
+        >
+          <FaScroll /> Patents {hasPatents && `(${patents.length})`}
+        </Tab>
+      </TabsContainer>
+
+      <ContentContainer>
+        <AnimatePresence mode="wait">
+          {activeTab === 'publications' ? (
+            <PublicationsGrid
+              key="publications"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {publications?.map(pub => (
+                <PublicationCard key={pub.id || pub.title} variants={itemVariants} status={pub.status}>
+                  <PublicationHeader>
+                    <PublicationTitle>{pub.title}</PublicationTitle>
+                    <PublicationLinks>
+                      {pub.url && (
+                        <PublicationLink
+                          href={pub.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Read ${pub.title}`}
+                        >
+                          {pub.url.toLowerCase().includes('pdf') ? <FaFilePdf /> : <FaLink />}
+                        </PublicationLink>
+                      )}
+                    </PublicationLinks>
+                  </PublicationHeader>
+
+                  <PublicationMeta style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div style={{ width: '100%' }}>
+                      <PublicationJournal>{pub.journal}</PublicationJournal>
+                    </div>
+                    <div style={{ width: '100%', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <PublicationYear>{pub.year}</PublicationYear>
+                      <PublicationStatus status={pub.status}>{pub.status}</PublicationStatus>
+                    </div>
+                  </PublicationMeta>
+
+                  {/* {pub.description && <PublicationDescription>{pub.description}</PublicationDescription>} */}
+                </PublicationCard>
+              ))}
+            </PublicationsGrid>
+          ) : (
+            <PatentsGrid
+              key="patents"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {patents?.map(patent => (
+                <PatentCard key={patent.id} variants={itemVariants}>
+                  <PatentIcon>
+                    <FaScroll />
+                  </PatentIcon>
+                  <PatentContent>
+                    <PatentTitle>{patent.title}</PatentTitle>
+                    <PatentDetails style={{ flexDirection: 'column', gap: '0.5rem' }}>
+                      <PatentDetail style={{ display: 'flex', width: '100%' }}>
+                        <strong>Application No:</strong> <span style={{ marginLeft: '0.4rem' }}>{patent.applicationNo}</span>
+                      </PatentDetail>
+                      <PatentDetail style={{ display: 'flex', width: '100%' }}>
+                        <strong>Country:</strong> <span style={{ marginLeft: '0.4rem' }}>{patent.country}</span>
+                      </PatentDetail>
+                      <PatentDetail style={{ display: 'flex', width: '100%' }}>
+                        <strong>Date:</strong> <span style={{ marginLeft: '0.4rem' }}>{patent.date}</span>
+                      </PatentDetail>
+                      {/* <PatentDetail style={{ display: 'flex', width: '100%', marginTop: '0.5rem' }}>
+                        <PublicationStatus status={patent.status}>{patent.status}</PublicationStatus>
+                      </PatentDetail> */}
+                    </PatentDetails>
+                  </PatentContent>
+                </PatentCard>
+              ))}
+            </PatentsGrid>
+          )}
+        </AnimatePresence>
+      </ContentContainer>
     </PublicationsSection>
   );
 };

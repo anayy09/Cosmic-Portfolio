@@ -33,79 +33,142 @@ const SkillsSection = styled.section`
   position: relative;
   overflow: hidden;
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 2rem 2rem;
+    padding: 3rem 1.5rem;
   }
+`;
+
+const SectionHeader = styled.div`
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  text-align: center;
+`;
+
+const SectionLabel = styled(motion.span)`
+  font-family: ${props => props.theme.fonts.code};
+  color: ${props => props.theme.colors.primary};
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 `;
 
-const SectionSubtitle = styled(motion.p)`
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 4rem;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-`;
-
-const SkillsGrid = styled(motion.div)`
-  max-width: 900px;
+const SkillsContainer = styled(motion.div)`
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  justify-items: center;
   
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    max-width: 100%;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 
-const SkillIcon = styled.div`
-  font-size: 3rem;
-  color: ${props => props.theme.colors.primary};
+const SkillCategory = styled(motion.div)`
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid ${props => props.theme.colors.border};
+  padding: 1.75rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 2rem;
+  &:hover {
+    border-color: rgba(91, 141, 239, 0.3);
+    box-shadow: 0 12px 40px rgba(91, 141, 239, 0.1);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1.5rem;
+    border-radius: 16px;
   }
 `;
 
-const SkillCard = styled(motion.a)`
+const CategoryHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+`;
+
+const CategoryIcon = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: ${props => props.gradient || props.theme.gradients.nebulaSubtle};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+`;
+
+const CategoryTitle = styled.h3`
+  font-size: 1rem;
+  color: ${props => props.theme.colors.light};
+  margin: 0;
+  font-weight: 600;
+`;
+
+const SkillsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.75rem;
+`;
+
+const SkillItem = styled(motion.a)`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  color: inherit;
+  padding: 0.85rem 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid transparent;
   text-decoration: none;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-  &:hover ${SkillIcon} {
-    color: ${props => props.theme.colors.accent};
-  }
+  transition: all 0.3s ease;
+  cursor: pointer;
   
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    gap: 0.25rem;
+  &:hover {
+    background: rgba(91, 141, 239, 0.08);
+    border-color: rgba(91, 141, 239, 0.2);
+    transform: translateY(-2px);
   }
 `;
 
-const SkillName = styled.p`
-  color: ${props => props.theme.colors.light};
-  font-size: 0.9rem;
-  text-align: center;
+const SkillIcon = styled.div`
+  font-size: 1.5rem;
+  color: ${props => props.theme.colors.primaryMuted};
+  transition: color 0.3s ease;
+  
+  ${SkillItem}:hover & {
+    color: ${props => props.theme.colors.primary};
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 0.75rem;
+    font-size: 1.25rem;
+  }
+`;
+
+const SkillName = styled.span`
+  color: ${props => props.theme.colors.muted};
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+  
+  ${SkillItem}:hover & {
+    color: ${props => props.theme.colors.light};
   }
 `;
 
@@ -135,6 +198,32 @@ const iconMap = {
   'WordPress': SiWordpress,
 };
 
+// Categorize skills
+const categorizeSkills = (techStack) => {
+  const categories = {
+    'Languages': ['C', 'C++', 'Python', 'Java', 'JavaScript', 'Golang', 'TypeScript', 'PHP'],
+    'Frameworks & ML': ['React.js', 'Next.js', 'Django', 'TensorFlow', 'Keras', 'PyTorch', 'Hugging Face'],
+    'Tools & Design': ['MySQL', 'Git', 'Docker', 'Unreal Engine', 'Blender', 'Zoho Creator', 'Figma', 'WordPress']
+  };
+  
+  const categorized = {
+    'Languages': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' },
+    'Frameworks & ML': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' },
+    'Tools & Design': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' }
+  };
+  
+  techStack.forEach(skill => {
+    for (const [category, skills] of Object.entries(categories)) {
+      if (skills.includes(skill.name)) {
+        categorized[category].items.push(skill);
+        break;
+      }
+    }
+  });
+  
+  return categorized;
+};
+
 const Skills = () => {
   const { techStack } = personalInfo;
   const controls = useAnimation();
@@ -147,8 +236,8 @@ const Skills = () => {
     }
   }, [controls, inView]);
 
-  const titleVariants = {
-    hidden: { opacity: 0, y: -30 },
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -161,21 +250,21 @@ const Skills = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.15,
         delayChildren: 0.2
       }
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+  const categoryVariants = {
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: 'spring',
-        stiffness: 120,
-        damping: 10
+        stiffness: 80,
+        damping: 12
       }
     }
   };
@@ -184,32 +273,50 @@ const Skills = () => {
     return null;
   }
 
+  const categorizedSkills = categorizeSkills(techStack);
+
   return (
     <SkillsSection id="skills" ref={ref}>
-      <SectionTitle variants={titleVariants} initial="hidden" animate={controls}>
-        Skills
-      </SectionTitle>
-      <SectionSubtitle variants={titleVariants} initial="hidden" animate={controls}>
-        Technologies and tools I frequently work with
-      </SectionSubtitle>
-      <SkillsGrid variants={containerVariants} initial="hidden" animate={controls}>
-        {techStack.map(({ name, url }) => {
-          const Icon = iconMap[name] || SiJavascript;
-          return (
-            <SkillCard
-              key={name}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              variants={itemVariants}
-              whileHover={{ scale: 1.1 }}
-            >
-              <SkillIcon><Icon /></SkillIcon>
-              <SkillName>{name}</SkillName>
-            </SkillCard>
-          );
-        })}
-      </SkillsGrid>
+      <SectionHeader>
+        <SectionLabel variants={headerVariants} initial="hidden" animate={controls}>
+          Expertise
+        </SectionLabel>
+        <SectionTitle variants={headerVariants} initial="hidden" animate={controls}>
+          Skills & Technologies
+        </SectionTitle>
+      </SectionHeader>
+      
+      <SkillsContainer variants={containerVariants} initial="hidden" animate={controls}>
+        {Object.entries(categorizedSkills).map(([category, { items, gradient }]) => (
+          <SkillCategory key={category} variants={categoryVariants}>
+            <CategoryHeader>
+              <CategoryIcon gradient={gradient}>
+                {category === 'Languages' ? '{ }' : category === 'Frameworks & ML' ? '⚡' : '🔧'}
+              </CategoryIcon>
+              <CategoryTitle>{category}</CategoryTitle>
+            </CategoryHeader>
+            
+            <SkillsGrid>
+              {items.map(({ name, url }) => {
+                const Icon = iconMap[name] || SiJavascript;
+                return (
+                  <SkillItem
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <SkillIcon><Icon /></SkillIcon>
+                    <SkillName>{name}</SkillName>
+                  </SkillItem>
+                );
+              })}
+            </SkillsGrid>
+          </SkillCategory>
+        ))}
+      </SkillsContainer>
     </SkillsSection>
   );
 };
