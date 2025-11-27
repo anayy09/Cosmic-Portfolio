@@ -59,39 +59,39 @@ const BackgroundContainer = styled.div`
   width: 100%;
   height: 100vh;
   z-index: -1;
-  background: #050714; /* Very dark blue-black base */
+  background: #0D0D12; /* Subtle warm-tinted deep black */
 `;
 
-// Optional: Component to make stars slightly twinkle or move (User's suggestion)
+// Gentle star field with slow rotation for calm cosmic ambiance
 function AnimatedStars() {
   const starsRef = useRef();
 
   useFrame(({ clock }) => {
     if (starsRef.current) {
-      // Subtle rotation for a dynamic feel
-      starsRef.current.rotation.x = Math.sin(clock.getElapsedTime() / 20) / 10;
-      starsRef.current.rotation.y = Math.cos(clock.getElapsedTime() / 20) / 10;
+      // Very slow, subtle rotation for serene feel
+      starsRef.current.rotation.x = Math.sin(clock.getElapsedTime() / 60) / 20;
+      starsRef.current.rotation.y = Math.cos(clock.getElapsedTime() / 60) / 20;
     }
   });
 
   return (
     <Stars
       ref={starsRef}
-      radius={100} // Radius of the sphere on which stars are generated
-      depth={50} // Depth of the star sphere
-      count={500} // Number of stars
-      factor={10} // Star size factor
-      saturation={0} // Star color saturation (0 for white)
+      radius={120} // Slightly larger sphere
+      depth={60} // More depth for layering
+      count={350} // Fewer stars for elegance
+      factor={6} // Smaller, more refined stars
+      saturation={0.1} // Slight color tint
       fade // Stars disappear when they are too far away
-      speed={1} // Animation speed (if applicable to the internal animation)
+      speed={0.3} // Slower subtle animation
     />
   );
 }
 
-// Shooting stars component with tails
+// Occasional shooting stars with gentle tails
 const ShootingStars = () => {
-  // We'll create a small number of shooting stars with tails
-  const count = 5;
+  // Fewer shooting stars for subtlety
+  const count = 3;
   const shootingStars = useRef([]);
   const trailsGroup = useRef();
   
@@ -105,13 +105,13 @@ const ShootingStars = () => {
         (Math.random() - 0.5) * 100
       ),
       velocity: new THREE.Vector3(
-        (Math.random() - 0.5) * 0.5,
-        -1 - Math.random() * 1.5,
-        (Math.random() - 0.5) * 0.5
+        (Math.random() - 0.5) * 0.3,
+        -0.6 - Math.random() * 0.8,
+        (Math.random() - 0.5) * 0.3
       ),
       trail: [],
-      trailLength: Math.floor(Math.random() * 10) + 15, // Length of the trail
-      nextActivationTime: Math.random() * 10 // Random delay before activation
+      trailLength: Math.floor(Math.random() * 8) + 10, // Shorter, more refined trail
+      nextActivationTime: Math.random() * 20 // Longer delay between stars
     }));
     return shootingStars.current;
   }, [count]);
@@ -157,7 +157,7 @@ const ShootingStars = () => {
         // Check if star is out of view
         if (star.position.y < -50) {
           star.active = false;
-          star.nextActivationTime = time + 5 + Math.random() * 15; // Wait before reactivating
+          star.nextActivationTime = time + 12 + Math.random() * 25; // Longer wait for subtlety
         }
       }
     });
@@ -197,10 +197,10 @@ const ShootingStars = () => {
           
           // Create the line material
           const material = new THREE.LineBasicMaterial({
-            color: 0xffffff,
+            color: 0xe8ecf4,
             vertexColors: true,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.5,
             blending: THREE.AdditiveBlending
           });
           
@@ -372,8 +372,9 @@ const Constellations = () => {
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.01;
-      groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.005) * 0.05;
+      // Very slow constellation drift
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.003;
+      groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.002) * 0.02;
     }
   });
 
@@ -390,19 +391,19 @@ const Constellations = () => {
 const CosmicScene = () => {
   return (
     <>
-      <color attach="background" args={['#050714']} />
-      <ambientLight intensity={0.1} />
+      <color attach="background" args={['#0D0D12']} />
+      <ambientLight intensity={0.08} />
       
-      <AnimatedStars /> {/* Replaced custom Stars with AnimatedStars */}
+      <AnimatedStars />
       <ShootingStars />
       <Constellations />
       <RealMoon />
       
       <EffectComposer>
         <Bloom
-          intensity={0.5}
-          luminanceThreshold={0.2}
-          luminanceSmoothing={0.9}
+          intensity={0.25}
+          luminanceThreshold={0.35}
+          luminanceSmoothing={0.95}
         />
       </EffectComposer>
     </>

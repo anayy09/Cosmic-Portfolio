@@ -7,25 +7,27 @@ const TypedTextContainer = styled.span`
   color: ${props => props.theme.colors.primary};
   font-weight: 500;
   font-size: 1em;
-  margin-left: 0.5rem;
+  margin-left: 0.4rem;
 
   &::after {
     content: '|';
     position: absolute;
-    right: -8px;
-    animation: blink 1s infinite;
+    right: -6px;
+    color: ${props => props.theme.colors.accent};
+    opacity: 0.7;
+    animation: blink 1.2s ease-in-out infinite;
   }
   
   @keyframes blink {
-    0%, 100% { opacity: 1; }
+    0%, 100% { opacity: 0.7; }
     50% { opacity: 0; }
   }
 
   /* Media query for smaller devices */
   @media (max-width: 768px) {
-    font-size: 0.8em; /* Smaller font size for mobile */
+    font-size: 0.85em;
     &::after {
-      right: -7px; /* Adjust cursor position for smaller font */
+      right: -5px;
     }
   }
 `;

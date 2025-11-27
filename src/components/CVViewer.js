@@ -33,9 +33,9 @@ const BackgroundEffects = styled.div`
     width: 100%;
     height: 100%;
     background: 
-      radial-gradient(circle at 20% 80%, rgba(66, 133, 244, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.2) 0%, transparent 50%);
+      radial-gradient(circle at 20% 80%, rgba(91, 141, 239, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(123, 104, 182, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(201, 160, 220, 0.08) 0%, transparent 50%);
   }
 `;
 
@@ -62,38 +62,40 @@ const BackButton = styled(Link)`
   gap: 0.5rem;
   color: ${props => props.theme.colors.light};
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid rgba(91, 141, 239, 0.25);
+  border-radius: 6px;
+  background: ${props => props.theme.colors.surface};
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
+  font-size: 0.9rem;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: ${props => props.theme.shadows.glow};
+    background: rgba(91, 141, 239, 0.1);
+    border-color: rgba(91, 141, 239, 0.4);
     transform: translateY(-2px);
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
     justify-content: center;
   }
 `;
 
 const Title = styled(motion.h1)`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
   background: ${props => props.theme.gradients.nebula};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-align: center;
+  letter-spacing: -0.02em;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     margin: 0;
   }
 `;
@@ -113,34 +115,32 @@ const ControlButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   color: ${props => props.theme.colors.light};
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem 1rem;
-  border-radius: 50px;
+  background: ${props => props.theme.colors.surface};
+  border: 1px solid rgba(91, 141, 239, 0.25);
+  padding: 0.65rem 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: ${props => props.theme.shadows.glow};
+    background: rgba(91, 141, 239, 0.1);
+    border-color: rgba(91, 141, 239, 0.4);
     transform: translateY(-2px);
   }
   
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
     
     &:hover {
       transform: none;
-      box-shadow: none;
     }
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.6rem 0.8rem;
+    padding: 0.5rem 0.7rem;
     font-size: 0.85rem;
     gap: 0.3rem;
     
@@ -173,14 +173,14 @@ const PDFContainer = styled(motion.div)`
 `;
 
 const PDFWrapper = styled.div`
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 2rem;
+  background: rgba(250, 250, 252, 0.97);
+  border-radius: 12px;
+  padding: 1.5rem;
   box-shadow: 
     ${props => props.theme.shadows.large},
-    0 0 50px rgba(66, 133, 244, 0.3);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+    0 0 40px rgba(91, 141, 239, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(91, 141, 239, 0.1);
   max-width: 100%;
   max-height: 100%;
   overflow: auto;
@@ -190,12 +190,12 @@ const PDFWrapper = styled.div`
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     padding: 0.5rem;
-    border-radius: 10px;
+    border-radius: 8px;
     margin: 0;
     width: 100%;
     box-shadow: 
       ${props => props.theme.shadows.medium},
-      0 0 20px rgba(66, 133, 244, 0.2);
+      0 0 20px rgba(91, 141, 239, 0.08);
   }
 `;
 
@@ -224,13 +224,13 @@ const LoadingSpinner = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: ${props => props.theme.colors.light};
+  color: ${props => props.theme.colors.muted};
   
   .spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(66, 133, 244, 0.3);
-    border-top: 3px solid ${props => props.theme.colors.primary};
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(91, 141, 239, 0.2);
+    border-top: 2px solid ${props => props.theme.colors.primary};
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }

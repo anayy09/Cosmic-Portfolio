@@ -12,7 +12,7 @@ const LoaderContainer = styled(motion.div)`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #050714;
+  background: #0D0D12;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,21 +21,24 @@ const LoaderContainer = styled(motion.div)`
 `;
 
 const LoadingText = styled(motion.div)`
-  color: #fff;
-  font-family: ${props => props.theme.fonts.main}; // Changed to main font
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  font-weight: 300;
-  opacity: 0.8;
+  color: #E8ECF4;
+  font-family: ${props => props.theme.fonts.main};
+  font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: lowercase;
+  opacity: 0.7;
   margin-top: 2rem;
 `;
 
 const ProgressContainer = styled(motion.div)`
-  margin-top: 1.5rem;
-  width: 120px;
+  margin-top: 1.25rem;
+  width: 100px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(232, 236, 244, 0.08);
   overflow: hidden;
   position: relative;
+  border-radius: 1px;
 `;
 
 const ProgressBar = styled(motion.div)`
@@ -43,7 +46,8 @@ const ProgressBar = styled(motion.div)`
   top: 0;
   left: 0;
   height: 100%;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(232, 236, 244, 0.5);
+  border-radius: 1px;
 `;
 
 // Gentle floating stars
@@ -74,7 +78,7 @@ const GentleStars = ({ count = 100 }) => {
 
   useFrame(({ clock }) => {
     if (points.current) {
-      points.current.rotation.y = clock.getElapsedTime() * 0.05;
+      points.current.rotation.y = clock.getElapsedTime() * 0.02;
     }
   });
 
@@ -95,10 +99,10 @@ const GentleStars = ({ count = 100 }) => {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.1}
-        color="#ffffff"
+        size={0.08}
+        color="#E8ECF4"
         transparent
-        opacity={0.7}
+        opacity={0.6}
         sizeAttenuation={true}
         alphaTest={0.001}
         depthWrite={false}
@@ -114,7 +118,7 @@ const Moon = () => {
 
     useFrame(({ clock }) => {
       if (mesh.current) {
-        mesh.current.rotation.y = clock.getElapsedTime() * 0.1;
+        mesh.current.rotation.y = clock.getElapsedTime() * 0.04;
       }
     });
 
@@ -138,10 +142,10 @@ const StarField = () => {
 
       <EffectComposer>
         <Bloom
-          intensity={0.6}
-          luminanceThreshold={0.1}
-          luminanceSmoothing={0.9}
-          radius={0.6}
+          intensity={0.35}
+          luminanceThreshold={0.2}
+          luminanceSmoothing={0.95}
+          radius={0.5}
         />
       </EffectComposer>
     </>

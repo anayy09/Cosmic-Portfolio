@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import { FaHeart, FaArrowUp } from 'react-icons/fa';
 
 const FooterContainer = styled.footer`
-  padding: 3rem 2rem;
-  background: rgba(10, 25, 47, 0.8);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(66, 133, 244, 0.3);
+  padding: 2.5rem 2rem;
+  background: rgba(16, 22, 36, 0.6);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(91, 141, 239, 0.08);
   text-align: center;
   position: relative;
 `;
@@ -18,13 +18,13 @@ const FooterContent = styled.div`
 `;
 
 const FooterText = styled.p`
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  color: ${props => props.theme.colors.muted};
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
   
   a {
     color: ${props => props.theme.colors.primary};
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
     
     &:hover {
       color: ${props => props.theme.colors.accent};
@@ -33,38 +33,41 @@ const FooterText = styled.p`
 `;
 
 const FooterCredits = styled.p`
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
+  color: rgba(136, 146, 166, 0.7);
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   
   svg {
-    color: #ff6b6b;
+    color: ${props => props.theme.colors.accent};
+    opacity: 0.8;
   }
 `;
 
 const ScrollToTopButton = styled(motion.button)`
   position: absolute;
   right: 2rem;
-  top: -1.5rem;
-  width: 3rem;
-  height: 3rem;
+  top: -1.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  background: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.dark};
+  background: ${props => props.theme.colors.surface};
+  color: ${props => props.theme.colors.light};
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 1px solid rgba(91, 141, 239, 0.15);
   cursor: pointer;
-  box-shadow: ${props => props.theme.shadows.medium};
-  transition: all 0.3s ease;
+  box-shadow: ${props => props.theme.shadows.small};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${props => props.theme.shadows.large};
+    transform: translateY(-3px);
+    background: ${props => props.theme.colors.primaryMuted};
+    box-shadow: ${props => props.theme.shadows.medium};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
@@ -72,7 +75,7 @@ const ScrollToTopButton = styled(motion.button)`
     transform: translateX(50%);
     
     &:hover {
-      transform: translateX(50%) translateY(-5px);
+      transform: translateX(50%) translateY(-3px);
     }
   }
 `;
@@ -100,8 +103,8 @@ const Footer = () => {
       
       <ScrollToTopButton
         onClick={scrollToTop}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         <FaArrowUp />
       </ScrollToTopButton>

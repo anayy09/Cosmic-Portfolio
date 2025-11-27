@@ -6,7 +6,7 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaRss, FaFilePdf } from 'react-icons/
 
 const SocialLinksContainer = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-top: 1.5rem;
   align-items: center;
   height: 100%;
@@ -14,33 +14,33 @@ const SocialLinksContainer = styled.div`
 `;
 
 const SocialLink = styled(motion.a)`
-  color: ${props => props.theme.colors.light};
-  font-size: 1.75rem;
-  transition: ${props => props.theme.transitions.standard};
+  color: ${props => props.theme.colors.muted};
+  font-size: 1.4rem;
+  transition: ${props => props.theme.transitions.fast};
   align-self: center;
   margin-top: 0.5rem;
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-3px);
+    color: ${props => props.theme.colors.light};
+    transform: translateY(-2px);
   }
 `;
 
 const CvButton = styled(motion.div)`
   display: inline-flex;
   align-items: center;
-  padding: 0.8rem 1.5rem;
+  padding: 0.7rem 1.25rem;
   background: transparent;
-  color: ${props => props.theme.colors.primary};
-  border: 1px solid ${props => props.theme.colors.primary};
-  border-radius: 5px;
-  font-size: 1rem;
+  color: ${props => props.theme.colors.light};
+  border: 1px solid rgba(91, 141, 239, 0.3);
+  border-radius: 4px;
+  font-size: 0.9rem;
   font-weight: 500;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.3s ease;
-  max-width: 200px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 180px;
   
   a {
     color: inherit;
@@ -51,15 +51,15 @@ const CvButton = styled(motion.div)`
   }
   
   &:hover {
-    background: rgba(66, 133, 244, 0.1);
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-3px);
+    background: rgba(91, 141, 239, 0.08);
+    border-color: rgba(91, 141, 239, 0.5);
+    transform: translateY(-2px);
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    max-width: 180px;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    max-width: 160px;
   }
 `;
 
@@ -69,18 +69,18 @@ const iconVariants = {
     scale: 1,
     opacity: 1,
     transition: {
-      delay: i * 0.1,
+      delay: i * 0.08,
       type: "spring",
-      stiffness: 260,
-      damping: 20
+      stiffness: 180,
+      damping: 18
     }
   }),
   hover: {
-    scale: 1.2,
+    scale: 1.1,
     transition: {
       type: "spring",
-      stiffness: 400,
-      damping: 10
+      stiffness: 300,
+      damping: 15
     }
   }
 };

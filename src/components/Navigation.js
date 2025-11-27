@@ -12,25 +12,29 @@ const NavContainer = styled(motion.header)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   background: ${props => props.scrolled 
-    ? 'rgba(10, 25, 47, 0.85)' 
+    ? 'rgba(16, 22, 36, 0.9)' 
     : 'transparent'};
-  transition: background 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: ${props => props.scrolled 
-    ? '0 10px 30px -10px rgba(0, 0, 0, 0.3)' 
+    ? '0 4px 20px rgba(0, 0, 0, 0.15)' 
     : 'none'};
+  border-bottom: ${props => props.scrolled 
+    ? '1px solid rgba(91, 141, 239, 0.08)' 
+    : '1px solid transparent'};
 `;
 
 const Logo = styled(motion.div)`
   font-family: ${props => props.theme.fonts.heading};
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.light};
   cursor: pointer;
+  letter-spacing: -0.02em;
   
   span {
-    color: ${props => props.theme.colors.accent};
+    color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -45,20 +49,26 @@ const NavLinks = styled.nav`
 `;
 
 const NavLink = styled(motion.a)`
-  color: ${props => props.theme.colors.light};
+  color: ${props => props.theme.colors.muted};
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   position: relative;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease;
   
   &::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -4px;
     left: 0;
     width: 0;
-    height: 2px;
+    height: 1px;
     background: ${props => props.theme.colors.primary};
-    transition: width 0.3s ease;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover {
+    color: ${props => props.theme.colors.light};
   }
   
   &:hover::after {
@@ -86,25 +96,32 @@ const MobileMenu = styled(motion.div)`
   top: 0;
   right: 0;
   width: 75%;
-  max-width: 400px;
+  max-width: 360px;
   height: 100vh;
-  background: ${props => props.theme.colors.darkBlue};
-  padding: 6rem 2rem 2rem;
+  background: rgba(16, 22, 36, 0.98);
+  backdrop-filter: blur(20px);
+  padding: 5rem 2rem 2rem;
   z-index: 105;
+  border-left: 1px solid rgba(91, 141, 239, 0.1);
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 `;
 
 const MobileNavLink = styled(motion.a)`
   color: ${props => props.theme.colors.light};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 500;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(91, 141, 239, 0.08);
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: ${props => props.theme.colors.primary};
+  }
 `;
 
 const Navigation = () => {
@@ -137,7 +154,7 @@ const Navigation = () => {
       scrolled={scrolled}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+      transition={{ type: 'spring', stiffness: 80, damping: 18 }}
     >
       <Logo
         initial={{ opacity: 0 }}
@@ -156,8 +173,8 @@ const Navigation = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 * (i + 1) }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             {item.name}
           </NavLink>
