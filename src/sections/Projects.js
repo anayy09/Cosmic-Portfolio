@@ -76,13 +76,18 @@ const BentoGrid = styled(motion.div)`
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(180px, auto);
+  grid-auto-rows: minmax(140px, auto);
   gap: 1.25rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
     gap: 1rem;
+  }
+  
+  @media (min-width: 1600px) {
+    max-width: 1500px;
+    gap: 1.5rem;
   }
 `;
 
@@ -108,7 +113,7 @@ const getGridSpan = (index, isMobile) => {
 const ProjectCard = styled(motion.div)`
   background: ${props => props.theme.colors.surface};
   backdrop-filter: blur(16px);
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid ${props => props.theme.colors.border};
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -119,8 +124,8 @@ const ProjectCard = styled(motion.div)`
   
   &:hover {
     border-color: rgba(91, 141, 239, 0.4);
-    box-shadow: 0 20px 60px rgba(91, 141, 239, 0.15);
-    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(91, 141, 239, 0.12);
+    transform: translateY(-3px);
   }
   
   ${props => props.isFeatured && css`
@@ -132,32 +137,41 @@ const ProjectCard = styled(motion.div)`
   `}
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    border-radius: 16px;
+    border-radius: 14px;
   }
 `;
 
 const ProjectImage = styled.div`
-  height: ${props => props.isFeatured ? '600px' : '250px'};
+  height: ${props => props.isFeatured ? '460px' : '160px'};
   background: linear-gradient(135deg, rgba(22, 30, 48, 0.8) 0%, rgba(15, 23, 41, 0.9) 100%);
   background-image: url(${props => props.imageUrl});
   background-size: cover;
   background-position: center;
   position: relative;
+  flex-shrink: 0;
   
   &::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent ${props => props.isFeatured ? '70%' : '50%'}, ${props => props.theme.colors.surface});
+    background: linear-gradient(to bottom, transparent ${props => props.isFeatured ? '60%' : '40%'}, ${props => props.theme.colors.surface});
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    height: 120px;
+    height: ${props => props.isFeatured ? '180px' : '120px'};
+    
+    &::after {
+      background: linear-gradient(to bottom, transparent 40%, ${props => props.theme.colors.surface});
+    }
+  }
+  
+  @media (min-width: 1600px) {
+    height: ${props => props.isFeatured ? '420px' : '180px'};
   }
 `;
 
 const ProjectContent = styled.div`
-  padding: ${props => props.isFeatured ? '1.5rem 2rem' : '1.25rem'};
+  padding: ${props => props.isFeatured ? '1.25rem 1.5rem' : '1rem'};
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -168,11 +182,17 @@ const ProjectContent = styled.div`
     left: 0;
     right: 0;
     background: linear-gradient(to top, rgba(15, 23, 41, 0.95) 0%, transparent 100%);
-    padding: 2rem;
+    padding: 1.5rem;
   `}
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    position: static;
+    background: none;
     padding: 1rem;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: ${props => props.isFeatured ? '1.5rem 2rem' : '1.25rem'};
   }
 `;
 
@@ -180,18 +200,22 @@ const ProjectHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: ${props => props.isFeatured ? '1.5rem' : '1.25rem'};
+  font-size: ${props => props.isFeatured ? '1.25rem' : '1.05rem'};
   color: ${props => props.theme.colors.light};
   line-height: 1.3;
   margin: 0;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.1rem;
+    font-size: ${props => props.isFeatured ? '1.15rem' : '1rem'};
+  }
+  
+  @media (min-width: 1600px) {
+    font-size: ${props => props.isFeatured ? '1.4rem' : '1.15rem'};
   }
 `;
 
@@ -202,16 +226,16 @@ const ProjectLinks = styled.div`
 `;
 
 const ProjectLink = styled.a`
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.colors.light};
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: all 0.25s ease;
   
   &:hover {
@@ -223,20 +247,24 @@ const ProjectLink = styled.a`
 `;
 
 const ProjectDescription = styled.p`
-  font-size: ${props => props.isFeatured ? '1.25rem' : '1.1rem'};
-  line-height: 1.65;
+  font-size: ${props => props.isFeatured ? '0.95rem' : '0.85rem'};
+  line-height: 1.6;
   color: ${props => props.theme.colors.muted};
   flex-grow: 1;
   margin: 0;
   
   display: -webkit-box;
-  -webkit-line-clamp: ${props => props.isFeatured ? 4 : 2};
+  -webkit-line-clamp: ${props => props.isFeatured ? 3 : 2};
   -webkit-box-orient: vertical;
   overflow: hidden;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     font-size: 0.85rem;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
+  }
+  
+  @media (min-width: 1600px) {
+    font-size: ${props => props.isFeatured ? '1rem' : '0.9rem'};
   }
 `;
 
@@ -244,9 +272,14 @@ const ProjectFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 0.5rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const ProjectTags = styled.div`
@@ -256,26 +289,32 @@ const ProjectTags = styled.div`
 `;
 
 const ProjectTag = styled.span`
-  font-size: 1rem;
-  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 50px;
   background: rgba(91, 141, 239, 0.1);
   color: ${props => props.theme.colors.primaryMuted};
   font-family: ${props => props.theme.fonts.code};
   border: 1px solid rgba(91, 141, 239, 0.15);
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
 `;
 
 const ProjectLanguage = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 1rem;
+  gap: 0.35rem;
+  font-size: 0.8rem;
   color: ${props => props.theme.colors.muted};
+  flex-shrink: 0;
   
   &::before {
     content: '';
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background-color: ${props => {
       switch(props.language?.toLowerCase()) {
@@ -288,16 +327,25 @@ const ProjectLanguage = styled.div`
       }
     }};
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.75rem;
+    
+    &::before {
+      width: 6px;
+      height: 6px;
+    }
+  }
 `;
 
 const FeaturedBadge = styled.div`
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  padding: 0.35rem 0.85rem;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.25rem 0.65rem;
   background: ${props => props.theme.gradients.nebula};
   border-radius: 50px;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: white;
   text-transform: uppercase;

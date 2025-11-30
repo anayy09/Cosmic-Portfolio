@@ -41,6 +41,10 @@ const SectionHeader = styled.div`
   max-width: 1200px;
   margin: 0 auto 4rem;
   text-align: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const SectionLabel = styled(motion.span)`
@@ -88,8 +92,8 @@ const SkillCategory = styled(motion.div)`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1.75rem;
-    border-radius: 16px;
+    padding: 1.25rem;
+    border-radius: 14px;
   }
 `;
 
@@ -100,6 +104,12 @@ const CategoryHeader = styled.div`
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    gap: 0.5rem;
+  }
 `;
 
 const CategoryIcon = styled.div`
@@ -111,6 +121,13 @@ const CategoryIcon = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 1rem;
+  }
 `;
 
 const CategoryTitle = styled.h3`
@@ -118,12 +135,25 @@ const CategoryTitle = styled.h3`
   color: ${props => props.theme.colors.light};
   margin: 0;
   font-weight: 600;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.1rem;
+  }
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 0.75rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const SkillItem = styled(motion.a)`
@@ -144,6 +174,12 @@ const SkillItem = styled(motion.a)`
     border-color: rgba(91, 141, 239, 0.2);
     transform: translateY(-2px);
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0.6rem 0.4rem;
+    gap: 0.35rem;
+    border-radius: 10px;
+  }
 `;
 
 const SkillIcon = styled.div`
@@ -155,8 +191,12 @@ const SkillIcon = styled.div`
     color: ${props => props.theme.colors.primary};
   }
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.5rem;
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.75rem;
+    font-size: 1.35rem;
   }
 `;
 
@@ -169,6 +209,11 @@ const SkillName = styled.span`
   
   ${SkillItem}:hover & {
     color: ${props => props.theme.colors.light};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 0.7rem;
+    line-height: 1.15;
   }
 `;
 

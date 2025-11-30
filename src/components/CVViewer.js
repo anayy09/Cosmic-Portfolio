@@ -11,8 +11,16 @@ const CVContainer = styled.div`
   position: relative;
   overflow: hidden;
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1rem;
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.5rem;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 3rem 4rem;
   }
 `;
 
@@ -46,13 +54,24 @@ const Header = styled(motion.header)`
   margin-bottom: 2rem;
   position: relative;
   z-index: 10;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-bottom: 1.5rem;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
     gap: 0.75rem;
     align-items: stretch;
     margin-bottom: 1rem;
-    padding: 0 0.5rem;
+  }
+  
+  @media (min-width: 1600px) {
+    max-width: 1600px;
+    margin-bottom: 2.5rem;
   }
 `;
 
@@ -77,8 +96,13 @@ const BackButton = styled(Link)`
     transform: translateY(-2px);
   }
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.5rem 0.9rem;
+    padding: 0.6rem 1rem;
     font-size: 0.85rem;
     justify-content: center;
   }
@@ -94,9 +118,17 @@ const Title = styled(motion.h1)`
   text-align: center;
   letter-spacing: -0.02em;
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.5rem;
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.35rem;
-    margin: 0;
+    font-size: 1.25rem;
+    margin: 0.25rem 0;
+  }
+  
+  @media (min-width: 1600px) {
+    font-size: 2.5rem;
   }
 `;
 
@@ -104,6 +136,10 @@ const Controls = styled(motion.div)`
   display: flex;
   gap: 1rem;
   align-items: center;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: 0.75rem;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     display: none;
@@ -155,13 +191,24 @@ const PDFContainer = styled(motion.div)`
   z-index: 5;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 200px);
+  align-items: flex-start;
+  min-height: calc(100vh - 180px);
   padding: 1rem;
   
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0.5rem;
+    min-height: calc(100vh - 140px);
+  }
+  
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.25rem;
-    min-height: calc(100vh - 120px);
+    padding: 0;
+    min-height: calc(100vh - 100px);
+    align-items: stretch;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 1.5rem;
+    min-height: calc(100vh - 200px);
   }
 `;
 
@@ -175,37 +222,67 @@ const PDFWrapper = styled.div`
   backdrop-filter: blur(16px);
   border: 1px solid rgba(91, 141, 239, 0.1);
   max-width: 100%;
-  max-height: 100%;
-  overflow: auto;
+  overflow: hidden;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1rem;
+    border-radius: 10px;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.5rem;
-    border-radius: 8px;
-    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    border: none;
     width: 100%;
-    box-shadow: 
-      ${props => props.theme.shadows.medium},
-      0 0 20px rgba(91, 141, 239, 0.08);
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 2rem;
+    border-radius: 16px;
   }
 `;
 
 const PDFEmbed = styled.iframe`
-  width: ${props => props.fullscreen ? '90vw' : '800px'};
-  height: ${props => props.fullscreen ? '85vh' : '1000px'};
+  width: ${props => props.fullscreen ? '90vw' : '850px'};
+  height: ${props => props.fullscreen ? '85vh' : 'calc(100vh - 200px)'};
+  max-height: 1200px;
   border: none;
   border-radius: 10px;
   box-shadow: ${props => props.theme.shadows.medium};
+  display: block;
+  
+  @media (max-width: ${props => props.theme.breakpoints.laptop}) {
+    width: ${props => props.fullscreen ? '95vw' : '100%'};
+    max-width: 750px;
+    height: ${props => props.fullscreen ? '80vh' : 'calc(100vh - 180px)'};
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    width: ${props => props.fullscreen ? '95vw' : '100%'};
-    height: ${props => props.fullscreen ? '80vh' : '600px'};
+    width: 100%;
+    max-width: none;
+    height: calc(100vh - 160px);
+    border-radius: 8px;
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    width: 100vw;
-    height: 85vh;
-    border-radius: 8px;
-    min-height: 500px;
+    width: 100%;
+    height: calc(100vh - 110px);
+    min-height: 450px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  @media (min-width: 1600px) {
+    width: ${props => props.fullscreen ? '85vw' : '1000px'};
+    height: ${props => props.fullscreen ? '85vh' : 'calc(100vh - 220px)'};
+    max-height: 1400px;
+    border-radius: 12px;
+  }
+  
+  @media (min-width: 2000px) {
+    width: ${props => props.fullscreen ? '80vw' : '1100px'};
   }
 `;
 

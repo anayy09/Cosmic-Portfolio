@@ -71,7 +71,7 @@ const TimelineWrapper = styled(motion.div)`
   gap: 0;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    grid-template-columns: auto 1fr;
+    display: block;
   }
 `;
 
@@ -87,8 +87,7 @@ const TimelineSpine = styled.div`
   border-radius: 3px;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    width: 2px;
-    margin: 0 1rem;
+    display: none;
   }
 `;
 
@@ -111,7 +110,7 @@ const EntriesRight = styled.div`
   padding-left: 2rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding-left: 0;
+    display: none;
   }
 `;
 
@@ -151,14 +150,7 @@ const EntryConnector = styled.div`
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    left: -1rem;
-    right: auto;
-    width: 1rem;
-    
-    &::after {
-      left: -6px;
-      right: auto;
-    }
+    display: none;
   }
 `;
 
@@ -194,6 +186,10 @@ const EntryHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const EntryIcon = styled.div`
@@ -216,6 +212,16 @@ const EntryIcon = styled.div`
     color: ${props => props.$type === 'experience' 
       ? props.theme.colors.primary 
       : props.theme.colors.secondary};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    
+    svg {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -249,6 +255,11 @@ const EntryTitle = styled.h3`
   overflow: ${props => props.$active ? 'visible' : 'hidden'};
   text-overflow: ellipsis;
   transition: all 0.3s ease;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: ${props => props.$active ? '1.1rem' : '1rem'};
+    white-space: normal;
+  }
 `;
 
 const EntryOrg = styled.p`
@@ -256,6 +267,10 @@ const EntryOrg = styled.p`
   font-weight: 500;
   color: ${props => props.theme.colors.primaryMuted};
   margin: 0.15rem 0 0 0;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+  }
 `;
 
 const EntryDate = styled.span`
@@ -263,6 +278,11 @@ const EntryDate = styled.span`
   font-size: 1rem;
   color: ${props => props.theme.colors.muted};
   white-space: nowrap;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 0.8rem;
+    margin-left: auto;
+  }
 `;
 
 const EntryHeaderRight = styled.div`
@@ -270,6 +290,15 @@ const EntryHeaderRight = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: 0.35rem;
+  flex-shrink: 0;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-left: calc(36px + 0.75rem);
+  }
 `;
 
 /* Expanded content */
@@ -358,7 +387,10 @@ const MobileEntries = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
+    border-left: 2px solid rgba(91, 141, 239, 0.2);
+    padding-left: 1rem;
+    margin-left: 0.5rem;
   }
 `;
 
