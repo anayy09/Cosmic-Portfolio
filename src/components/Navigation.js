@@ -162,7 +162,7 @@ const Navigation = () => {
         transition={{ delay: 0.2 }}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-        anay<span>.</span>live
+        anay<span>.</span>codes
       </Logo>
       
       <NavLinks>
