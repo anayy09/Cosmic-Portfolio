@@ -230,6 +230,17 @@ const personalInfo = {
 
   publications: [
     {
+      id: "pub-5",
+      title: "Contrastive Learning and Large Language Models for Depression Detection from Social Media",
+      authors: [""],
+      journal: "2025 IEEE International Conference on Contemporary Computing & Communications",
+      year: "Dec 2025",
+      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, & F1-scores.",
+      status: "Published",
+      type: "Conference",
+      url: "https://doi.org/10.1109/InC465408.2025.11256322"
+    },
+    {
       id: "pub-1",
       title: "Battery-Aware Super-Peer & Fountain Coding in Java P2P Systems",
       authors: [""],
@@ -267,23 +278,12 @@ const personalInfo = {
       title: "Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data",
       authors: [""],
       journal: "5th International Conference on Innovations in Computational Intelligence & Computer Vision",
-      year: "2025",
+      year: "Feb 2026",
       description: "Introduces a multimodal dataset & ensemble ML framework for stress monitoring, improving predictive accuracy & class balance.",
       status: "Accepted",
       type: "Conference",
-      url: ""
+      url: "https://doi.org/10.48550/arXiv.2507.07589"
     },
-    {
-      id: "pub-5",
-      title: "Contrastive Learning & Large Language Models for Depression Detection from Social Media",
-      authors: [""],
-      journal: "2025 IEEE International Conference on Contemporary Computing & Communications",
-      year: "2025",
-      description: "Explores using contrastive learning with LLMs for depression detection on social media, demonstrating improved precision, recall, & F1-scores.",
-      status: "Accepted",
-      type: "Conference",
-      url: ""
-    }
   ],
 
   patents: [

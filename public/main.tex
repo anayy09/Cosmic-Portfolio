@@ -102,7 +102,7 @@
   \textbf{{\LARGE ANAY SINHAL}} & Gainesville, FL, USA \\
   Email: \href{mailto:sinhal.anay@ufl.edu}{sinhal.anay@ufl.edu} & Mobile: +1 (352) 219-5579 \\
   GitHub: \href{https://github.com/anayy09}{anayy09} & LinkedIn: \href{https://www.linkedin.com/in/anaysinhal/}{in/anaysinhal} \\
-  Portfolio: \href{https://anaysinhal.vercel.app/}{anaysinhal.vercel.app} & Available for Summer 2026 internships (May to Aug 2026) \\
+  Portfolio: \href{https://www.anay.codes/}{anay.codes} & Available for Summer 2026 internships (May to Aug 2026) \\
 \end{tabular*}
 
 %-----------EDUCATION-----------
@@ -196,32 +196,46 @@
   \resumeSubHeadingListStart
 
     \resumeProjectHeading
+      {\textbf{\href{https://github.com/anayy09/ehr-timeline-triage}{EHR Timeline Triage}} $|$ \emph{Python, PyTorch, FastAPI, Next.js, DuckDB, Docker}}{\textit{Nov 2025}}
+    \resumeItemListStart
+      \resumeItem{Built a research prototype that converts longitudinal EHR events into fixed-width time bins \& trains LR, GRU, \& Transformer models for 30 day readmission \& 48 hour ICU mortality prediction with AUROC, AUPRC, Brier score, \& calibration evaluation.}
+      \resumeItem{Exposed the models through a FastAPI service \& interactive timeline UI that surfaces risk trajectories \& feature attribution based explanations over synthetic EHR cohorts.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{\href{https://github.com/anayy09/radiology-copilot}{Radiology Copilot}} $|$ \emph{PyTorch, MONAI, FastAPI, Next.js, Express, PostgreSQL, Docker}}{\textit{Nov 2025}}
+    \resumeItemListStart
+      \resumeItem{Developed a full stack radiology decision support app where clinicians can upload chest X ray studies, run a multimodal CLIP style model that combines ViT image encoder \& ClinicalBERT text encoder, \& obtain multi label findings with calibrated uncertainty.}
+      \resumeItem{Integrated Grad CAM saliency overlays, AI drafted radiology reports, \& a study store backed by PostgreSQL behind a Next.js dashboard with study lifecycle tracking \& editing or export workflow.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
       {\textbf{\href{https://github.com/anayy09/Medlyze}{Medlyze: AI Powered Diagnostic Support Platform}} $|$ \emph{Next.js 15, PostgreSQL/Prisma, Tailwind, LLM}}{\textit{Oct 2025}}
     \resumeItemListStart
-      \resumeItem{Implemented encrypted medical report intake with AES 256 file encryption, regex based de identification, and role based access for patients and clinicians.}
-      \resumeItem{Added multimodal analysis across PDFs and images using LLM and vision models with longitudinal biomarker tracking and risk scoring views.}
+      \resumeItem{Implemented encrypted medical report intake with AES 256 file encryption, regex based de identification, \& role based access for patients \& clinicians.}
+      \resumeItem{Added multimodal analysis across PDFs \& images using LLM \& vision models with longitudinal biomarker tracking \& risk scoring views.}
     \resumeItemListEnd
 
     \resumeProjectHeading
       {\textbf{\href{https://github.com/anayy09/Sepsis-Sentinel}{Sepsis Sentinel}} $|$ \emph{Python, FastAPI, XGBoost, React, Docker, PostgreSQL}}{\textit{Jul 2025}}
     \resumeItemListStart
-      \resumeItem{Trained XGBoost and LightGBM models for early sepsis detection from EHR data with AUROC 0.89 on validation cohorts.}
-      \resumeItem{Built a FastAPI service and React dashboard to surface risk scores and trends, showing up to 4 hour earlier alerts in simulation.}
+      \resumeItem{Trained XGBoost \& LightGBM models for early sepsis detection from EHR data with AUROC 0.89 on validation cohorts.}
+      \resumeItem{Built a FastAPI service \& React dashboard to surface risk scores \& trends, showing up to 4 hour earlier alerts in simulation.}
     \resumeItemListEnd
 
-    \resumeProjectHeading
-      {\textbf{\href{https://github.com/anayy09/Finmate}{FinMate: Personal Finance Manager}} $|$ \emph{Django, React, Chakra UI, D3, Plotly}}{\textit{Jun 2025}}
-    \resumeItemListStart
-      \resumeItem{Integrated Plaid API, Random Forest forecasts, and Isolation Forest anomaly detection in a Django backend to generate monthly PDF and CSV spend reports.}
-      \resumeItem{Developed a React dashboard with interactive charts and budget alerts via email and in app notifications.}
-    \resumeItemListEnd
+    % \resumeProjectHeading
+    %   {\textbf{\href{https://github.com/anayy09/Finmate}{FinMate: Personal Finance Manager}} $|$ \emph{Django, React, Chakra UI, D3, Plotly}}{\textit{Jun 2025}}
+    % \resumeItemListStart
+    %   \resumeItem{Integrated Plaid API, Random Forest forecasts, \& Isolation Forest anomaly detection in a Django backend to generate monthly PDF \& CSV spend reports.}
+    %   \resumeItem{Developed a React dashboard with interactive charts \& budget alerts via email \& in app notifications.}
+    % \resumeItemListEnd
 
-    \resumeProjectHeading
-      {\textbf{\href{https://github.com/anayy09/Local-News-Analytics}{Intelligent Local News Analytics Platform}} $|$ \emph{Python, spaCy, BERTopic, BART, Flask}}{\textit{Apr 2025}}
-    \resumeItemListStart
-      \resumeItem{Built an NLP pipeline that clusters over 2k news items per day and flags emerging events with F1 score 0.83.}
-      \resumeItem{Deployed a Flask dashboard with scheduled updates to reduce manual monitoring effort for editors.}
-    \resumeItemListEnd
+    % \resumeProjectHeading
+    %   {\textbf{\href{https://github.com/anayy09/Local-News-Analytics}{Intelligent Local News Analytics Platform}} $|$ \emph{Python, spaCy, BERTopic, BART, Flask}}{\textit{Apr 2025}}
+    % \resumeItemListStart
+    %   \resumeItem{Built an NLP pipeline that clusters over 2k news items per day \& flags emerging events with F1 score 0.83.}
+    %   \resumeItem{Deployed a Flask dashboard with scheduled updates to reduce manual monitoring effort for editors.}
+    % \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
@@ -230,20 +244,22 @@
 \begin{itemize}[leftmargin=0.15in, label={}]
   \small
 
+  \item \textbf{Contrastive Learning and Large Language Models for Depression Detection from Social Media.}\\
+  \textit{IEEE International Conference on Contemporary Computing \& Communications}, Dec 2025.
+  \href{https://doi.org/10.1109/InC465408.2025.11256322}{DOI: 10.1109/InC465408.2025.11256322}
+  
   \item \textbf{Battery-Aware Super-Peer and Fountain Coding in Java P2P Systems.}\\
   \textit{Discover Internet of Things}, Springer Nature, Nov 2025. \href{https://doi.org/10.1007/s43926-025-00240-3}{DOI: 10.1007/s43926-025-00240-3}.
 
   \item \textbf{Optimizing Diagnostic Accuracy in Healthcare by Using Deep Learning.}\\
-  \textit{2025 IEEE 4th World Conference on Applied Intelligence and Computing (AIC)}, Nov 2025. \href{https://doi.org/10.1109/AIC66080.2025.11211920}{DOI: 10.1109/AIC66080.2025.11211920}.
+  \textit{IEEE 4th World Conference on Applied Intelligence \& Computing (AIC)}, Nov 2025. \href{https://doi.org/10.1109/AIC66080.2025.11211920}{DOI: 10.1109/AIC66080.2025.11211920}.
 
   \item \textbf{LoRA-Tuned Segment Anything Model for Few-Shot Polyp Segmentation in Colonoscopy Images.}\\
   \textit{Journal of Carcinogenesis}, Sept 2025. \href{https://doi.org/10.64149/J.Carcinog.24.3.372-386}{DOI: 10.64149/J.Carcinog.24.3.372-386}.
 
   \item \textbf{Stress Monitoring in Healthcare: An Ensemble Machine Learning Framework Using Wearable Sensor Data.}\\
-  \textit{Fifth International Conference on Innovations in Computational Intelligence and Computer Vision}, accepted; to appear in Springer proceedings.
+  \textit{International Conference on Innovations in Computational Intelligence \& Computer Vision}, accepted; to appear in Springer.
 
-  \item \textbf{Contrastive Learning and Large Language Models for Depression Detection from Social Media.}\\
-  \textit{2025 IEEE International Conference on Contemporary Computing and Communications}, accepted; to appear in IEEE Xplore.
 
 \end{itemize}
 
