@@ -6,7 +6,7 @@
 
 [![Cosmic Portfolio](./public/demo/demo-home.png)](https://anaysinhal.vercel.app/)
 
-### 🔗 **Live Website**: [https://anaysinhal.vercel.app/](https://anaysinhal.vercel.app/)
+### 🔗 **Live Website**: [anay.codes](https://www.anay.codes/)
 
 ---
 
@@ -23,20 +23,18 @@ Cosmic Portfolio is a cutting-edge, responsive single-page application that pres
 * **📱 Fully Responsive Design**: Seamless experience across all devices and screen sizes
 * **🎭 Advanced Animations**: Smooth, purposeful animations using Framer Motion with scroll-triggered effects
 
-### **Dynamic Content Integration**
-
-* **🔗 GitHub Projects API**: Real-time fetching and display of repositories with advanced filtering and sorting
-* **📝 Hashnode Blog Integration**: Automatic blog post synchronization with rich content display
-* **💼 Professional Timeline**: Interactive education and experience timeline with organization logos
-* **🏆 Certifications & Publications**: Dedicated sections for academic and professional achievements
-
-### **Interactive Sections**
+### **Content Sections**
 
 * **🌟 Hero Section**: Captivating introduction with typed text animations and social links
 * **🛠️ Skills Showcase**: Interactive tech stack grid with hover effects and official resource links
+* **💼 Professional Timeline**: Interactive education and experience timeline with organization logos
 * **📂 Featured Projects**: Curated project gallery with live demos, source code links, and detailed descriptions
+* **📝 Blog Integration**: Automatic blog post synchronization from Hashnode with rich content display
+* **📚 Publications**: Academic publications and research papers display
+* **🏆 Certifications**: Professional certifications and achievements (currently disabled)
 * **🗺️ Cosmic Journeys**: Interactive world map showing travel experiences with dynamic zoom and region switching
 * **📬 Contact Form**: Integrated EmailJS-powered contact system with form validation
+* **📄 CV Viewer**: Dedicated page for viewing the full CV as a PDF
 * **📱 Social Integration**: Seamless links to GitHub, LinkedIn, blog, and CV
 
 ### **Advanced Technical Features**
@@ -72,12 +70,6 @@ Built with a carefully selected modern technology stack for optimal performance 
 * **📊 D3 (d3-fetch, d3-scale) 4.0** - Data manipulation and scaling utilities
 * **🗺️ Supercluster 8.0** - Fast geospatial point clustering for map optimization
 
-### **Charts & Advanced Visualization**
-
-* **📈 AMCharts 5.11** - Professional charting library with extensive features
-* **🔤 AMCharts 5 Fonts** - Typography and icon fonts for charts
-* **🌍 AMCharts 5 GeoData** - Geographic data for advanced map visualizations
-
 ### **Communication & UX**
 
 * **📧 EmailJS 4.3** - Direct email sending from frontend contact forms
@@ -110,6 +102,8 @@ cosmic-portfolio/
 │   │   ├── 🖼️ custom-4.png
 │   │   ├── 🖼️ custom-5.png
 │   │   └── 🖼️ custom-6.png
+│   ├── 📄 CV_Sinhal_Anay.pdf     # CV PDF for the CV Viewer
+│   ├── 📄 main.tex               # LaTeX source for CV generation
 │   └── 📁 textures/              # 3D background textures
 │       └── 🌙 2k_moon.jpg        # High-resolution moon texture
 ├── 📁 src/
@@ -127,24 +121,25 @@ cosmic-portfolio/
 │   │   ├── 🧭 Navigation.js      # Responsive navigation bar
 │   │   ├── 👥 SocialLinks.js     # Social media link components
 │   │   ├── ⌨️ TypedText.js       # Typing animation component
-│   │   └── 🦶 Footer.js          # Site footer with credits
+│   │   ├── 🦶 Footer.js          # Site footer with credits
+│   │   └── 📄 CVViewer.js        # PDF CV viewer component
 │   │
 │   ├── ⚙️ config/               # Configuration and data management
 │   │   ├── 👤 personalInfo.js    # All personal content and data
 │   │   └── 🎨 theme.js           # Design system and theme tokens
 │   │
 │   ├── 🎣 hooks/                # Custom React hooks for API integration
-│   │   ├── 📦 useGitHubProjects.js  # GitHub REST API integration
+│   │   ├── 📦 useGitHubProjects.js  # GitHub REST API integration (unused)
 │   │   └── 📝 useHashnodeBlogs.js   # Hashnode GraphQL API integration
 │   │
 │   ├── 📑 sections/             # Major page sections and features
 │   │   ├── 🦸 Hero.js            # Landing section with introduction
 │   │   ├── 🛠️ Skills.js          # Interactive tech stack showcase
-│   │   ├── 📈 Timeline.js        # Education and experience timeline
+│   │   ├── � Timeline.js        # Education and experience timeline
 │   │   ├── 📂 Projects.js        # Featured projects gallery
 │   │   ├── 📝 Blogs.js           # Blog posts integration
-│   │   ├── 🏆 Publications.js    # Academic publications display
-│   │   ├── 🎓 Certifications.js  # Professional certifications
+│   │   ├── 📚 Publications.js    # Academic publications display
+│   │   ├── 🏆 Certifications.js  # Professional certifications (disabled)
 │   │   ├── 🗺️ CosmicJourneys.js  # Interactive travel map
 │   │   ├── 📬 Contact.js         # Contact form with EmailJS
 │   │   ├── 🗺️ in.json           # India map TopoJSON data
@@ -154,8 +149,6 @@ cosmic-portfolio/
 │       └── 🌐 GlobalStyles.js    # Styled-components global styles
 │
 ├── 📦 package.json              # Dependencies and build scripts
-├── 📖 README.md                 # Project documentation (this file)
-└── 🤖 AGENT.md                 # Development and architecture guide
 ```
 
 ### **Architecture Highlights**
@@ -173,7 +166,7 @@ cosmic-portfolio/
 
 Before you begin, ensure you have these tools installed:
 
-* **Node.js** (v18.x or higher) - [Download here](https://nodejs.org/)
+* **Node.js** (v24.x) - [Download here](https://nodejs.org/)
 * **npm** (comes with Node.js) or **yarn** - Package manager
 * **Git** - Version control system
 
@@ -314,7 +307,7 @@ Edit `src/config/personalInfo.js` to update:
 * **💼 Experience**: Work experience with logos, dates, and descriptions
 * **🎓 Education**: Academic background and achievements
 * **📝 Projects**: Custom project showcase with images and links
-* **🏆 Certifications**: Professional certifications and credentials
+* **🏆 Certifications**: Professional certifications and credentials (currently commented out)
 * **📚 Publications**: Academic papers and research publications
 * **🗺️ Travel Journeys**: Places visited with coordinates and stories
 * **⚙️ API Configuration**: GitHub and Hashnode usernames, EmailJS settings
@@ -346,10 +339,13 @@ Each section can be customized independently:
 * **`Hero.js`**: Landing page introduction and social links
 * **`Skills.js`**: Technology showcase with icons and descriptions
 * **`Timeline.js`**: Professional and educational timeline
-* **`Projects.js`**: Featured projects gallery
+* **`Projects.js`**: Featured projects gallery (uses custom projects from personalInfo)
 * **`Blogs.js`**: Blog integration settings
+* **`Publications.js`**: Academic publications display
+* **`Certifications.js`**: Professional certifications (currently disabled)
 * **`CosmicJourneys.js`**: Travel map configuration
 * **`Contact.js`**: Contact form styling and validation
+* **`CVViewer.js`**: CV PDF viewer (displays /CV_Sinhal_Anay.pdf)
 
 ### **Environment Configuration**
 
@@ -361,7 +357,7 @@ REACT_APP_EMAILJS_SERVICE_ID=your_dev_service_id
 REACT_APP_EMAILJS_TEMPLATE_ID=your_dev_template_id
 REACT_APP_EMAILJS_PUBLIC_KEY=your_dev_public_key
 
-# Optional: GitHub API token for higher rate limits
+# Optional: GitHub API token for higher rate limits (currently unused)
 REACT_APP_GITHUB_TOKEN=your_github_token
 ```
 
@@ -428,6 +424,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 * **📧 Email**: [sinhal.anay@ufl.edu](mailto:sinhal.anay@ufl.edu)
 * **💼 LinkedIn**: [linkedin.com/in/anaysinhal](https://linkedin.com/in/anaysinhal)
+* **📄 CV**: [View CV](https://anaysinhal.vercel.app/cv)
 ---
 
 ⭐ **Star this repository if you found it helpful!** ⭐
