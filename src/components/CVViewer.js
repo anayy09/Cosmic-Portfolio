@@ -40,10 +40,9 @@ const BackgroundEffects = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(91, 141, 239, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(123, 104, 182, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(201, 160, 220, 0.08) 0%, transparent 50%);
+    background:
+      radial-gradient(ellipse at 15% 85%, rgba(91, 141, 239, 0.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 15%, rgba(123, 104, 182, 0.06) 0%, transparent 45%);
   }
 `;
 
@@ -76,6 +75,9 @@ const Header = styled(motion.header)`
 `;
 
 const BackButton = styled(Link)`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -108,27 +110,35 @@ const BackButton = styled(Link)`
   }
 `;
 
-const Title = styled(motion.h1)`
-  font-size: 2rem;
-  font-weight: 600;
-  background: ${props => props.theme.gradients.nebula};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+const Title = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
   text-align: center;
-  letter-spacing: -0.02em;
-  
+`;
+
+const TitleLabel = styled.span`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(91, 141, 239, 0.45);
+`;
+
+const TitleMain = styled.span`
+  font-family: ${props => props.theme.fonts.display};
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.01em;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.5rem;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     font-size: 1.25rem;
-    margin: 0.25rem 0;
   }
-  
-  @media (min-width: 1600px) {
-    font-size: 2.5rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
   }
 `;
 
@@ -351,11 +361,12 @@ const CVViewer = () => {
         <Header>
           <BackButton to="/" variants={itemVariants}>
             <FiArrowLeft />
-            Back
+            // portfolio
           </BackButton>
-          
+
           <Title variants={itemVariants}>
-            Curriculum Vitae
+            <TitleLabel>// research.dossier</TitleLabel>
+            <TitleMain>Curriculum Vitae</TitleMain>
           </Title>
           
           <Controls variants={itemVariants}>            
