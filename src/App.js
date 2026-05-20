@@ -7,29 +7,28 @@ import personalInfo from './config/personalInfo';
 import CosmicBackground from './components/CosmicBackground';
 import Navigation from './components/Navigation';
 import Hero from './sections/Hero';
-import Skills from './sections/Skills';
+import About from './sections/About';
 import Timeline from './sections/Timeline';
 import Projects from './sections/Projects';
-import Blogs from './sections/Blogs';
+import Skills from './sections/Skills';
+import Research from './sections/Research';
+import CosmicJourneys from './sections/CosmicJourneys';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
 import CosmicLoader from './components/CosmicLoader';
-import Publications from './sections/Publications';
-import Certifications from './sections/Certifications';
-import CosmicJourneys from './sections/CosmicJourneys';
 import CVViewer from './components/CVViewer';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 5000);
-    
+    }, 4500);
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   const finishLoading = () => {
     setLoading(false);
   };
@@ -41,6 +40,7 @@ function App() {
       <div className="App">
         <Hero
           name={personalInfo.name}
+          title={personalInfo.title}
           skills={personalInfo.skills}
           description={personalInfo.description}
           github={personalInfo.github}
@@ -48,41 +48,39 @@ function App() {
           email={personalInfo.email}
           blog={personalInfo.blog}
           cv={personalInfo.cv}
+          orcid={personalInfo.orcid}
         />
+        <About about={personalInfo.about} />
         <Timeline
           education={personalInfo.education}
           experience={personalInfo.experience}
         />
-        <Projects 
+        <Projects
           githubUsername={personalInfo.apis.github.username}
           customProjects={personalInfo.customProjects}
         />
-        <Skills />
-        <Blogs 
-          hashnodeUsername={personalInfo.apis.hashnode.username}
-        />
-        <Publications 
+        <Skills skillCategories={personalInfo.skillCategories} />
+        <Research
           publications={personalInfo.publications}
-        />
-        <Certifications 
-          certifications={personalInfo.certifications}  
+          patents={personalInfo.patents}
+          orcid={personalInfo.orcid}
         />
         <CosmicJourneys />
-        <Contact 
+        <Contact
           email={personalInfo.email}
           linkedin={personalInfo.linkedin}
           github={personalInfo.github}
+          orcid={personalInfo.orcid}
         />
         <Footer />
       </div>
     </>
   );
-  
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        
         {loading ? (
           <CosmicLoader finishLoading={finishLoading} />
         ) : (
