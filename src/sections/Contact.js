@@ -345,7 +345,7 @@ const Contact = ({ email, linkedin, github, orcid }) => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SectionLabel>// contact.init</SectionLabel>
+          <SectionLabel>{'// contact.init'}</SectionLabel>
           <SectionTitle>Get in Touch</SectionTitle>
           <SectionSubtitle>
             Open to research collaborations, full-time roles from Dec 2026, and interesting technical conversations.

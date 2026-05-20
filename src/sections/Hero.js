@@ -386,7 +386,7 @@ const Hero = ({ name, title, description, github, linkedin, email, cv }) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, delay: 1.4 }}
       >
-        // 29.6516° N · 82.3248° W · UF IC3
+        {'// 29.6516° N · 82.3248° W · UF IC3'}
       </CoordinateAnnotation>
 
       <Container>
@@ -396,7 +396,7 @@ const Hero = ({ name, title, description, github, linkedin, email, cv }) => {
           initial="hidden"
           animate="visible"
         >
-          <SectionLabel variants={itemVariants}>// mission.brief</SectionLabel>
+          <SectionLabel variants={itemVariants}>{'// mission.brief'}</SectionLabel>
 
           <MetaRow variants={itemVariants}>
             <TitleText>{title}</TitleText>

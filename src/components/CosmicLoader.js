@@ -211,7 +211,7 @@ const CosmicLoader = ({ finishLoading }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Label>// initializing observatory</Label>
+          <Label>{'// initializing observatory'}</Label>
           <ProgressTrack>
             <ProgressFill
               initial={{ width: 0 }}

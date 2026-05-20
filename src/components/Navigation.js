@@ -199,22 +199,22 @@ const MobileNavLink = styled(motion.a)`
   }
 `;
 
+const navItems = [
+  { name: 'Home', href: '#home', id: 'home' },
+  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Timeline', href: '#timeline', id: 'timeline' },
+  { name: 'Projects', href: '#projects', id: 'projects' },
+  { name: 'Skills', href: '#skills', id: 'skills' },
+  { name: 'Research', href: '#research', id: 'research' },
+  { name: 'Journeys', href: '#journeys', id: 'journeys' },
+  { name: 'Contact', href: '#contact', id: 'contact' },
+];
+
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState('home');
-
-  const navItems = [
-    { name: 'Home', href: '#home', id: 'home' },
-    { name: 'About', href: '#about', id: 'about' },
-    { name: 'Timeline', href: '#timeline', id: 'timeline' },
-    { name: 'Projects', href: '#projects', id: 'projects' },
-    { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Research', href: '#research', id: 'research' },
-    { name: 'Journeys', href: '#journeys', id: 'journeys' },
-    { name: 'Contact', href: '#contact', id: 'contact' },
-  ];
 
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;

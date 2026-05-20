@@ -361,11 +361,11 @@ const CVViewer = () => {
         <Header>
           <BackButton to="/" variants={itemVariants}>
             <FiArrowLeft />
-            // portfolio
+            {'// portfolio'}
           </BackButton>
 
           <Title variants={itemVariants}>
-            <TitleLabel>// research.dossier</TitleLabel>
+            <TitleLabel>{'// research.dossier'}</TitleLabel>
             <TitleMain>Curriculum Vitae</TitleMain>
           </Title>
           

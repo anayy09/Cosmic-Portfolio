@@ -251,7 +251,7 @@ const CosmicJourneys = () => {
     return (
       <CosmicJourneysSection id="journeys" ref={ref}>
         <Container>
-          <SectionLabel>// nav.coordinates</SectionLabel>
+          <SectionLabel>{'// nav.coordinates'}</SectionLabel>
           <SectionTitle>Exploration Log</SectionTitle>
         </Container>
       </CosmicJourneysSection>
@@ -274,7 +274,7 @@ const CosmicJourneys = () => {
           initial="hidden"
           animate={controls}
         >
-          <SectionLabel>// nav.coordinates</SectionLabel>
+          <SectionLabel>{'// nav.coordinates'}</SectionLabel>
           <SectionTitle>Exploration Log</SectionTitle>
           <SectionSubtitle>
             Coordinates mapped across physical space — from Gainesville to Guangzhou.

@@ -165,28 +165,6 @@ const ShootingStars = () => {
   return <group ref={trailsGroup} />;
 };
 
-const MoonHalo = ({ position }) => {
-  const haloRef = useRef();
-
-  useFrame(({ clock }) => {
-    if (haloRef.current) {
-      haloRef.current.material.opacity = 0.12 + Math.sin(clock.getElapsedTime() * 0.4) * 0.03;
-    }
-  });
-
-  return (
-    <sprite ref={haloRef} position={position} scale={[28, 28, 1]}>
-      <spriteMaterial
-        transparent
-        opacity={0.14}
-        color={new THREE.Color(0.35, 0.55, 0.95)}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </sprite>
-  );
-};
-
 const RealMoon = () => {
   const moonRef = useRef();
   const { viewport } = useThree();
@@ -219,7 +197,6 @@ const RealMoon = () => {
 
   return (
     <group ref={moonRef} position={fixedMoonPosition}>
-      {/* <MoonHalo position={[0, 0, -0.1]} /> */}
       <sprite scale={[moonSize, moonSize, 1]}>
         <spriteMaterial
           map={moonTexture}

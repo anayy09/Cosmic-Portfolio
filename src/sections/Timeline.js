@@ -499,7 +499,7 @@ const Timeline = ({ education, experience }) => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SectionLabel>// journey.log</SectionLabel>
+          <SectionLabel>{'// journey.log'}</SectionLabel>
           <SectionTitle>Experience & Education</SectionTitle>
           <TabsWrapper>
             {['all', 'experience', 'education'].map(tab => (

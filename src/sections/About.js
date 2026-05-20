@@ -155,7 +155,7 @@ const About = ({ about }) => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
-          <SectionLabel variants={itemVariants}>// about.me</SectionLabel>
+          <SectionLabel variants={itemVariants}>{'// about.me'}</SectionLabel>
           <SectionTitle variants={itemVariants}>Research Focus</SectionTitle>
 
           <IntroCard variants={itemVariants}>

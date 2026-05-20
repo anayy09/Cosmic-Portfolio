@@ -374,7 +374,7 @@ const Research = ({ publications = [], patents = [], orcid }) => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SectionLabel>// research.output</SectionLabel>
+          <SectionLabel>{'// research.output'}</SectionLabel>
           <SectionTitle>Publications & Patents</SectionTitle>
           <SectionSubtitle>
             {publications.length} peer-reviewed papers across IEEE, Springer, and Journal of Carcinogenesis. {patents.length} Indian patents.
