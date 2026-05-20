@@ -1,367 +1,235 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import {
-  SiC,
-  SiCplusplus,
-  SiPython,
-  SiOpenjdk,
-  SiJavascript,
-  SiGo,
-  SiTypescript,
-  SiPhp,
-  SiReact,
-  SiNextdotjs,
-  SiDjango,
-  SiTensorflow,
-  SiKeras,
-  SiPytorch,
-  SiHuggingface,
-  SiMysql,
-  SiGit,
-  SiDocker,
-  SiUnrealengine,
-  SiBlender,
-  SiZoho,
-  SiFigma,
-  SiWordpress
+  SiPython, SiGo, SiTypescript, SiJavascript, SiCplusplus,
+  SiPostgresql, SiGnubash,
+  SiPytorch, SiTensorflow, SiHuggingface, SiScikitlearn,
+  SiFastapi, SiDjango, SiSpringboot, SiNodedotjs, SiReact, SiNextdotjs,
+  SiMongodb, SiRedis, SiDocker, SiAmazonwebservices,
+  SiLinux, SiGit, SiFigma,
 } from 'react-icons/si';
-import personalInfo from '../config/personalInfo';
+import { FaJava } from 'react-icons/fa';
+import { FiCloud } from 'react-icons/fi';
+
+const iconMap = {
+  SiPython: SiPython, SiGo: SiGo, SiTypescript: SiTypescript,
+  SiJavascript: SiJavascript, SiCplusplus: SiCplusplus, SiPostgresql: SiPostgresql,
+  SiGnubash: SiGnubash, FaJava: FaJava,
+  SiPytorch: SiPytorch, SiTensorflow: SiTensorflow, SiHuggingface: SiHuggingface,
+  SiScikitlearn: SiScikitlearn, SiFastapi: SiFastapi, SiDjango: SiDjango,
+  SiSpringboot: SiSpringboot, SiNodedotjs: SiNodedotjs, SiReact: SiReact,
+  SiNextdotjs: SiNextdotjs,
+  SiMongodb: SiMongodb, SiRedis: SiRedis, SiDocker: SiDocker,
+  SiMicrosoftazure: FiCloud, SiAmazonaws: SiAmazonwebservices,
+  SiLinux: SiLinux, SiGit: SiGit, SiFigma: SiFigma,
+};
 
 const SkillsSection = styled.section`
-  padding: 6rem 2rem;
+  padding: 6rem 0;
   position: relative;
-  overflow: hidden;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 3rem 1.5rem;
+    padding: 4rem 0;
   }
 `;
 
-const SectionHeader = styled.div`
-  max-width: 1200px;
-  margin: 0 auto 4rem;
-  text-align: center;
-  
+const Container = styled.div`
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: 2rem;
+    padding: 0 1.5rem;
   }
 `;
 
-const SectionLabel = styled(motion.span)`
+const SectionLabel = styled(motion.p)`
   font-family: ${props => props.theme.fonts.code};
-  color: ${props => props.theme.colors.primary};
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  display: block;
-  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.875rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 4vw, 3rem);
-  background: ${props => props.theme.gradients.nebula};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.02em;
+  margin-bottom: 2.75rem;
 `;
 
-const SkillsContainer = styled(motion.div)`
-  max-width: 1400px;
-  margin: 0 auto;
+const PanelsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+  gap: 1.25rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tabletL}) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 `;
 
-const SkillCategory = styled(motion.div)`
-  background: ${props => props.theme.colors.surface};
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  border: 1px solid ${props => props.theme.colors.border};
-  padding: 2rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
+const Panel = styled(motion.div)`
+  background: rgba(14, 20, 32, 0.72);
+  border: 1px solid rgba(91, 141, 239, 0.1);
+  border-radius: ${props => props.theme.radius.lg};
+  padding: 1.75rem;
+  transition: border-color 0.25s ease;
+
   &:hover {
-    border-color: rgba(91, 141, 239, 0.3);
-    box-shadow: 0 12px 40px rgba(91, 141, 239, 0.1);
+    border-color: rgba(91, 141, 239, 0.2);
   }
-  
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1.25rem;
-    border-radius: 14px;
+    padding: 1.5rem;
   }
 `;
 
-const CategoryHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    gap: 0.5rem;
-  }
+const PanelLabel = styled.p`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.5rem;
 `;
 
-const CategoryIcon = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: ${props => props.gradient || props.theme.gradients.nebulaSubtle};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    font-size: 1rem;
-  }
-`;
-
-const CategoryTitle = styled.h3`
-  font-size: 1.25rem;
-  color: ${props => props.theme.colors.light};
-  margin: 0;
+const PanelTitle = styled.h3`
+  font-family: ${props => props.theme.fonts.heading};
+  font-size: 1rem;
   font-weight: 600;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.1rem;
-  }
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
 `;
 
 const SkillsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 0.75rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const SkillItem = styled(motion.a)`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0.5rem;
-  padding: 1rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px;
+`;
+
+const SkillRow = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: ${props => props.theme.radius.md};
   border: 1px solid transparent;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  
+  transition: background 0.18s ease, border-color 0.18s ease;
+  cursor: default;
+
   &:hover {
-    background: rgba(91, 141, 239, 0.08);
-    border-color: rgba(91, 141, 239, 0.2);
-    transform: translateY(-2px);
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 0.6rem 0.4rem;
-    gap: 0.35rem;
-    border-radius: 10px;
+    background: rgba(91, 141, 239, 0.06);
+    border-color: rgba(91, 141, 239, 0.12);
   }
 `;
 
 const SkillIcon = styled.div`
-  font-size: 2.15rem;
-  color: ${props => props.theme.colors.primaryMuted};
-  transition: color 0.3s ease;
-  
-  ${SkillItem}:hover & {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.colors.muted};
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  transition: color 0.18s ease;
+
+  ${SkillRow}:hover & {
     color: ${props => props.theme.colors.primary};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.5rem;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.35rem;
   }
 `;
 
 const SkillName = styled.span`
+  font-family: ${props => props.theme.fonts.main};
+  font-size: 0.875rem;
+  font-weight: 500;
   color: ${props => props.theme.colors.muted};
-  font-size: 1rem;
-  text-align: center;
-  line-height: 1.2;
-  transition: color 0.3s ease;
-  
-  ${SkillItem}:hover & {
+  transition: color 0.18s ease;
+
+  ${SkillRow}:hover & {
     color: ${props => props.theme.colors.light};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.7rem;
-    line-height: 1.15;
   }
 `;
 
-const iconMap = {
-  'C': SiC,
-  'C++': SiCplusplus,
-  'Python': SiPython,
-  'Java': SiOpenjdk,
-  'JavaScript': SiJavascript,
-  'Golang': SiGo,
-  'TypeScript': SiTypescript,
-  'PHP': SiPhp,
-  'React.js': SiReact,
-  'Next.js': SiNextdotjs,
-  'Django': SiDjango,
-  'TensorFlow': SiTensorflow,
-  'Keras': SiKeras,
-  'PyTorch': SiPytorch,
-  'Hugging Face': SiHuggingface,
-  'MySQL': SiMysql,
-  'Git': SiGit,
-  'Docker': SiDocker,
-  'Unreal Engine': SiUnrealengine,
-  'Blender': SiBlender,
-  'Zoho Creator': SiZoho,
-  'Figma': SiFigma,
-  'WordPress': SiWordpress,
-};
-
-// Categorize skills
-const categorizeSkills = (techStack) => {
-  const categories = {
-    'Languages': ['C', 'C++', 'Python', 'Java', 'JavaScript', 'Golang', 'TypeScript', 'PHP'],
-    'Frameworks & ML': ['React.js', 'Next.js', 'Django', 'TensorFlow', 'Keras', 'PyTorch', 'Hugging Face'],
-    'Tools & Design': ['MySQL', 'Git', 'Docker', 'Unreal Engine', 'Blender', 'Zoho Creator', 'Figma', 'WordPress']
-  };
-  
-  const categorized = {
-    'Languages': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' },
-    'Frameworks & ML': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' },
-    'Tools & Design': { items: [], gradient: 'linear-gradient(135deg, #0D0D12 0%, #101624 50%, #1A2540 100%)' }
-  };
-  
-  techStack.forEach(skill => {
-    for (const [category, skills] of Object.entries(categories)) {
-      if (skills.includes(skill.name)) {
-        categorized[category].items.push(skill);
-        break;
-      }
-    }
-  });
-  
-  return categorized;
-};
-
-const Skills = () => {
-  const { techStack } = personalInfo;
-  const controls = useAnimation();
+const Skills = ({ skillCategories }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.2 });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
-    }
-  };
+  const inView = useInView(ref, { once: true, margin: '-80px' });
 
   const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1 } },
   };
 
-  const categoryVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 80,
-        damping: 12
-      }
-    }
+  const panelVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
   };
 
-  if (!techStack || techStack.length === 0) {
-    return null;
-  }
+  const rowVariants = {
+    hidden: { opacity: 0, x: -8 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+  };
 
-  const categorizedSkills = categorizeSkills(techStack);
+  const categories = skillCategories || [];
 
   return (
-    <SkillsSection id="skills" ref={ref}>
-      <SectionHeader>
-        <SectionLabel variants={headerVariants} initial="hidden" animate={controls}>
-          Expertise
-        </SectionLabel>
-        <SectionTitle variants={headerVariants} initial="hidden" animate={controls}>
-          Skills & Technologies
-        </SectionTitle>
-      </SectionHeader>
-      
-      <SkillsContainer variants={containerVariants} initial="hidden" animate={controls}>
-        {Object.entries(categorizedSkills).map(([category, { items, gradient }]) => (
-          <SkillCategory key={category} variants={categoryVariants}>
-            <CategoryHeader>
-              <CategoryIcon gradient={gradient}>
-                {category === 'Languages' ? '{ }' : category === 'Frameworks & ML' ? '⚡' : '🔧'}
-              </CategoryIcon>
-              <CategoryTitle>{category}</CategoryTitle>
-            </CategoryHeader>
-            
-            <SkillsGrid>
-              {items.map(({ name, url }) => {
-                const Icon = iconMap[name] || SiJavascript;
-                return (
-                  <SkillItem
-                    key={name}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <SkillIcon><Icon /></SkillIcon>
-                    <SkillName>{name}</SkillName>
-                  </SkillItem>
-                );
-              })}
-            </SkillsGrid>
-          </SkillCategory>
-        ))}
-      </SkillsContainer>
+    <SkillsSection id="skills">
+      <Container ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <SectionLabel>// tech.stack</SectionLabel>
+          <SectionTitle>Skills</SectionTitle>
+        </motion.div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+        >
+          <PanelsGrid>
+            {categories.map((category) => (
+              <Panel
+                key={category.id}
+                variants={panelVariants}
+                whileHover={{ y: -2 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 16 }}
+              >
+                <PanelLabel>{category.label}</PanelLabel>
+                <PanelTitle>{category.title}</PanelTitle>
+                <SkillsGrid>
+                  {category.skills.map((skill, i) => {
+                    const Icon = iconMap[skill.icon];
+                    return (
+                      <SkillRow
+                        key={skill.name}
+                        variants={rowVariants}
+                        custom={i}
+                      >
+                        <SkillIcon>
+                          {Icon ? <Icon /> : null}
+                        </SkillIcon>
+                        <SkillName>{skill.name}</SkillName>
+                      </SkillRow>
+                    );
+                  })}
+                </SkillsGrid>
+              </Panel>
+            ))}
+          </PanelsGrid>
+        </motion.div>
+      </Container>
     </SkillsSection>
   );
 };

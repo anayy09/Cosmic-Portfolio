@@ -1,538 +1,441 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaArrowRight } from 'react-icons/fa';
 import personalInfo from '../config/personalInfo';
 
+const langColor = (lang) => {
+  switch (lang?.toLowerCase()) {
+    case 'typescript': return '#3178C6';
+    case 'python': return '#3776AB';
+    case 'javascript': return '#F7DF1E';
+    case 'java': return '#007396';
+    case 'go': return '#00ADD8';
+    default: return '#6B7280';
+  }
+};
+
+const domainStyles = {
+  health: { bg: 'rgba(13, 148, 136, 0.1)', color: '#0D9488', border: 'rgba(13, 148, 136, 0.25)' },
+  systems: { bg: 'rgba(91, 141, 239, 0.1)', color: '#5B8DEF', border: 'rgba(91, 141, 239, 0.22)' },
+  nlp: { bg: 'rgba(123, 104, 182, 0.1)', color: '#7B68B6', border: 'rgba(123, 104, 182, 0.22)' },
+};
+
 const ProjectsSection = styled.section`
-  padding: 6rem 2rem;
+  padding: 6rem 0;
   position: relative;
-  overflow: hidden;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 3rem 1.5rem;
+    padding: 4rem 0;
+  }
+`;
+
+const Container = styled.div`
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0 1.5rem;
   }
 `;
 
 const SectionHeader = styled.div`
-  max-width: 1400px;
-  margin: 0 auto 3rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 2rem;
-  
+  margin-bottom: 2.5rem;
+  gap: 1rem;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.875rem;
     margin-bottom: 2rem;
   }
 `;
 
-const SectionTitleGroup = styled.div``;
-
-const SectionLabel = styled(motion.span)`
+const SectionLabel = styled(motion.p)`
   font-family: ${props => props.theme.fonts.code};
-  color: ${props => props.theme.colors.primary};
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  display: block;
-  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.875rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 4vw, 3rem);
-  background: ${props => props.theme.gradients.nebula};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.02em;
   margin: 0;
 `;
 
 const ViewAllLink = styled(motion.a)`
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   color: ${props => props.theme.colors.muted};
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  padding: 0.5rem 0;
-  
+  font-size: 0.85rem;
+  font-family: ${props => props.theme.fonts.code};
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  padding-bottom: 0.25rem;
+
   svg {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
   }
-  
+
   &:hover {
     color: ${props => props.theme.colors.primary};
-    svg {
-      transform: translateX(4px);
-    }
+    svg { transform: translateX(3px); }
   }
 `;
 
-const BentoGrid = styled(motion.div)`
-  max-width: 1400px;
-  margin: 0 auto;
+const getGridSpan = (index) => {
+  const patterns = [
+    css`grid-column: span 8; grid-row: span 2;`,
+    css`grid-column: span 4; grid-row: span 1;`,
+    css`grid-column: span 4; grid-row: span 1;`,
+    css`grid-column: span 4; grid-row: span 1;`,
+    css`grid-column: span 4; grid-row: span 1;`,
+    css`grid-column: span 4; grid-row: span 1;`,
+  ];
+  return patterns[index] || css`grid-column: span 4; grid-row: span 1;`;
+};
+
+const BentoGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(140px, auto);
-  gap: 1.25rem;
-  
+  grid-auto-rows: minmax(130px, auto);
+  gap: 1.1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.laptop}) {
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: auto;
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
-    gap: 1rem;
-  }
-  
-  @media (min-width: 1600px) {
-    max-width: 1500px;
-    gap: 1.5rem;
+    gap: 0.875rem;
   }
 `;
 
-const getGridSpan = (index, isMobile) => {
-  if (isMobile) return css`grid-column: span 1;`;
-  
-  // Bento layout pattern: featured (0), medium (1,2), small (3,4,5), medium (6,7), small (8)
-  const patterns = [
-    css`grid-column: span 8; grid-row: span 2;`, // Featured - large
-    css`grid-column: span 4; grid-row: span 1;`, // Medium
-    css`grid-column: span 4; grid-row: span 1;`, // Medium
-    css`grid-column: span 4; grid-row: span 1;`, // Small
-    css`grid-column: span 4; grid-row: span 1;`, // Small
-    css`grid-column: span 4; grid-row: span 1;`, // Small
-    css`grid-column: span 6; grid-row: span 1;`, // Wide
-    css`grid-column: span 6; grid-row: span 1;`, // Wide
-    css`grid-column: span 12; grid-row: span 1;`, // Full width
-  ];
-  
-  return patterns[index % patterns.length];
-};
-
 const ProjectCard = styled(motion.div)`
-  background: ${props => props.theme.colors.surface};
-  backdrop-filter: blur(16px);
-  border-radius: 16px;
-  border: 1px solid ${props => props.theme.colors.border};
+  background: rgba(14, 20, 32, 0.72);
+  border-radius: ${props => props.theme.radius.lg};
+  border: 1px solid rgba(91, 141, 239, 0.1);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   position: relative;
-  ${props => getGridSpan(props.index, props.isMobile)}
-  
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+  ${props => getGridSpan(props.$index)}
+
   &:hover {
-    border-color: rgba(91, 141, 239, 0.4);
-    box-shadow: 0 12px 40px rgba(91, 141, 239, 0.12);
-    transform: translateY(-3px);
+    border-color: ${props => props.$domain === 'health'
+      ? 'rgba(13, 148, 136, 0.35)'
+      : 'rgba(91, 141, 239, 0.32)'};
+    box-shadow: ${props => props.$domain === 'health'
+      ? '0 8px 32px rgba(13, 148, 136, 0.1)'
+      : '0 8px 32px rgba(91, 141, 239, 0.1)'};
   }
-  
-  ${props => props.isFeatured && css`
-    position: relative;
-    background: linear-gradient(135deg, 
-      ${props.theme.colors.surface} 0%, 
-      rgba(91, 141, 239, 0.08) 100%
-    );
-  `}
+
+  @media (max-width: ${props => props.theme.breakpoints.laptop}) {
+    grid-column: span 3 !important;
+    grid-row: span 1 !important;
+  }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    border-radius: 14px;
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
   }
 `;
 
-const ProjectImage = styled.div`
-  height: ${props => props.isFeatured ? '460px' : '160px'};
-  background: linear-gradient(135deg, rgba(22, 30, 48, 0.8) 0%, rgba(15, 23, 41, 0.9) 100%);
-  background-image: url(${props => props.imageUrl});
+const FeaturedImageArea = styled.div`
+  height: ${props => props.$featured ? '220px' : '0'};
+  background: rgba(8, 12, 20, 0.6);
+  background-image: url(${props => props.$img});
   background-size: cover;
   background-position: center;
   position: relative;
   flex-shrink: 0;
-  
+
   &::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent ${props => props.isFeatured ? '60%' : '40%'}, ${props => props.theme.colors.surface});
+    background: linear-gradient(to bottom, transparent 50%, rgba(14, 20, 32, 0.95));
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    height: ${props => props.isFeatured ? '180px' : '120px'};
-    
-    &::after {
-      background: linear-gradient(to bottom, transparent 40%, ${props => props.theme.colors.surface});
-    }
-  }
-  
-  @media (min-width: 1600px) {
-    height: ${props => props.isFeatured ? '420px' : '180px'};
+    height: ${props => props.$featured ? '140px' : '0'};
   }
 `;
 
-const ProjectContent = styled.div`
-  padding: ${props => props.isFeatured ? '1.25rem 1.5rem' : '1rem'};
-  flex-grow: 1;
+const CardContent = styled.div`
+  padding: ${props => props.$featured ? '1.1rem 1.4rem 1.25rem' : '1.1rem 1.2rem'};
+  flex: 1;
   display: flex;
   flex-direction: column;
-  
-  ${props => props.isFeatured && css`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(15, 23, 41, 0.95) 0%, transparent 100%);
-    padding: 1.5rem;
-  `}
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    position: static;
-    background: none;
-    padding: 1rem;
-  }
-  
-  @media (min-width: 1600px) {
-    padding: ${props => props.isFeatured ? '1.5rem 2rem' : '1.25rem'};
-  }
 `;
 
-const ProjectHeader = styled.div`
+const CardTopRow = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 0.75rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
 `;
 
 const ProjectTitle = styled.h3`
-  font-size: ${props => props.isFeatured ? '1.25rem' : '1.05rem'};
+  font-size: ${props => props.$featured ? '1.05rem' : '0.95rem'};
+  font-weight: 600;
   color: ${props => props.theme.colors.light};
   line-height: 1.3;
   margin: 0;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: ${props => props.isFeatured ? '1.15rem' : '1rem'};
-  }
-  
-  @media (min-width: 1600px) {
-    font-size: ${props => props.isFeatured ? '1.4rem' : '1.15rem'};
-  }
+  letter-spacing: -0.01em;
 `;
 
-const ProjectLinks = styled.div`
+const CardLinks = styled.div`
   display: flex;
-  gap: 0.75rem;
+  gap: 0.4rem;
   flex-shrink: 0;
 `;
 
-const ProjectLink = styled.a`
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+const CardLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.theme.colors.light};
-  font-size: 0.8rem;
-  transition: all 0.25s ease;
-  
+  width: 26px;
+  height: 26px;
+  border-radius: ${props => props.theme.radius.sm};
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: ${props => props.theme.colors.muted};
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+
   &:hover {
     background: ${props => props.theme.colors.primary};
     border-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.dark};
-    transform: translateY(-2px);
+    color: #fff;
+    transform: translateY(-1px);
   }
 `;
 
-const ProjectDescription = styled.p`
-  font-size: ${props => props.isFeatured ? '0.95rem' : '0.85rem'};
-  line-height: 1.6;
+const ProjectDesc = styled.p`
+  font-size: 0.855rem;
+  line-height: 1.65;
   color: ${props => props.theme.colors.muted};
-  flex-grow: 1;
-  margin: 0;
-  
+  flex: 1;
+  margin: 0 0 0.875rem 0;
+  max-width: none;
   display: -webkit-box;
-  -webkit-line-clamp: ${props => props.isFeatured ? 3 : 2};
+  -webkit-line-clamp: ${props => props.$featured ? 3 : 2};
   -webkit-box-orient: vertical;
   overflow: hidden;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.85rem;
-    -webkit-line-clamp: 3;
-  }
-  
-  @media (min-width: 1600px) {
-    font-size: ${props => props.isFeatured ? '1rem' : '0.9rem'};
-  }
 `;
 
-const ProjectFooter = styled.div`
+const CardFooter = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 0.75rem;
+  gap: 0.625rem;
+  flex-wrap: wrap;
   padding-top: 0.75rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  gap: 0.5rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    flex-wrap: wrap;
-  }
 `;
 
-const ProjectTags = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`;
-
-const ProjectTag = styled.span`
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 50px;
-  background: rgba(91, 141, 239, 0.1);
-  color: ${props => props.theme.colors.primaryMuted};
+const DomainBadge = styled.span`
   font-family: ${props => props.theme.fonts.code};
-  border: 1px solid rgba(91, 141, 239, 0.15);
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.7rem;
-    padding: 0.15rem 0.4rem;
-  }
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: ${props => domainStyles[props.$domain]?.bg || domainStyles.systems.bg};
+  color: ${props => domainStyles[props.$domain]?.color || domainStyles.systems.color};
+  border: 1px solid ${props => domainStyles[props.$domain]?.border || domainStyles.systems.border};
 `;
 
-const ProjectLanguage = styled.div`
-  display: flex;
+const TopicTag = styled.span`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.62rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: rgba(91, 141, 239, 0.07);
+  color: ${props => props.theme.colors.primaryMuted};
+  border: 1px solid rgba(91, 141, 239, 0.12);
+`;
+
+const LangDot = styled.span`
+  display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.8rem;
-  color: ${props => props.theme.colors.muted};
-  flex-shrink: 0;
-  
+  font-size: 0.75rem;
+  color: ${props => props.theme.colors.subtle};
+  margin-left: auto;
+
   &::before {
     content: '';
+    display: inline-block;
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: ${props => {
-      switch(props.language?.toLowerCase()) {
-        case 'javascript': return '#F7DF1E';
-        case 'typescript': return '#3178C6';
-        case 'python': return '#3776AB';
-        case 'java': return '#007396';
-        case 'go': return '#00ADD8';
-        default: return '#8E8E8E';
-      }
-    }};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 0.75rem;
-    
-    &::before {
-      width: 6px;
-      height: 6px;
-    }
+    background: ${props => langColor(props.$lang)};
   }
 `;
 
-const FeaturedBadge = styled.div`
+const FeaturedLabel = styled.span`
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
-  padding: 0.25rem 0.65rem;
-  background: ${props => props.theme.gradients.nebula};
-  border-radius: 50px;
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: white;
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  padding: 0.22rem 0.6rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: rgba(91, 141, 239, 0.15);
+  color: ${props => props.theme.colors.primary};
+  border: 1px solid rgba(91, 141, 239, 0.25);
   z-index: 2;
 `;
 
-const Projects = ({ githubUsername = '' }) => {
-  const customProjects = personalInfo.customProjects || [];
-  const controls = useAnimation();
+const Projects = ({ githubUsername = '', customProjects }) => {
+  const projects = customProjects || personalInfo.customProjects || [];
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.1 });
+  const inView = useInView(ref, { once: true, margin: '-80px' });
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
-  
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-  
-  const sortedProjects = [...customProjects].sort((a, b) => {
-    if (a.sortOrder && b.sortOrder) return a.sortOrder - b.sortOrder;
-    return 0; 
-  });
 
-  const projectsToShow = isMobile ? sortedProjects.slice(0, 4) : sortedProjects;
+  const displayed = isMobile ? projects.slice(0, 4) : projects;
 
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 }, 
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" } 
-    }
-  };
-  
   const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1, 
-        delayChildren: 0.2 
-      }
-    }
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
   };
-  
+
   const itemVariants = {
-    hidden: { opacity: 0, y: 25, scale: 0.95 }, 
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100, 
-        damping: 12 
-      }
-    }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
   };
-  
+
   return (
-    <ProjectsSection id="projects" ref={ref}>
-      <SectionHeader>
-        <SectionTitleGroup>
-          <SectionLabel
-            variants={headerVariants}
-            initial="hidden"
-            animate={controls}
+    <ProjectsSection id="projects">
+      <Container ref={ref}>
+        <SectionHeader>
+          <div>
+            <SectionLabel
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
+              // work.built
+            </SectionLabel>
+            <SectionTitle
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Featured Projects
+            </SectionTitle>
+          </div>
+
+          <ViewAllLink
+            href={`https://github.com/${githubUsername}?tab=repositories`}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Portfolio
-          </SectionLabel>
-          <SectionTitle
-            variants={headerVariants}
-            initial="hidden"
-            animate={controls}
-          >
-            Featured Projects
-          </SectionTitle>
-        </SectionTitleGroup>
-        
-        <ViewAllLink
-          href={`https://github.com/${githubUsername}?tab=repositories`}
-          target="_blank"
-          rel="noopener noreferrer"
-          variants={headerVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          View all projects <FaArrowRight />
-        </ViewAllLink>
-      </SectionHeader>
-      
-      {projectsToShow.length === 0 ? (
-        <motion.p
-          style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)' }}
-          variants={headerVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          No projects to display at the moment. Check back soon!
-        </motion.p>
-      ) : (
-        <BentoGrid
+            All repos <FaArrowRight size={11} />
+          </ViewAllLink>
+        </SectionHeader>
+
+        <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate={controls}
+          animate={inView ? 'visible' : 'hidden'}
         >
-          {projectsToShow.map((project, index) => (
-            <ProjectCard 
-              key={project.id || project.name} 
-              variants={itemVariants}
-              index={index}
-              isMobile={isMobile}
-              isFeatured={index === 0}
-            >
-              {index === 0 && <FeaturedBadge>Featured</FeaturedBadge>}
-              
-              {project.imageUrl && (
-                <ProjectImage 
-                  imageUrl={project.imageUrl} 
-                  isFeatured={index === 0}
+          <BentoGrid>
+            {displayed.map((project, i) => (
+              <ProjectCard
+                key={project.id}
+                $index={i}
+                $domain={project.domain}
+                variants={itemVariants}
+                whileHover={{ y: -2 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 16 }}
+              >
+                {i === 0 && <FeaturedLabel>Featured</FeaturedLabel>}
+
+                <FeaturedImageArea
+                  $featured={i === 0}
+                  $img={project.imageUrl}
                 />
-              )}
-              
-              <ProjectContent isFeatured={index === 0}>
-                <ProjectHeader>
-                  <ProjectTitle isFeatured={index === 0}>{project.name}</ProjectTitle>
-                  <ProjectLinks>
-                    {project.url && (
-                      <ProjectLink 
-                        href={project.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        aria-label={`View source code for ${project.name}`}
-                      >
-                        <FaGithub />
-                      </ProjectLink>
+
+                <CardContent $featured={i === 0}>
+                  <CardTopRow>
+                    <ProjectTitle $featured={i === 0}>{project.name}</ProjectTitle>
+                    <CardLinks>
+                      {project.url && (
+                        <CardLink
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="GitHub"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <FaGithub />
+                        </CardLink>
+                      )}
+                      {project.homepage && (
+                        <CardLink
+                          href={project.homepage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Live demo"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <FaExternalLinkAlt />
+                        </CardLink>
+                      )}
+                    </CardLinks>
+                  </CardTopRow>
+
+                  <ProjectDesc $featured={i === 0}>{project.description}</ProjectDesc>
+
+                  <CardFooter>
+                    {project.domain && (
+                      <DomainBadge $domain={project.domain}>
+                        {project.domain === 'health' ? 'Health AI' : project.domain === 'nlp' ? 'NLP' : 'Systems'}
+                      </DomainBadge>
                     )}
-                    {project.homepage && (
-                      <ProjectLink 
-                        href={project.homepage} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        aria-label={`View live demo for ${project.name}`}
-                      >
-                        <FaExternalLinkAlt />
-                      </ProjectLink>
+                    {project.topics?.slice(0, 2).map(t => (
+                      <TopicTag key={t}>{t}</TopicTag>
+                    ))}
+                    {project.language && (
+                      <LangDot $lang={project.language}>{project.language}</LangDot>
                     )}
-                  </ProjectLinks>
-                </ProjectHeader>
-                
-                <ProjectDescription isFeatured={index === 0}>
-                  {project.description}
-                </ProjectDescription>
-                
-                <ProjectFooter>
-                  {project.topics && project.topics.length > 0 && (
-                    <ProjectTags>
-                      {project.topics.slice(0, index === 0 ? 4 : 2).map((topic, i) => (
-                        <ProjectTag key={i}>{topic}</ProjectTag>
-                      ))}
-                    </ProjectTags>
-                  )}
-                  
-                  {project.language && (
-                    <ProjectLanguage language={project.language}>
-                      {project.language}
-                    </ProjectLanguage>
-                  )}
-                </ProjectFooter>
-              </ProjectContent>
-            </ProjectCard>
-          ))}
-        </BentoGrid>
-      )}
+                  </CardFooter>
+                </CardContent>
+              </ProjectCard>
+            ))}
+          </BentoGrid>
+        </motion.div>
+      </Container>
     </ProjectsSection>
   );
 };

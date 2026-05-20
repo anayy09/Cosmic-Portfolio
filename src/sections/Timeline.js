@@ -1,103 +1,104 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 
 const TimelineSection = styled.section`
-  padding: 6rem 2rem;
+  padding: 6rem 0;
   position: relative;
-  overflow: hidden;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 3rem 1.5rem;
+    padding: 4rem 0;
   }
 `;
 
-const SectionHeader = styled.div`
-  max-width: 1000px;
-  margin: 0 auto 3rem;
-  text-align: center;
+const Container = styled.div`
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0 1.5rem;
+  }
 `;
 
-const SectionLabel = styled(motion.span)`
+const SectionLabel = styled(motion.p)`
   font-family: ${props => props.theme.fonts.code};
-  color: ${props => props.theme.colors.primary};
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  display: block;
-  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.875rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 4vw, 3rem);
-  background: ${props => props.theme.gradients.nebula};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0 0 1.5rem 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.02em;
+  margin-bottom: 2.25rem;
 `;
 
 const TabsWrapper = styled(motion.div)`
   display: inline-flex;
-  gap: 0.5rem;
-  background: ${props => props.theme.colors.surface};
-  padding: 0.35rem;
-  border-radius: 12px;
-  border: 1px solid ${props => props.theme.colors.border};
+  gap: 0.25rem;
+  background: rgba(14, 20, 32, 0.7);
+  padding: 0.3rem;
+  border-radius: ${props => props.theme.radius.md};
+  border: 1px solid rgba(91, 141, 239, 0.1);
+  margin-bottom: 3rem;
 `;
 
 const TabButton = styled.button`
-  padding: 0.6rem 1.25rem;
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.muted};
+  padding: 0.5rem 1.1rem;
+  background: ${props => props.$active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.$active ? '#fff' : props.theme.colors.muted};
   border: none;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  border-radius: ${props => props.theme.radius.sm};
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover:not(:disabled) {
-    background: ${props => props.active ? props.theme.colors.primary : 'rgba(91, 141, 239, 0.1)'};
-    color: ${props => props.active ? props.theme.colors.dark : props.theme.colors.light};
+  transition: all 0.2s ease;
+  font-family: ${props => props.theme.fonts.main};
+
+  &:hover:not([disabled]) {
+    background: ${props => props.$active ? props.theme.colors.primary : 'rgba(91, 141, 239, 0.1)'};
+    color: ${props => props.$active ? '#fff' : props.theme.colors.light};
   }
 `;
 
-const TimelineWrapper = styled(motion.div)`
-  max-width: 1400px;
-  margin: 0 auto;
+const TimelineGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 0;
-  
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: block;
+    grid-template-columns: 1fr;
   }
 `;
 
-/* Center spine */
 const TimelineSpine = styled.div`
-  position: relative;
-  width: 5px;
+  width: 2px;
   background: linear-gradient(
     180deg,
-    ${props => props.theme.colors.primary}50 0%,
-    ${props => props.theme.colors.secondary}50 100%
+    transparent,
+    rgba(91, 141, 239, 0.3) 10%,
+    rgba(123, 104, 182, 0.25) 90%,
+    transparent
   );
-  border-radius: 3px;
-  
+  border-radius: 2px;
+  position: relative;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
 `;
 
-/* Timeline entries container */
 const EntriesLeft = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-right: 2rem;
-  
+  padding-right: 2.25rem;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
@@ -107,138 +108,92 @@ const EntriesRight = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-left: 2rem;
-  
+  padding-left: 2.25rem;
+  padding-top: 3.5rem;
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
 `;
 
-/* Individual entry */
+const MobileEntries = styled.div`
+  display: none;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+`;
+
+
+const ConnectorLine = styled.div`
+  position: absolute;
+  height: 1px;
+  background: ${props => props.$type === 'experience'
+    ? 'rgba(91, 141, 239, 0.2)'
+    : 'rgba(123, 104, 182, 0.2)'};
+  width: 2.25rem;
+  top: 1.55rem;
+  ${props => props.$side === 'left' ? 'right: -2.25rem;' : 'left: -2.25rem;'}
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
 const TimelineEntry = styled(motion.div)`
   position: relative;
-  display: flex;
-  flex-direction: column;
-`;
-
-const EntryConnector = styled.div`
-  position: absolute;
-  width: 2rem;
-  height: 2px;
-  background: ${props => props.$type === 'experience' 
-    ? 'rgba(91, 141, 239, 0.4)' 
-    : 'rgba(139, 92, 246, 0.4)'};
-  top: 1.5rem;
-  ${props => props.$side === 'left' ? 'right: -2rem;' : 'left: -2rem;'}
-  
-  &::after {
-    content: '';
-    position: absolute;
-    ${props => props.$side === 'left' ? 'right: -12px;' : 'left: -12px;'}
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: ${props => props.$active 
-      ? (props.$type === 'experience' ? props.theme.colors.primary : props.theme.colors.secondary)
-      : props.theme.colors.surface};
-    border: 3px solid ${props => props.$active 
-      ? (props.$type === 'experience' ? props.theme.colors.primary : props.theme.colors.secondary)
-      : (props.$type === 'experience' ? 'rgba(91, 141, 239, 0.5)' : 'rgba(139, 92, 246, 0.5)')};
-    transition: all 0.3s ease;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: none;
-  }
 `;
 
 const EntryCard = styled(motion.div)`
-  background: ${props => props.$active 
-    ? props.theme.colors.surface 
-    : 'rgba(255, 255, 255, 0.02)'};
-  border: 1px solid ${props => props.$active 
-    ? (props.$type === 'experience' ? 'rgba(91, 141, 239, 0.4)' : 'rgba(139, 92, 246, 0.4)')
-    : props.theme.colors.border};
-  border-radius: 16px;
-  padding: ${props => props.$active ? '1.25rem' : '1rem'};
+  background: ${props => props.$expanded
+    ? 'rgba(14, 20, 32, 0.85)'
+    : 'rgba(14, 20, 32, 0.5)'};
+  border: 1px solid ${props => props.$expanded
+    ? (props.$type === 'experience' ? 'rgba(91, 141, 239, 0.3)' : 'rgba(123, 104, 182, 0.3)')
+    : 'rgba(91, 141, 239, 0.1)'};
+  border-radius: ${props => props.theme.radius.lg};
+  padding: 1.1rem 1.25rem;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: ${props => props.$active ? 'blur(16px)' : 'none'};
-  border-left: 3px solid ${props => props.$type === 'experience' 
-    ? 'rgba(91, 141, 239, 0.6)' 
-    : 'rgba(139, 92, 246, 0.6)'};
-  
+  transition: border-color 0.25s ease, background 0.25s ease;
+
   &:hover {
-    background: ${props => props.theme.colors.surface};
-    border-color: ${props => props.$type === 'experience' 
-      ? 'rgba(91, 141, 239, 0.3)' 
-      : 'rgba(139, 92, 246, 0.3)'};
-    border-left-color: ${props => props.$type === 'experience' 
-      ? props.theme.colors.primary 
-      : props.theme.colors.secondary};
-    transform: translateY(-2px);
+    border-color: ${props => props.$type === 'experience'
+      ? 'rgba(91, 141, 239, 0.28)'
+      : 'rgba(123, 104, 182, 0.28)'};
+    background: rgba(14, 20, 32, 0.75);
   }
 `;
 
 const EntryHeader = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    flex-wrap: wrap;
-  }
+  align-items: flex-start;
+  gap: 0.875rem;
 `;
 
-const EntryIcon = styled.div`
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: ${props => props.$type === 'experience' 
-    ? 'rgba(91, 141, 239, 0.15)' 
-    : 'rgba(139, 92, 246, 0.15)'};
-  border: 1px solid ${props => props.$type === 'experience' 
-    ? 'rgba(91, 141, 239, 0.25)' 
-    : 'rgba(139, 92, 246, 0.25)'};
+const EntryIconBox = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: ${props => props.theme.radius.md};
+  background: ${props => props.$type === 'experience'
+    ? 'rgba(91, 141, 239, 0.12)'
+    : 'rgba(123, 104, 182, 0.12)'};
+  border: 1px solid ${props => props.$type === 'experience'
+    ? 'rgba(91, 141, 239, 0.2)'
+    : 'rgba(123, 104, 182, 0.2)'};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  
+  margin-top: 1px;
+
   svg {
-    font-size: 1.2rem;
-    color: ${props => props.$type === 'experience' 
-      ? props.theme.colors.primary 
+    font-size: 1rem;
+    color: ${props => props.$type === 'experience'
+      ? props.theme.colors.primary
       : props.theme.colors.secondary};
   }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    
-    svg {
-      font-size: 1rem;
-    }
-  }
-`;
-
-const TypeLabel = styled.span`
-  font-size: 0.65rem;
-  font-family: ${props => props.theme.fonts.code};
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  background: ${props => props.$type === 'experience' 
-    ? 'rgba(91, 141, 239, 0.12)' 
-    : 'rgba(139, 92, 246, 0.12)'};
-  color: ${props => props.$type === 'experience' 
-    ? props.theme.colors.primary 
-    : props.theme.colors.secondary};
-  margin-left: auto;
 `;
 
 const EntryMeta = styled.div`
@@ -247,90 +202,86 @@ const EntryMeta = styled.div`
 `;
 
 const EntryTitle = styled.h3`
-  font-size: ${props => props.$active ? '1.5rem' : '1.25rem'};
-  color: ${props => props.theme.colors.light};
-  margin: 0;
+  font-size: 0.975rem;
   font-weight: 600;
-  white-space: ${props => props.$active ? 'normal' : 'nowrap'};
-  overflow: ${props => props.$active ? 'visible' : 'hidden'};
+  color: ${props => props.theme.colors.light};
+  margin: 0 0 0.15rem 0;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  transition: all 0.3s ease;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: ${props => props.$active ? '1.1rem' : '1rem'};
+
+  ${props => props.$expanded && `
     white-space: normal;
-  }
+    overflow: visible;
+  `}
 `;
 
 const EntryOrg = styled.p`
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: ${props => props.theme.colors.primaryMuted};
-  margin: 0.15rem 0 0 0;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 0.9rem;
-  }
+  margin: 0;
 `;
 
-const EntryDate = styled.span`
-  font-family: ${props => props.theme.fonts.code};
-  font-size: 1rem;
-  color: ${props => props.theme.colors.muted};
-  white-space: nowrap;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 0.8rem;
-    margin-left: auto;
-  }
-`;
-
-const EntryHeaderRight = styled.div`
+const EntryRightMeta = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.35rem;
   flex-shrink: 0;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    margin-top: 0.5rem;
-    padding-left: calc(36px + 0.75rem);
-  }
 `;
 
-/* Expanded content */
+const TypeBadge = styled.span`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: ${props => props.$type === 'experience'
+    ? 'rgba(91, 141, 239, 0.1)'
+    : 'rgba(123, 104, 182, 0.1)'};
+  color: ${props => props.$type === 'experience'
+    ? props.theme.colors.primary
+    : props.theme.colors.secondary};
+`;
+
+const EntryDate = styled.span`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.72rem;
+  color: ${props => props.theme.colors.subtle};
+`;
+
 const ExpandedContent = styled(motion.div)`
   overflow: hidden;
 `;
 
 const ExpandedInner = styled.div`
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: 1rem;
+  border-top: 1px solid rgba(91, 141, 239, 0.08);
 `;
 
 const LogoRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.875rem;
   margin-bottom: 0.75rem;
 `;
 
-const LogoContainer = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+const LogoBox = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: ${props => props.theme.radius.md};
   overflow: hidden;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -338,68 +289,70 @@ const LogoContainer = styled.div`
   }
 `;
 
-const FallbackLogo = styled.div`
+const FallbackInitials = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.theme.gradients.nebulaSubtle};
-  color: ${props => props.theme.colors.light};
+  background: rgba(91, 141, 239, 0.08);
+  color: ${props => props.theme.colors.primary};
+  font-family: ${props => props.theme.fonts.code};
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.8rem;
 `;
 
-const FullDate = styled.div`
+const FullDate = styled.span`
   font-family: ${props => props.theme.fonts.code};
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: ${props => props.theme.colors.muted};
+`;
+
+const AwardBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 0.22rem 0.6rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: rgba(212, 165, 116, 0.1);
+  color: ${props => props.theme.colors.accentWarm};
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  margin-top: 0.35rem;
 `;
 
 const EntryDescription = styled.p`
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.7;
   color: ${props => props.theme.colors.muted};
   margin: 0;
+  max-width: none;
 `;
 
 const SkillTags = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
+  gap: 0.35rem;
+  margin-top: 0.875rem;
 `;
 
 const SkillTag = styled.span`
-  font-size: 0.65rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 50px;
-  background: rgba(91, 141, 239, 0.1);
-  color: ${props => props.theme.colors.primaryMuted};
   font-family: ${props => props.theme.fonts.code};
-  border: 1px solid rgba(91, 141, 239, 0.15);
-`;
-
-/* Mobile only - single column */
-const MobileEntries = styled.div`
-  display: none;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    border-left: 2px solid rgba(91, 141, 239, 0.2);
-    padding-left: 1rem;
-    margin-left: 0.5rem;
-  }
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 0.22rem 0.6rem;
+  border-radius: ${props => props.theme.radius.pill};
+  background: rgba(91, 141, 239, 0.08);
+  color: ${props => props.theme.colors.primaryMuted};
+  border: 1px solid rgba(91, 141, 239, 0.12);
 `;
 
 const LogoDisplay = ({ logoUrl, organizationName, getInitials }) => {
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    setHasError(false);
-  }, [logoUrl]);
+  useEffect(() => { setHasError(false); }, [logoUrl]);
 
   if (logoUrl && !hasError) {
     return (
@@ -410,146 +363,118 @@ const LogoDisplay = ({ logoUrl, organizationName, getInitials }) => {
       />
     );
   }
-  return <FallbackLogo>{getInitials(organizationName)}</FallbackLogo>;
+  return <FallbackInitials>{getInitials(organizationName)}</FallbackInitials>;
 };
 
 const Timeline = ({ education, experience }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [timelineItems, setTimelineItems] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
-  const sectionControls = useAnimation();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.1 });
+  const inView = useInView(ref, { once: true, margin: '-80px' });
 
   useEffect(() => {
-    if (inView) {
-      sectionControls.start('visible');
-    }
-  }, [sectionControls, inView]);
-  
-  useEffect(() => {
     let items = [];
-    
     if (activeTab === 'all' || activeTab === 'education') {
       items = [...items, ...education.map(item => ({ ...item, type: 'education' }))];
     }
-    
     if (activeTab === 'all' || activeTab === 'experience') {
       items = [...items, ...experience.map(item => ({ ...item, type: 'experience' }))];
     }
-    
     items.sort((a, b) => {
-      const dateA = new Date(a.endDate || new Date());
-      const dateB = new Date(b.endDate || new Date());
-      return dateB - dateA;
+      const parse = (d) => {
+        if (!d || d === 'Present') return new Date();
+        const parts = d.split(' ');
+        return parts.length === 2 ? new Date(`${parts[0]} 1, ${parts[1]}`) : new Date(d);
+      };
+      return parse(b.endDate) - parse(a.endDate);
     });
-    
     setTimelineItems(items);
     setExpandedId(null);
   }, [activeTab, education, experience]);
-  
-  const getInitials = (name) => {
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .substring(0, 2)
-      .toUpperCase();
-  };
+
+  const getInitials = (name) =>
+    name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
 
   const getShortDate = (startDate, endDate) => {
-    const end = endDate || 'Present';
     const startYear = startDate?.split(' ').pop() || '';
-    const endYear = end === 'Present' ? 'Now' : end.split(' ').pop();
-    return `${startYear} - ${endYear}`;
+    const endYear = !endDate || endDate === 'Present' ? 'Now' : endDate.split(' ').pop();
+    return `${startYear}–${endYear}`;
   };
 
-  const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
-  
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
-  
-  const wrapperVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.2 }
-    }
+  const toggleExpand = (id) => setExpandedId(prev => prev === id ? null : id);
+
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
   };
 
   const entryVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 }
-    }
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
   };
 
-  // Split items for left and right columns (desktop)
   const leftItems = timelineItems.filter((_, i) => i % 2 === 0);
   const rightItems = timelineItems.filter((_, i) => i % 2 === 1);
 
-  const renderEntry = (item, side = 'right') => {
-    const id = `${item.type}-${item.organization}-${item.title}`;
+  const renderEntry = (item) => {
+    const id = `${item.type}-${item.organization}-${item.startDate}`;
     const isExpanded = expandedId === id;
-    
+
     return (
       <TimelineEntry key={id} variants={entryVariants}>
-        <EntryConnector $side={side} $active={isExpanded} $type={item.type} />
-        <EntryCard 
-          $active={isExpanded}
+        <ConnectorLine
+          $type={item.type}
+          $side={leftItems.includes(item) ? 'left' : 'right'}
+        />
+        <EntryCard
+          $expanded={isExpanded}
           $type={item.type}
           onClick={() => toggleExpand(id)}
-          whileHover={{ scale: 1.01 }}
+          whileHover={{ y: -1 }}
           whileTap={{ scale: 0.99 }}
         >
           <EntryHeader>
-            <EntryIcon $type={item.type}>
+            <EntryIconBox $type={item.type}>
               {item.type === 'experience' ? <FaBriefcase /> : <FaGraduationCap />}
-            </EntryIcon>
+            </EntryIconBox>
             <EntryMeta>
-              <EntryTitle $active={isExpanded}>{item.title}</EntryTitle>
+              <EntryTitle $expanded={isExpanded}>{item.title}</EntryTitle>
               <EntryOrg>{item.organization}</EntryOrg>
             </EntryMeta>
-            <EntryHeaderRight>
-              <TypeLabel $type={item.type}>
+            <EntryRightMeta>
+              <TypeBadge $type={item.type}>
                 {item.type === 'experience' ? 'Work' : 'Study'}
-              </TypeLabel>
+              </TypeBadge>
               <EntryDate>{getShortDate(item.startDate, item.endDate)}</EntryDate>
-            </EntryHeaderRight>
+            </EntryRightMeta>
           </EntryHeader>
-          
+
           <AnimatePresence>
             {isExpanded && (
               <ExpandedContent
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
               >
                 <ExpandedInner>
                   <LogoRow>
-                    <LogoContainer>
+                    <LogoBox>
                       <LogoDisplay
                         logoUrl={item.logoUrl}
                         organizationName={item.organization}
                         getInitials={getInitials}
                       />
-                    </LogoContainer>
-                    <FullDate>{item.startDate} — {item.endDate || 'Present'}</FullDate>
+                    </LogoBox>
+                    <div>
+                      <FullDate>{item.startDate} — {item.endDate || 'Present'}</FullDate>
+                      {item.award && (
+                        <AwardBadge>★ {item.award}</AwardBadge>
+                      )}
+                    </div>
                   </LogoRow>
-                  
                   <EntryDescription>{item.description}</EntryDescription>
-                  
                   {item.skills && item.skills.length > 0 && (
                     <SkillTags>
                       {item.skills.map((skill, i) => (
@@ -565,65 +490,52 @@ const Timeline = ({ education, experience }) => {
       </TimelineEntry>
     );
   };
-  
+
   return (
-    <TimelineSection id="timeline" ref={ref}>
-      <SectionHeader>
-        <SectionLabel variants={headerVariants} initial="hidden" animate={sectionControls}>
-          Journey
-        </SectionLabel>
-        <SectionTitle variants={headerVariants} initial="hidden" animate={sectionControls}>
-          Experience & Education
-        </SectionTitle>
-        
-        <TabsWrapper variants={headerVariants} initial="hidden" animate={sectionControls}>
-          <TabButton 
-            active={activeTab === 'all'} 
-            onClick={() => setActiveTab('all')}
-          >
-            All
-          </TabButton>
-          <TabButton 
-            active={activeTab === 'experience'} 
-            onClick={() => setActiveTab('experience')}
-          >
-            Work
-          </TabButton>
-          <TabButton 
-            active={activeTab === 'education'} 
-            onClick={() => setActiveTab('education')}
-          >
-            Study
-          </TabButton>
-        </TabsWrapper>
-      </SectionHeader>
-      
-      <AnimatePresence mode="wait">
-        <TimelineWrapper 
-          key={activeTab}
-          variants={wrapperVariants} 
-          initial="hidden" 
-          animate="visible"
+    <TimelineSection id="timeline">
+      <Container ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Desktop: Alternating two-column layout */}
-          <EntriesLeft>
-            {leftItems.map(item => renderEntry(item, 'left'))}
-          </EntriesLeft>
-          
-          <TimelineSpine />
-          
-          <EntriesRight>
-            {/* Add spacer for first item offset */}
-            <div style={{ height: '3rem' }} />
-            {rightItems.map(item => renderEntry(item, 'right'))}
-          </EntriesRight>
-          
-          {/* Mobile: Single column */}
-          <MobileEntries>
-            {timelineItems.map(item => renderEntry(item, 'right'))}
-          </MobileEntries>
-        </TimelineWrapper>
-      </AnimatePresence>
+          <SectionLabel>// journey.log</SectionLabel>
+          <SectionTitle>Experience & Education</SectionTitle>
+          <TabsWrapper>
+            {['all', 'experience', 'education'].map(tab => (
+              <TabButton
+                key={tab}
+                $active={activeTab === tab}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab === 'all' ? 'All' : tab === 'experience' ? 'Work' : 'Study'}
+              </TabButton>
+            ))}
+          </TabsWrapper>
+        </motion.div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <TimelineGrid>
+              <EntriesLeft>
+                {leftItems.map(item => renderEntry(item))}
+              </EntriesLeft>
+              <TimelineSpine />
+              <EntriesRight>
+                {rightItems.map(item => renderEntry(item))}
+              </EntriesRight>
+              <MobileEntries>
+                {timelineItems.map(item => renderEntry(item))}
+              </MobileEntries>
+            </TimelineGrid>
+          </motion.div>
+        </AnimatePresence>
+      </Container>
     </TimelineSection>
   );
 };
