@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import styled, { useTheme } from 'styled-components'; // Combined useTheme import
-import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion'; // Added AnimatePresence
+import styled, { useTheme } from 'styled-components';
+import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
 import {
   ComposableMap,
   Geographies,
@@ -16,92 +16,104 @@ const MAP_JSON_PATH_WORLD = worldMapData;
 const MAP_JSON_PATH_INDIA = indiaMapData;
 
 const CosmicJourneysSection = styled.section`
-  padding: 6rem 2rem;
+  padding: 6rem 0;
   position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 3rem 1.5rem;
+    padding: 4rem 0;
   }
 `;
 
-const SectionHeader = styled(motion.div)`
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 1rem;
-  background: ${props => props.theme.gradients.nebula};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
-
-const SectionSubtitle = styled.p`
-  max-width: 500px;
+const Container = styled.div`
+  max-width: 1140px;
   margin: 0 auto;
-  font-size: 1rem;
+  padding: 0 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 0 1.5rem;
+  }
+`;
+
+const SectionLabel = styled(motion.p)`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.875rem;
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: ${props => props.theme.colors.light};
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+`;
+
+const SectionSubtitle = styled(motion.p)`
+  font-size: 0.875rem;
   color: ${props => props.theme.colors.muted};
-  line-height: 1.6;
+  max-width: 48ch;
+  line-height: 1.65;
+  margin-bottom: 2.5rem;
 `;
 
-const MapWrapper = styled(motion.div)`
-  width: 100%;
-  max-width: 1000px;
+const MapControls = styled(motion.div)`
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const MapControls = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
 `;
 
 const MapToggle = styled(motion.button)`
-  background: ${props => props.$active 
-    ? 'rgba(91, 141, 239, 0.2)' 
-    : props.theme.colors.surface};
-  border: 1px solid ${props => props.$active 
-    ? 'rgba(91, 141, 239, 0.4)' 
-    : props.theme.colors.border};
-  color: ${props => props.$active 
-    ? props.theme.colors.primary 
-    : props.theme.colors.muted};
-  padding: 0.6rem 1.25rem;
-  border-radius: 25px;
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.875rem;
+  border-radius: ${props => props.theme.radius.pill};
+  border: 1px solid ${props => props.$active
+    ? 'rgba(91, 141, 239, 0.35)'
+    : 'rgba(91, 141, 239, 0.1)'};
+  background: ${props => props.$active
+    ? 'rgba(91, 141, 239, 0.1)'
+    : 'transparent'};
+  color: ${props => props.$active
+    ? props.theme.colors.primary
+    : props.theme.colors.subtle};
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
-  
+  transition: all 0.2s ease;
+
   &:hover {
-    background: rgba(91, 141, 239, 0.15);
-    border-color: rgba(91, 141, 239, 0.3);
+    border-color: rgba(91, 141, 239, 0.28);
+    color: ${props => props.theme.colors.muted};
   }
 `;
 
-const MapContainer = styled(motion.div)`
+const MapOuter = styled(motion.div)`
   position: relative;
   width: 100%;
-  height: 450px;
-  background: ${props => props.theme.colors.surface};
-  border-radius: 20px;
-  border: 1px solid ${props => props.theme.colors.border};
+`;
+
+const MapContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: rgba(6, 9, 16, 0.97);
+  border-radius: ${props => props.theme.radius.lg};
+  border: 1px solid rgba(91, 141, 239, 0.07);
   overflow: hidden;
-  backdrop-filter: blur(16px);
-  
+
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    height: 350px;
-    border-radius: 16px;
+    height: 360px;
+    border-radius: ${props => props.theme.radius.md};
   }
-  
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    height: 280px;
+  }
+
   svg {
     display: block;
     width: 100%;
@@ -109,76 +121,57 @@ const MapContainer = styled(motion.div)`
   }
 `;
 
-const PlacesCount = styled.div`
+const MapChrome = styled.div`
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  background: ${props => props.theme.colors.surface};
-  border: 1px solid ${props => props.theme.colors.border};
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: ${props => props.theme.colors.muted};
-  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  pointer-events: none;
   z-index: 10;
-  
+`;
+
+const MapStat = styled.div`
+  font-family: ${props => props.theme.fonts.code};
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(91, 141, 239, 0.35);
+
   span {
-    color: ${props => props.theme.colors.primary};
-    font-weight: 600;
+    color: rgba(91, 141, 239, 0.65);
   }
 `;
 
 const Tooltip = styled.div`
-  position: absolute;
-  background: rgba(16, 22, 36, 0.95);
+  position: fixed;
+  background: rgba(8, 12, 20, 0.96);
   color: ${props => props.theme.colors.light};
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 0.7rem 0.875rem;
+  border-radius: ${props => props.theme.radius.md};
+  font-size: 0.825rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   white-space: nowrap;
-  z-index: 100;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  max-width: 250px;
-  
+  z-index: 9999;
+  border: 1px solid rgba(91, 141, 239, 0.12);
+  max-width: 240px;
+
   h4 {
-    margin: 0 0 0.35rem 0;
-    font-size: 0.95rem;
+    margin: 0 0 0.3rem 0;
+    font-size: 0.875rem;
     color: ${props => props.theme.colors.primary};
     font-weight: 500;
   }
-  
+
   p {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.775rem;
     color: ${props => props.theme.colors.muted};
     white-space: normal;
-    line-height: 1.4;
+    line-height: 1.5;
   }
-`;
-
-const LegendContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 0.5rem;
-`;
-
-const LegendItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: ${props => props.theme.colors.muted};
-`;
-
-const LegendDot = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: ${props => props.$color || props.theme.colors.accent};
 `;
 
 const CosmicJourneys = () => {
@@ -187,37 +180,33 @@ const CosmicJourneys = () => {
 
   const controls = useAnimation();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, threshold: 0.1 });
+  const inView = useInView(ref, { once: true, margin: '-80px' });
 
   const [tooltipContent, setTooltipContent] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [hoveredMarker, setHoveredMarker] = useState(null);
+  const [currentMap, setCurrentMap] = useState('world');
 
-  const [currentMap, setCurrentMap] = useState('world'); // 'world' or 'india'
-
-  const worldMapInitialConfig = {
+  const worldMapConfig = {
     projectionConfig: { scale: 135, center: [0, 20] },
-    zoomableGroup: { center: [0, 20], zoom: 1 }, // Corrected center for world map consistency
+    zoomableGroup: { center: [0, 20], zoom: 1 },
     geoJson: MAP_JSON_PATH_WORLD,
-    label: "World Map"
+    label: 'World Map',
   };
 
-  const indiaMapInitialConfig = {
-    projectionConfig: { scale: 825, center: [82, 22.5] }, // Fine-tuned center and scale for India
+  const indiaMapConfig = {
+    projectionConfig: { scale: 825, center: [82, 22.5] },
     zoomableGroup: { center: [82, 22.5], zoom: 1 },
     geoJson: MAP_JSON_PATH_INDIA,
-    label: "India Map"
+    label: 'India Map',
   };
 
-  const [activeMapConfig, setActiveMapConfig] = useState(worldMapInitialConfig);
-
-  // State for current map view (center and zoom)
+  const [activeMapConfig, setActiveMapConfig] = useState(worldMapConfig);
   const [mapView, setMapView] = useState({
-    center: activeMapConfig.zoomableGroup.center,
-    zoom: activeMapConfig.zoomableGroup.zoom,
+    center: worldMapConfig.zoomableGroup.center,
+    zoom: worldMapConfig.zoomableGroup.zoom,
   });
 
-  // Effect to reset mapView when activeMapConfig changes (e.g., switching maps)
   useEffect(() => {
     setMapView({
       center: activeMapConfig.zoomableGroup.center,
@@ -225,246 +214,211 @@ const CosmicJourneys = () => {
     });
   }, [activeMapConfig]);
 
+  useEffect(() => {
+    if (inView) controls.start('visible');
+  }, [controls, inView]);
+
+  useEffect(() => {
+    if (!tooltipContent) return;
+    const handleMouseMove = (e) => {
+      setTooltipPosition({ x: e.clientX + 15, y: e.clientY + 15 });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [tooltipContent]);
+
   const handleMapMoveEnd = ({ coordinates, zoom }) => {
     setMapView({ center: coordinates, zoom });
   };
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  const handleMouseMove = (e) => {
-    setTooltipPosition({ x: e.clientX + 15, y: e.clientY + 15 });
+  const headerVariants = {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
   };
 
-  useEffect(() => {
-    if (tooltipContent) {
-      window.addEventListener('mousemove', handleMouseMove);
-    } else {
-      window.removeEventListener('mousemove', handleMouseMove);
-    }
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [tooltipContent]);
-
-  const containerVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
+  const mapVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] } },
   };
 
   const mapTransitionVariants = {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.95 },
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   if (!visitedPlaces) {
     return (
       <CosmicJourneysSection id="journeys" ref={ref}>
-        <SectionHeader variants={headerVariants} initial="hidden" animate={controls}>
-          <SectionTitle>Cosmic Journeys</SectionTitle>
-          <SectionSubtitle>Map data is currently unavailable.</SectionSubtitle>
-        </SectionHeader>
+        <Container>
+          <SectionLabel>// nav.coordinates</SectionLabel>
+          <SectionTitle>Exploration Log</SectionTitle>
+        </Container>
       </CosmicJourneysSection>
     );
   }
 
-  const handleIndiaClick = () => {
-    setCurrentMap('india');
-    setActiveMapConfig(indiaMapInitialConfig);
-  };
-
-  const handleBackToWorldClick = () => {
-    setCurrentMap('world');
-    setActiveMapConfig(worldMapInitialConfig);
-  };
-
   const displayedPlaces = currentMap === 'india'
-  ? visitedPlaces.filter(place => place.name.includes("India") || (place.coordinates[0] > 68 && place.coordinates[0] < 98 && place.coordinates[1] > 8 && place.coordinates[1] < 37) ) // Basic check for India by name or coordinates
-  : visitedPlaces;
+    ? visitedPlaces.filter(place =>
+        place.name.includes('India') ||
+        (place.coordinates[0] > 68 && place.coordinates[0] < 98 &&
+         place.coordinates[1] > 8 && place.coordinates[1] < 37)
+      )
+    : visitedPlaces;
 
   return (
     <CosmicJourneysSection id="journeys" ref={ref}>
-      <SectionHeader variants={headerVariants} initial="hidden" animate={controls}>
-        <SectionTitle>Journeys</SectionTitle>
-        <SectionSubtitle>
-          Charting my explorations across the globe and within India.
-        </SectionSubtitle>
-      </SectionHeader>
-      
-      <MapWrapper variants={containerVariants} initial="hidden" animate={controls}>
-        <MapControls>
-          <MapToggle 
-            $active={currentMap === 'world'} 
-            onClick={handleBackToWorldClick}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            🌍 World
-          </MapToggle>
-          <MapToggle 
-            $active={currentMap === 'india'} 
-            onClick={handleIndiaClick}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            🇮🇳 India
-          </MapToggle>
-        </MapControls>
-        
-        <MapContainer>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentMap}
-              variants={mapTransitionVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              style={{ width: '100%', height: '100%' }}
+      <Container>
+        <motion.div
+          variants={headerVariants}
+          initial="hidden"
+          animate={controls}
+        >
+          <SectionLabel>// nav.coordinates</SectionLabel>
+          <SectionTitle>Exploration Log</SectionTitle>
+          <SectionSubtitle>
+            Coordinates mapped across physical space — from Gainesville to Guangzhou.
+          </SectionSubtitle>
+        </motion.div>
+
+        <MapOuter variants={mapVariants} initial="hidden" animate={controls}>
+          <MapControls>
+            <MapToggle
+              $active={currentMap === 'world'}
+              onClick={() => { setCurrentMap('world'); setActiveMapConfig(worldMapConfig); }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
             >
-              <ComposableMap
-                projection="geoMercator"
-                projectionConfig={activeMapConfig.projectionConfig}
-                aria-label={activeMapConfig.label}
-                width={800}
-                height={450}
-                style={{ width: "100%", height: "100%" }}
+              World
+            </MapToggle>
+            <MapToggle
+              $active={currentMap === 'india'}
+              onClick={() => { setCurrentMap('india'); setActiveMapConfig(indiaMapConfig); }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              India
+            </MapToggle>
+          </MapControls>
+
+          <MapContainer>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentMap}
+                variants={mapTransitionVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                style={{ width: '100%', height: '100%' }}
               >
-                <ZoomableGroup
-                  center={mapView.center}
-                  zoom={mapView.zoom}
-                  onMoveEnd={handleMapMoveEnd}
-                  minZoom={0.5}
-                  maxZoom={10}
+                <ComposableMap
+                  projection="geoMercator"
+                  projectionConfig={activeMapConfig.projectionConfig}
+                  aria-label={activeMapConfig.label}
+                  width={800}
+                  height={500}
+                  style={{ width: '100%', height: '100%' }}
                 >
-                  <Geographies geography={activeMapConfig.geoJson}>
-                    {({ geographies }) =>
-                      geographies.map(geo => {
-                        const isIndiaGeography = currentMap === 'world' && geo.properties && (
-                          (typeof geo.properties.NAME === 'string' && geo.properties.NAME.toLowerCase() === 'india') ||
-                          (typeof geo.properties.ADMIN === 'string' && geo.properties.ADMIN.toLowerCase() === 'india') ||
-                          (typeof geo.properties.NAME_LONG === 'string' && geo.properties.NAME_LONG.toLowerCase() === 'india') ||
-                          (typeof geo.properties.SOVEREIGNT === 'string' && geo.properties.SOVEREIGNT.toLowerCase() === 'india') ||
-                          (typeof geo.properties.name === 'string' && geo.properties.name.toLowerCase() === 'india') ||
-                          geo.properties.GU_A3 === 'IND' ||
-                          geo.properties.ISO_A3 === 'IND' ||
-                          geo.properties.ADM0_A3 === 'IND'
-                        );
+                  <ZoomableGroup
+                    center={mapView.center}
+                    zoom={mapView.zoom}
+                    onMoveEnd={handleMapMoveEnd}
+                    minZoom={0.5}
+                    maxZoom={10}
+                  >
+                    <Geographies geography={activeMapConfig.geoJson}>
+                      {({ geographies }) =>
+                        geographies.map(geo => {
+                          const isIndia = currentMap === 'world' && geo.properties && (
+                            geo.properties.GU_A3 === 'IND' ||
+                            geo.properties.ISO_A3 === 'IND' ||
+                            geo.properties.ADM0_A3 === 'IND' ||
+                            (typeof geo.properties.SOVEREIGNT === 'string' && geo.properties.SOVEREIGNT.toLowerCase() === 'india') ||
+                            (typeof geo.properties.name === 'string' && geo.properties.name.toLowerCase() === 'india')
+                          );
 
-                        return (
-                          <Geography
-                            key={geo.rsmKey}
-                            geography={geo}
-                            fill={
-                              isIndiaGeography
-                                ? theme.colors.accent
-                                : theme.colors.darkBlue
-                            }
-                            stroke={
-                              isIndiaGeography
-                                ? theme.colors.light
-                                : theme.colors.primary
-                            }
-                            style={{
-                              default: {
-                                outline: 'none',
-                                transition: 'fill 0.2s ease-in-out',
-                              },
-                              hover: {
-                                outline: 'none',
-                                fill: isIndiaGeography
-                                  ? theme.colors.accentHover
-                                  : theme.colors.primary,
-                              },
-                              pressed: { outline: 'none', fill: theme.colors.accentHover },
-                            }}
-                          />
-                        );
-                      })
-                    }
-                  </Geographies>
-                  {displayedPlaces.map((place) => {
-                    const currentZoom = mapView.zoom || 1;
-                    const baseDotRadius = hoveredMarker === place.id ? 6 : 4;
-                    const basePulsingRadius = 8;
-                    const baseStrokeWidth = 0.5;
-                    const basePulsingStrokeWidth = 1;
-
-                    const dynamicDotRadius = Math.max(1, baseDotRadius / currentZoom);
-                    const dynamicPulsingRadius = Math.max(2, basePulsingRadius / currentZoom);
-                    const dynamicStrokeWidth = Math.max(0.1, baseStrokeWidth / currentZoom);
-                    const dynamicPulsingStrokeWidth = Math.max(0.2, basePulsingStrokeWidth / currentZoom);
-
-                    return (
-                      <Marker
-                        key={place.id}
-                        coordinates={place.coordinates}
-                        onMouseEnter={() => {
-                          setTooltipContent({ name: place.name, story: place.story, significance: place.significance });
-                          setHoveredMarker(place.id);
-                        }}
-                        onMouseLeave={() => {
-                          setTooltipContent(null);
-                          setHoveredMarker(null);
-                        }}
-                      >
-                        <motion.g
-                          animate={{ scale: hoveredMarker === place.id ? 1.2 : 1 }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                          style={{ pointerEvents: 'auto' }}
-                        >
-                          <circle
-                            cx={0} cy={0}
-                            r={dynamicDotRadius}
-                            fill={theme.colors.accent}
-                            stroke={theme.colors.light}
-                            strokeWidth={dynamicStrokeWidth}
-                          />
-                          {hoveredMarker === place.id && (
-                            <motion.circle
-                              cx={0} cy={0}
-                              r={dynamicPulsingRadius}
-                              fill="none"
-                              stroke={theme.colors.accentHover}
-                              strokeWidth={dynamicPulsingStrokeWidth}
-                              initial={{ opacity: 0.5, scale: 1 }}
-                              animate={{ opacity: [0.5, 0.1, 0.5], scale: [1, 2, 1] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
+                          return (
+                            <Geography
+                              key={geo.rsmKey}
+                              geography={geo}
+                              fill={isIndia ? 'rgba(58, 90, 143, 0.8)' : 'rgba(14, 22, 38, 0.95)'}
+                              stroke={isIndia ? 'rgba(91, 141, 239, 0.25)' : 'rgba(91, 141, 239, 0.06)'}
+                              strokeWidth={0.5}
+                              style={{
+                                default: { outline: 'none', transition: 'fill 0.2s ease' },
+                                hover: {
+                                  outline: 'none',
+                                  fill: isIndia ? 'rgba(91, 141, 239, 0.55)' : 'rgba(20, 32, 55, 1)',
+                                },
+                                pressed: { outline: 'none' },
+                              }}
                             />
-                          )}
-                        </motion.g>
-                      </Marker>
-                    );
-                  })}
-                </ZoomableGroup>
-              </ComposableMap>
-            </motion.div>
-          </AnimatePresence>
-          
-          <PlacesCount>
-            <span>{displayedPlaces.length}</span> places explored
-          </PlacesCount>
-        </MapContainer>
-        
-        <LegendContainer>
-          <LegendItem>
-            <LegendDot $color={theme.colors.accent} />
-            Visited Location
-          </LegendItem>
-          <LegendItem>
-            <LegendDot $color={theme.colors.primary} />
-            Highlighted Region
-          </LegendItem>
-        </LegendContainer>
-      </MapWrapper>
-      
+                          );
+                        })
+                      }
+                    </Geographies>
+
+                    {displayedPlaces.map((place) => {
+                      const currentZoom = mapView.zoom || 1;
+                      const isHovered = hoveredMarker === place.id;
+                      const dotR = Math.max(1.2, (isHovered ? 5.5 : 3.5) / currentZoom);
+                      const ringR = Math.max(2, 9 / currentZoom);
+                      const strokeW = Math.max(0.1, 0.5 / currentZoom);
+
+                      return (
+                        <Marker
+                          key={place.id}
+                          coordinates={place.coordinates}
+                          onMouseEnter={() => {
+                            setTooltipContent({ name: place.name, story: place.story, significance: place.significance });
+                            setHoveredMarker(place.id);
+                          }}
+                          onMouseLeave={() => {
+                            setTooltipContent(null);
+                            setHoveredMarker(null);
+                          }}
+                        >
+                          <motion.g
+                            animate={{ scale: isHovered ? 1.15 : 1 }}
+                            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+                            style={{ pointerEvents: 'auto' }}
+                          >
+                            <circle
+                              cx={0} cy={0}
+                              r={dotR}
+                              fill={theme.colors.primary}
+                              stroke="rgba(255,255,255,0.12)"
+                              strokeWidth={strokeW}
+                            />
+                            {isHovered && (
+                              <motion.circle
+                                cx={0} cy={0}
+                                r={ringR}
+                                fill="none"
+                                stroke={theme.colors.primary}
+                                strokeWidth={Math.max(0.15, 0.8 / currentZoom)}
+                                initial={{ opacity: 0.6, scale: 1 }}
+                                animate={{ opacity: [0.6, 0.05, 0.6], scale: [1, 1.8, 1] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
+                              />
+                            )}
+                          </motion.g>
+                        </Marker>
+                      );
+                    })}
+                  </ZoomableGroup>
+                </ComposableMap>
+              </motion.div>
+            </AnimatePresence>
+
+            <MapChrome>
+              <MapStat><span>{displayedPlaces.length}</span> nodes mapped</MapStat>
+              <MapStat>drag · scroll to navigate</MapStat>
+            </MapChrome>
+          </MapContainer>
+        </MapOuter>
+      </Container>
+
       {tooltipContent && (
         <Tooltip style={{ left: tooltipPosition.x, top: tooltipPosition.y }}>
           <h4>{tooltipContent.name}</h4>
